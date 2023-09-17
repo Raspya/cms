@@ -63,7 +63,7 @@ public class ComponentService {
         componentRepository.delete( component );
     }
 
-    public Component get( String componentId ){
+    public Component getById(String componentId ){
         return componentRepository.findById( componentId ).orElseThrow();
     }
 
