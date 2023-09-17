@@ -1,0 +1,11 @@
+spring:
+  data:
+    mongodb:
+      username: cms-user
+      password: F3MS9DHXpyCU22M4eHd9b7VdX
+      host: bernouy.com
+      port: 27017
+      database: cms
+
+server:
+  port: 7777
