@@ -8,4 +8,4 @@ spring:
       database: cms
 
 server:
-  port: 7777
+  port: 8080
