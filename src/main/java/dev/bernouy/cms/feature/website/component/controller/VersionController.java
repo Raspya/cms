@@ -1,7 +1,13 @@
 package dev.bernouy.cms.feature.website.component.controller;
 
+import dev.bernouy.cms.feature.account.Account;
 import dev.bernouy.cms.feature.website.component.dto.ReqCreateVersion;
 import dev.bernouy.cms.feature.website.component.dto.ReqUploadFile;
+import dev.bernouy.cms.feature.website.component.model.Version;
+import dev.bernouy.cms.feature.website.component.service.VersionService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,22 +16,38 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/component/version")
 public class VersionController {
 
+    private VersionService versionService;
+    private HttpServletResponse response;
+    private HttpServletRequest request;
+
+    @Autowired
+    public VersionController(VersionService versionService, HttpServletResponse response, HttpServletRequest request) {
+        this.versionService = versionService;
+        this.response = response;
+        this.request = request;
+    }
+
+
     @PostMapping("/create")
     public ResponseEntity<String> createVersion(@RequestBody ReqCreateVersion dto){
-        return new ResponseEntity<>("", HttpStatus.CREATED);
+        Account account = (Account) request.getAttribute("account");
+        Version version = versionService.create(dto, account);
+        return new ResponseEntity<>(version.getId(), HttpStatus.CREATED);
     }
 
-    @PostMapping("/version/{versionID}/uploadJS")
+    @PostMapping("/{versionID}/uploadJS")
     public ResponseEntity<String> uploadJS(@RequestBody ReqUploadFile dto, @PathVariable String versionID){
+        Account account = (Account) request.getAttribute("account");
+        versionService.uploadJS(dto, account, versionID);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
-    @PostMapping("/version/{versionID}/uploadCSS")
+    @PostMapping("/{versionID}/uploadCSS")
     public ResponseEntity<String> uploadCSS(@RequestBody ReqUploadFile dto, @PathVariable String versionID){
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
-    @PostMapping("/version/{versionID}/deploy")
+    @PostMapping("/{versionID}/deploy")
     public ResponseEntity<String> deployVersion(@PathVariable String versionID){
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
