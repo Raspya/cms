@@ -1,5 +1,6 @@
 package dev.bernouy.cms;
 
+import dev.bernouy.cms.common.FileSystem;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
