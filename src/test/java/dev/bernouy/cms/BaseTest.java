@@ -1,6 +1,7 @@
 package dev.bernouy.cms;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.bernouy.cms.common.FileSystem;
 import dev.bernouy.cms.tdb.builder.AccountBuilderTDB;
 import dev.bernouy.cms.tdb.builder.ComponentBuilderTDB;
 import dev.bernouy.cms.tdb.builder.ProjectBuilderTDB;
@@ -32,6 +33,7 @@ public class BaseTest {
     @BeforeEach
     public void setup() {
         mongoTemplate.getDb().drop();
+        FileSystem.initFileSystem();
     }
 
     @AfterEach

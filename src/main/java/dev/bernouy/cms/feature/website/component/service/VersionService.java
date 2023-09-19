@@ -16,9 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 @Service
 public class VersionService {
@@ -54,13 +51,9 @@ public class VersionService {
     public void uploadJS(ReqUploadFile dto, Account account, String versionId){
         Version version = versionRepository.findById(versionId).orElseThrow();
         authorizeAccount(version.getComponent(), account);
-        String url = FileSystem.COMPONENT_PATH + File.separator + version.getComponent().getId() + File.separator + "C" + version.getId() + ".js";
+
+        String url = FileSystem.COMPONENT_PATH + File.separator + "C" + version.getId() + ".js";
         try {
-            System.out.println(url);
-            Path path = Paths.get(url);
-            if (!Files.exists(path)){
-                Files.createDirectories(path);
-            }
             FileWriter fw = new FileWriter(url);
             fw.write(dto.getFile());
             fw.close();
@@ -70,6 +63,8 @@ public class VersionService {
     private void authorizeAccount(Component comp, Account account){
         if (!comp.getProject().getOwner().equals(account)) throw new BasicException(BasicException.AUTH_ERROR, HttpStatus.FORBIDDEN);
     }
+
+
 
 
 

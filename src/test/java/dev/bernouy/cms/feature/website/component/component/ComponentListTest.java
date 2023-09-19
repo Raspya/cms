@@ -1,4 +1,4 @@
-package dev.bernouy.cms.feature.website.component;
+package dev.bernouy.cms.feature.website.component.component;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;

@@ -1,4 +1,4 @@
-package dev.bernouy.cms.feature.website.component;
+package dev.bernouy.cms.feature.website.component.component;
 
 import dev.bernouy.cms.BaseTest;
 import dev.bernouy.cms.feature.website.component.dto.ReqDeleteComponentDTO;
