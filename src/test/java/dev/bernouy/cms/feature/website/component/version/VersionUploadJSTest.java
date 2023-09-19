@@ -1,4 +1,4 @@
-package dev.bernouy.cms.feature.version;
+package dev.bernouy.cms.feature.website.component.version;
 
 import dev.bernouy.cms.BaseTest;
 import dev.bernouy.cms.common.FileSystem;
@@ -25,16 +25,5 @@ public class VersionUploadJSTest extends BaseTest {
               .withAuth(versionTDB.getComponentTDB().getWebsite().getAccount().getCookie())
               .send("/api/v1/component/version/" + versionTDB.getId() + "/uploadJS");
         System.out.println(res.getBody() + " --- " + res.getStatusCode());
-    }
-
-    @Test
-    public void testFW(){
-        System.out.println(FileSystem.class.getResource("/"));
-        try {
-            FileWriter fw = new FileWriter(FileSystem.COMPONENT_PATH + "/TestC1" + ".js");
-            fw.write("Hello World !");
-            fw.close();
-        } catch (Exception e) {e.printStackTrace();}
-
     }
 }

@@ -1,4 +1,4 @@
-package dev.bernouy.cms.feature.app;
+package dev.bernouy.cms.feature.website.project;
 
 import dev.bernouy.cms.BaseTest;
 import dev.bernouy.cms.MethodEnum;
