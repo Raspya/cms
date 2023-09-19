@@ -1,4 +1,4 @@
-package dev.bernouy.cms.feature.version;
+package dev.bernouy.cms.feature.website.component.version;
 
 import dev.bernouy.cms.BaseTest;
 import dev.bernouy.cms.tdb.builder.VersionBuilderTDB;
