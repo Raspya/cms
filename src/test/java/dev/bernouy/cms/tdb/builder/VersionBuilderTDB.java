@@ -14,9 +14,8 @@ import org.springframework.stereotype.Component;
 public class VersionBuilderTDB {
 
     private ComponentBuilderTDB componentBuilderTDB;
-    private int majorVersion = 1;
-    private int minorVersion = 0;
-    private int patchVersion = 0;
+
+    private String typeVersion = "";
     private ComponentTDB componentTDB;
     private boolean isDeploy = false;
 
@@ -29,18 +28,8 @@ public class VersionBuilderTDB {
 
     }
 
-    public VersionBuilderTDB withMajorVersion(int majorVersion){
-        this.majorVersion = majorVersion;
-        return this;
-    }
-
-    public VersionBuilderTDB withMinorVersion(int minorVersion){
-        this.minorVersion = minorVersion;
-        return this;
-    }
-
-    public VersionBuilderTDB withPatchVersion(int patchVersion){
-        this.patchVersion = patchVersion;
+    public VersionBuilderTDB withTypeVersion(String typeVersion){
+        this.typeVersion = typeVersion;
         return this;
     }
 
@@ -56,13 +45,10 @@ public class VersionBuilderTDB {
 
     public VersionTDB build(){
         if (componentTDB == null) this.componentTDB = componentBuilderTDB.build();
-        ReqCreateVersion dto = new ReqCreateVersion(this.majorVersion, this.minorVersion, this.patchVersion, this.componentTDB.getId());
+        ReqCreateVersion dto = new ReqCreateVersion(this.typeVersion, this.componentTDB.getId());
         ResponseEntity<String> res = this.reqTDB.withAuth(this.componentTDB.getWebsite().getAccount().getCookie()).withDto(dto).send("/api/v1/component/version/create");
         VersionTDB versionTDB = new VersionTDB();
         versionTDB.setId(res.getBody());
-        versionTDB.setMajorVersion(this.majorVersion);
-        versionTDB.setMinorVersion(this.minorVersion);
-        versionTDB.setPatchVersion(this.patchVersion);
         versionTDB.setComponentTDB(this.componentTDB);
         versionTDB.setDeploy(this.isDeploy);
 
@@ -71,9 +57,7 @@ public class VersionBuilderTDB {
     }
 
     public void reset(){
-        this.majorVersion = 1;
-        this.minorVersion = 0;
-        this.patchVersion = 0;
+        this.typeVersion = "";
         this.componentTDB = componentBuilderTDB.build();
         this.isDeploy = false;
     }

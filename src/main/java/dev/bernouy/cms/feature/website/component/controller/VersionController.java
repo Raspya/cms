@@ -44,11 +44,15 @@ public class VersionController {
 
     @PostMapping("/{versionID}/uploadCSS")
     public ResponseEntity<String> uploadCSS(@RequestBody ReqUploadFile dto, @PathVariable String versionID){
+        Account account = (Account) request.getAttribute("account");
+        versionService.uploadCSS(dto, account, versionID);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
     @PostMapping("/{versionID}/deploy")
     public ResponseEntity<String> deployVersion(@PathVariable String versionID){
+        Account account = (Account) request.getAttribute("account");
+        versionService.deploy(account, versionID);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
