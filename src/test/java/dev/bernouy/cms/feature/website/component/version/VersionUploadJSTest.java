@@ -24,6 +24,7 @@ public class VersionUploadJSTest extends BaseTest {
         ResponseEntity<String> res = reqTDB.withDto(reqUploadFile)
               .withAuth(versionTDB.getComponentTDB().getWebsite().getAccount().getCookie())
               .send("/api/v1/component/version/" + versionTDB.getId() + "/uploadJS");
-        System.out.println(res.getBody() + " --- " + res.getStatusCode());
+
+        Assertions.assertEquals(201, res.getStatusCode().value());
     }
 }

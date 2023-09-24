@@ -3,9 +3,7 @@ package dev.bernouy.cms.tdb.pojo;
 public class VersionTDB {
 
     private String id;
-    private int majorVersion;
-    private int minorVersion;
-    private int patchVersion;
+    private String typeVersion;
     private ComponentTDB componentTDB;
     private boolean isDeploy;
 
@@ -16,28 +14,13 @@ public class VersionTDB {
     public void setId(String id) {
         this.id = id;
     }
-    public int getMajorVersion() {
-        return majorVersion;
+
+    public String getTypeVersion() {
+        return typeVersion;
     }
 
-    public void setMajorVersion(int majorVersion) {
-        this.majorVersion = majorVersion;
-    }
-
-    public int getMinorVersion() {
-        return minorVersion;
-    }
-
-    public void setMinorVersion(int minorVersion) {
-        this.minorVersion = minorVersion;
-    }
-
-    public int getPatchVersion() {
-        return patchVersion;
-    }
-
-    public void setPatchVersion(int patchVersion) {
-        this.patchVersion = patchVersion;
+    public void setTypeVersion(String typeVersion) {
+        this.typeVersion = typeVersion;
     }
 
     public ComponentTDB getComponentTDB() {

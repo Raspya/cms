@@ -4,6 +4,7 @@ import dev.bernouy.cms.common.BasicException;
 import dev.bernouy.cms.common.FileSystem;
 import dev.bernouy.cms.common.RegexComponent;
 import dev.bernouy.cms.feature.account.Account;
+import dev.bernouy.cms.feature.account.AccountExceptionMessages;
 import dev.bernouy.cms.feature.website.component.ComponentExceptionMessages;
 import dev.bernouy.cms.feature.website.component.dto.ReqCreateVersion;
 import dev.bernouy.cms.feature.website.component.dto.ReqUploadFile;
@@ -35,13 +36,42 @@ public class VersionService {
     public Version create(ReqCreateVersion dto, Account account){
         Component comp = componentService.getById(dto.getComponentID());
         authorizeAccount(comp, account);
-        if (dto.getMajorVersion() < 0) throw new BasicException(ComponentExceptionMessages.VERSION_INVALID);
-        if (dto.getMinorVersion() < 0) throw new BasicException(ComponentExceptionMessages.VERSION_INVALID);
-        if (dto.getPatchVersion() < 0) throw new BasicException(ComponentExceptionMessages.VERSION_INVALID);
+
+        int majorVersion = 1;
+        int minorVersion = 0;
+        int patchVersion = 0;
+
+        String typeVersion = dto.getTypeVersion().toLowerCase();
+
+        if (!typeVersion.equals("major") && !typeVersion.equals("minor") && !typeVersion.equals("patch") && !typeVersion.equals(""))
+            throw new BasicException(ComponentExceptionMessages.INVALID_VERSION_TYPE);
+
+        Version oldVersion = versionRepository.getByComponentIdOrderByPatchVersion(dto.getComponentID());
+        if (oldVersion != null) {
+            majorVersion = oldVersion.getMajorVersion();
+            minorVersion = oldVersion.getMinorVersion();
+            patchVersion = oldVersion.getPatchVersion();
+
+            if (typeVersion.equals("major")) {
+                majorVersion += 1;
+                minorVersion = 0;
+                patchVersion = 0;
+            }
+
+            else if (typeVersion.equals("minor")) {
+                minorVersion += 1;
+                patchVersion = 0;
+            }
+
+            else if (typeVersion.equals("patch")) {
+                patchVersion += 1;
+            }
+        }
+
         Version version = new Version();
-        version.setMajorVersion(dto.getMajorVersion());
-        version.setMinorVersion(dto.getMinorVersion());
-        version.setPatchVersion(dto.getPatchVersion());
+        version.setMajorVersion(majorVersion);
+        version.setMinorVersion(minorVersion);
+        version.setPatchVersion(patchVersion);
         version.setComponent(comp);
         version.setDeploy(false);
         versionRepository.save(version);
@@ -52,12 +82,46 @@ public class VersionService {
         Version version = versionRepository.findById(versionId).orElseThrow();
         authorizeAccount(version.getComponent(), account);
 
-        String url = FileSystem.COMPONENT_PATH + File.separator + "C" + version.getId() + ".js";
+        String url = FileSystem.COMPONENT_PATH + File.separator + "js" + File.separator + "C" + version.getId() + ".js";
         try {
             FileWriter fw = new FileWriter(url);
             fw.write(dto.getFile());
             fw.close();
         } catch (Exception e) {e.printStackTrace();}
+    }
+
+    public void uploadCSS(ReqUploadFile dto, Account account, String versionId){
+        Version version = versionRepository.findById(versionId).orElseThrow();
+        authorizeAccount(version.getComponent(), account);
+
+        String url = FileSystem.COMPONENT_PATH + File.separator + "css" + File.separator + "C" + version.getId() + ".css";
+        try {
+            FileWriter fw = new FileWriter(url);
+            fw.write(dto.getFile());
+            fw.close();
+        } catch (Exception e) {e.printStackTrace();}
+    }
+
+    public void deploy(Account account, String versionId){
+        Version version = versionRepository.findById(versionId).orElseThrow();
+        authorizeAccount(version.getComponent(), account);
+
+        String urlJS = FileSystem.COMPONENT_PATH + File.separator + "js" + File.separator + "C" + version.getId() + ".js";
+        String urlCSS = FileSystem.COMPONENT_PATH + File.separator + "css" + File.separator + "C" + version.getId() + ".css";
+        File fileJS = new File(urlJS);
+        File fileCSS = new File(urlCSS);
+
+        if (!fileJS.exists() || !fileCSS.exists()) throw new BasicException(ComponentExceptionMessages.FILE_DOES_NOT_EXIST);
+
+        version.setDeploy(true);
+
+        System.out.println("-----------");
+        System.out.println("-----------");
+        System.out.println(version.isDeploy());
+        System.out.println("-----------");
+        System.out.println("-----------");
+
+
     }
 
     private void authorizeAccount(Component comp, Account account){
