@@ -7,7 +7,7 @@ import java.nio.file.Path;
 public class FileSystem {
 
     public final static String CLASS_PATH = FileSystem.class.getResource("/").getPath();
-    public final static String COMPONENT_PATH =CLASS_PATH + "/component";
+    public final static String COMPONENT_PATH = CLASS_PATH + "/component";
 
     public static void initFileSystem(){
         try{
