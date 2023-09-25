@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 @CompoundIndexes({
@@ -21,6 +22,24 @@ public class ParamModel extends AbstractDocument {
     private String key;
     private String type;
     private Object byDefault;
+
+    private HashMap<String, Object> options;
+
+    public HashMap<String, Object> getOptions() {
+        return options;
+    }
+
+    public void addOption(String key, Object value) {
+        if (!options.containsKey(key)) options.put(key, value);
+    }
+
+    public void removeOption(String key) {
+        if (options.containsKey(key)) options.remove(key);
+    }
+
+    public void setOptions(HashMap<String, Object> options) {
+        this.options = options;
+    }
 
     public Object getByDefault() {
         return byDefault;

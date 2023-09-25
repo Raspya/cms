@@ -113,13 +113,11 @@ public class VersionService {
 
         version.setDeploy(true);
 
-        System.out.println("-----------");
-        System.out.println("-----------");
-        System.out.println(version.isDeploy());
-        System.out.println("-----------");
-        System.out.println("-----------");
 
+    }
 
+    public Version getById(String versionId ){
+        return versionRepository.findById( versionId ).orElseThrow();
     }
 
     private void authorizeAccount(Component comp, Account account){
