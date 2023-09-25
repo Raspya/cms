@@ -4,9 +4,6 @@ public class ReqCreateVersion {
 
     private String componentID;
     private String typeVersion;
-    private int majorVersion;
-    private int minorVersion;
-    private int patchVersion;
 
     public ReqCreateVersion(){}
     public ReqCreateVersion(String typeVersion, String componentID) {

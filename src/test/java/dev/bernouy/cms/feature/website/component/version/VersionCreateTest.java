@@ -19,10 +19,6 @@ public class VersionCreateTest extends BaseTest {
     @Test
     public void testFirstCreate(){
         VersionTDB versionTDB = versionBuilderTDB.build();
-        ReqCreateVersion dto = new ReqCreateVersion(versionTDB.getTypeVersion(), versionTDB.getComponentTDB().getId());
-        ResponseEntity<String> res = reqTDB.withDto(dto)
-                                           .withAuth(versionTDB.getComponentTDB().getWebsite().getAccount().getCookie())
-                                           .send("/api/v1/component/version/create");
         Assertions.assertNotNull(versionTDB.getId());
     }
 
