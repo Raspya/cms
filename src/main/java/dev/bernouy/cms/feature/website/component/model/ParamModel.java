@@ -20,6 +20,15 @@ public class ParamModel extends AbstractDocument {
     private String name;
     private String key;
     private String type;
+    private Object byDefault;
+
+    public Object getByDefault() {
+        return byDefault;
+    }
+
+    public void setByDefault(Object byDefault) {
+        this.byDefault = byDefault;
+    }
 
     public Version getComponentVersion() {
         return componentVersion;
@@ -66,12 +75,12 @@ public class ParamModel extends AbstractDocument {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ParamModel that = (ParamModel) o;
-        return Objects.equals(componentVersion, that.componentVersion) && Objects.equals(parent, that.parent) && Objects.equals(name, that.name) && Objects.equals(key, that.key) && Objects.equals(type, that.type);
+        return Objects.equals(componentVersion, that.componentVersion) && Objects.equals(parent, that.parent) && Objects.equals(name, that.name) && Objects.equals(key, that.key) && Objects.equals(type, that.type) && Objects.equals(byDefault, that.byDefault);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(componentVersion, parent, name, key, type);
+        return Objects.hash(componentVersion, parent, name, key, type, byDefault);
     }
 
     @Override
@@ -82,6 +91,7 @@ public class ParamModel extends AbstractDocument {
                 ", name='" + name + '\'' +
                 ", key='" + key + '\'' +
                 ", type='" + type + '\'' +
+                ", byDefault=" + byDefault +
                 '}';
     }
 }

@@ -52,19 +52,17 @@ public class VersionService {
             minorVersion = oldVersion.getMinorVersion();
             patchVersion = oldVersion.getPatchVersion();
 
-            if (typeVersion.equals("major")) {
-                majorVersion += 1;
-                minorVersion = 0;
-                patchVersion = 0;
-            }
-
-            else if (typeVersion.equals("minor")) {
-                minorVersion += 1;
-                patchVersion = 0;
-            }
-
-            else if (typeVersion.equals("patch")) {
-                patchVersion += 1;
+            switch (typeVersion) {
+                case "major" -> {
+                    majorVersion += 1;
+                    minorVersion = 0;
+                    patchVersion = 0;
+                }
+                case "minor" -> {
+                    minorVersion += 1;
+                    patchVersion = 0;
+                }
+                case "patch" -> patchVersion += 1;
             }
         }
 
