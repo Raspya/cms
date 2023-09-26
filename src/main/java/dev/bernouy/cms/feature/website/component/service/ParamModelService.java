@@ -6,9 +6,11 @@ import dev.bernouy.cms.feature.account.Account;
 import dev.bernouy.cms.feature.website.component.dto.ReqCreateParamModel;
 import dev.bernouy.cms.feature.website.component.dto.ReqInfoParamModel;
 import dev.bernouy.cms.feature.website.component.dto.ReqOptionParamModel;
-import dev.bernouy.cms.feature.website.component.model.ParamModel.ParamModel;
-import dev.bernouy.cms.feature.website.component.model.ParamModel.ParamModelString;
 import dev.bernouy.cms.feature.website.component.model.Version;
+import dev.bernouy.cms.feature.website.component.model.paramModel.ParamModel;
+import dev.bernouy.cms.feature.website.component.model.paramModel.ParamModelFloat;
+import dev.bernouy.cms.feature.website.component.model.paramModel.ParamModelInt;
+import dev.bernouy.cms.feature.website.component.model.paramModel.ParamModelString;
 import dev.bernouy.cms.feature.website.component.repository.ParamModelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,20 +33,24 @@ public class ParamModelService {
     }
 
     public ParamModel create(ReqCreateParamModel dto, Account account){
+
         Version componentVersion = versionService.getById(dto.getVersionId());
         versionService.authorizeAccount(componentVersion.getComponent(), account);
+
+        ParamModel parent = paramModelRepository.findById(dto.getParentId()).orElse(null);
+        if ( parent != null && !parent.childAvailable())
+            throw new BasicException("Invalid parent type");
+
         String type = dto.getType().toLowerCase();
-        ParamModel paramModel;
-        paramModel = switch (type) {
+        ParamModel paramModel = switch (type) {
             case "string" -> new ParamModelString();
-            case "list"   -> new ParamModelString();
-            case "int"    -> new ParamModelString();
-            case "float"  -> new ParamModelString();
-            case "object" -> new ParamModelString();
-            default       -> throw new BasicException("test");
+            case "int"    -> new ParamModelInt();
+            case "float"  -> new ParamModelFloat();
+            default       -> throw new BasicException("Invalid ParamModel type");
         };
         paramModel.setType(dto.getType());
         paramModel.setComponentVersion(componentVersion);
+        if ( parent != null ) paramModel.setParent(parent);
         return paramModel;
     }
 
@@ -58,6 +64,7 @@ public class ParamModelService {
         ParamModel paramModel = paramModelRepository.findById(paramModelId).orElseThrow();
         paramModel.setKey(dto.getInfo());
     }
+
     public void setName(ReqInfoParamModel dto, Account account, String paramModelId) {
         authorizeAccount(paramModelId, account);
         ParamModel paramModel = paramModelRepository.findById(paramModelId).orElseThrow();
