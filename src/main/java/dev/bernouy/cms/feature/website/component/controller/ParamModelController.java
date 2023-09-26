@@ -4,9 +4,7 @@ import dev.bernouy.cms.feature.account.Account;
 import dev.bernouy.cms.feature.website.component.dto.ReqCreateParamModel;
 import dev.bernouy.cms.feature.website.component.dto.ReqInfoParamModel;
 import dev.bernouy.cms.feature.website.component.dto.ReqOptionParamModel;
-import dev.bernouy.cms.feature.website.component.model.ParamModel;
-import dev.bernouy.cms.feature.website.component.model.Version;
-import dev.bernouy.cms.feature.website.component.repository.ParamModelRepository;
+import dev.bernouy.cms.feature.website.component.model.ParamModel.ParamModel;
 import dev.bernouy.cms.feature.website.component.service.ParamModelService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -34,6 +32,7 @@ public class ParamModelController {
     public ResponseEntity<String> createParamModel(@RequestBody ReqCreateParamModel dto) {
         Account account = (Account) request.getAttribute("account");
         ParamModel paramModel = paramModelService.create(dto, account);
+        // ajouter le parent du ParamModel dans le dto
         return new ResponseEntity<>(paramModel.getId(), HttpStatus.CREATED);
     }
 
@@ -78,10 +77,13 @@ public class ParamModelController {
         paramModelService.resetOption(dto, account, paramModelId);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
+
     @PostMapping("/{paramModelId}/resetOptions")
     public ResponseEntity<String> resetOptions(@PathVariable String paramModelId) {
         Account account = (Account) request.getAttribute("account");
         paramModelService.resetOptions(account, paramModelId);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
+
+    // Set the value of the paramModel
 }

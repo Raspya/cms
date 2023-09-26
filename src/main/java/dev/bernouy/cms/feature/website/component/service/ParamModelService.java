@@ -6,11 +6,10 @@ import dev.bernouy.cms.feature.account.Account;
 import dev.bernouy.cms.feature.website.component.dto.ReqCreateParamModel;
 import dev.bernouy.cms.feature.website.component.dto.ReqInfoParamModel;
 import dev.bernouy.cms.feature.website.component.dto.ReqOptionParamModel;
-import dev.bernouy.cms.feature.website.component.model.Component;
-import dev.bernouy.cms.feature.website.component.model.ParamModel;
+import dev.bernouy.cms.feature.website.component.model.ParamModel.ParamModel;
+import dev.bernouy.cms.feature.website.component.model.ParamModel.ParamModelString;
 import dev.bernouy.cms.feature.website.component.model.Version;
 import dev.bernouy.cms.feature.website.component.repository.ParamModelRepository;
-import dev.bernouy.cms.feature.website.component.repository.VersionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -32,8 +31,18 @@ public class ParamModelService {
     }
 
     public ParamModel create(ReqCreateParamModel dto, Account account){
-        Version componentVersion = versionService.getById(dto.getVersionId()); // A MODIFIER
-        ParamModel paramModel = new ParamModel();
+        Version componentVersion = versionService.getById(dto.getVersionId());
+        versionService.authorizeAccount(componentVersion.getComponent(), account);
+        String type = dto.getType().toLowerCase();
+        ParamModel paramModel;
+        paramModel = switch (type) {
+            case "string" -> new ParamModelString();
+            case "list"   -> new ParamModelString();
+            case "int"    -> new ParamModelString();
+            case "float"  -> new ParamModelString();
+            case "object" -> new ParamModelString();
+            default       -> throw new BasicException("test");
+        };
         paramModel.setType(dto.getType());
         paramModel.setComponentVersion(componentVersion);
         return paramModel;
@@ -63,7 +72,7 @@ public class ParamModelService {
     public void setOption(ReqOptionParamModel dto, Account account, String paramModelId) {
         authorizeAccount(paramModelId, account);
         ParamModel paramModel = paramModelRepository.findById(paramModelId).orElseThrow();
-        paramModel.addOption(dto.getKey(), dto.getValue());
+        paramModel.updateOption(dto.getKey(), dto.getValue());
     }
 
     public void resetOption(ReqInfoParamModel dto, Account account, String paramModelId) {

@@ -120,7 +120,7 @@ public class VersionService {
         return versionRepository.findById( versionId ).orElseThrow();
     }
 
-    private void authorizeAccount(Component comp, Account account){
+    public void authorizeAccount(Component comp, Account account){
         if (!comp.getProject().getOwner().equals(account)) throw new BasicException(BasicException.AUTH_ERROR, HttpStatus.FORBIDDEN);
     }
 
