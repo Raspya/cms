@@ -1,15 +1,32 @@
 package dev.bernouy.cms.feature.website.component.dto;
 
+import dev.bernouy.cms.feature.website.component.model.ParamModel.ParamModel;
+
 public class ReqCreateParamModel {
 
     private String versionId;
     private String type;
+    private String parentId;
 
 
     public ReqCreateParamModel() {}
-    public ReqCreateParamModel(String versionId, String type){
+    public ReqCreateParamModel(String versionId, String type) {
         this.versionId = versionId;
         this.type = type;
+    }
+
+    public ReqCreateParamModel(String versionId, String type, String parentId) {
+        this.versionId = versionId;
+        this.type = type;
+        this.parentId = parentId;
+    }
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
 
     public String getVersionId() {

@@ -1,4 +1,4 @@
-package dev.bernouy.cms.feature.website.component.model.ParamModel;
+package dev.bernouy.cms.feature.website.component.model.paramModel;
 
 import dev.bernouy.cms.common.AbstractDocument;
 import dev.bernouy.cms.feature.website.component.model.Version;
@@ -22,20 +22,6 @@ public abstract class ParamModel extends AbstractDocument implements ParamInterf
     protected String key;
     protected String type;
     protected Object value;
-
-    protected HashMap<String, Object> options;
-
-    public HashMap<String, Object> getOptions() {
-        return options;
-    }
-
-    public void removeOption(String key) {
-        if (options.containsKey(key)) options.remove(key);
-    }
-
-    public void setOptions(HashMap<String, Object> options) {
-        this.options = options;
-    }
 
     public Object getValue() {
         return value;
@@ -79,6 +65,10 @@ public abstract class ParamModel extends AbstractDocument implements ParamInterf
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public boolean childAvailable() {
+        return false;
     }
 
 }
