@@ -1,25 +1,32 @@
-package dev.bernouy.cms.feature.website.component.model;
+package dev.bernouy.cms.feature.website.component.model.paramModel;
 
 import dev.bernouy.cms.common.AbstractDocument;
+import dev.bernouy.cms.feature.website.component.model.Version;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
-import java.util.Objects;
+import java.util.HashMap;
 
 @CompoundIndexes({
         @CompoundIndex(name = "keyIndex", def = "{'parent' : 1, 'key': 1}"),
         @CompoundIndex(name = "searchIndex", def = "{ 'parent': 1, 'componentVersion': 1 }")
 })
-public class ParamModel extends AbstractDocument {
+public abstract class ParamModel extends AbstractDocument implements ParamInterface {
 
     @DBRef
-    private Version componentVersion;
+    protected Version componentVersion;
     @DBRef
-    private ParamModel parent;
-    private String name;
-    private String key;
-    private String type;
+    protected ParamModel parent;
+    protected String name;
+    protected String key;
+    protected String type;
+    protected int position;
+
+    public int getPosition() { return position;}
+    public void setPosition(int position) {
+        this.position = position;
+    }
 
     public Version getComponentVersion() {
         return componentVersion;
@@ -61,27 +68,8 @@ public class ParamModel extends AbstractDocument {
         this.type = type;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ParamModel that = (ParamModel) o;
-        return Objects.equals(componentVersion, that.componentVersion) && Objects.equals(parent, that.parent) && Objects.equals(name, that.name) && Objects.equals(key, that.key) && Objects.equals(type, that.type);
+    public boolean childAvailable() {
+        return false;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(componentVersion, parent, name, key, type);
-    }
-
-    @Override
-    public String toString() {
-        return "ParamModel{" +
-                "componentVersion=" + componentVersion +
-                ", parent=" + parent +
-                ", name='" + name + '\'' +
-                ", key='" + key + '\'' +
-                ", type='" + type + '\'' +
-                '}';
-    }
 }

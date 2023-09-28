@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+// RequestParam String nomParam
 @RestController
 @RequestMapping("/api/v1/component/version")
 public class VersionController {
