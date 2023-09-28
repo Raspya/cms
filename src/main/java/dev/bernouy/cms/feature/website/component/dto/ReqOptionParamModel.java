@@ -3,9 +3,9 @@ package dev.bernouy.cms.feature.website.component.dto;
 public class ReqOptionParamModel {
 
     private String key;
-    private Object value;
+    private String value;
 
-    public ReqOptionParamModel(String key, Object value) {
+    public ReqOptionParamModel(String key, String value) {
         this.key = key;
         this.value = value;
     }
@@ -18,11 +18,11 @@ public class ReqOptionParamModel {
         this.key = key;
     }
 
-    public Object getValue() {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(Object value) {
+    public void setValue(String value) {
         this.value = value;
     }
 }

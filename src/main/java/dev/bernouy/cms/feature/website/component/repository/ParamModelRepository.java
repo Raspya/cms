@@ -5,4 +5,5 @@ import dev.bernouy.cms.feature.website.component.model.paramModel.ParamModel;
 import org.springframework.data.repository.CrudRepository;
 
 public interface ParamModelRepository extends CrudRepository<ParamModel, String> {
+    ParamModel findByPosition(int i);
 }

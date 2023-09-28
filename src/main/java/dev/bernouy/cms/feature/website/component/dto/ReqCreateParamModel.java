@@ -1,6 +1,6 @@
 package dev.bernouy.cms.feature.website.component.dto;
 
-import dev.bernouy.cms.feature.website.component.model.ParamModel.ParamModel;
+import dev.bernouy.cms.feature.website.component.model.paramModel.ParamModel;
 
 public class ReqCreateParamModel {
 
