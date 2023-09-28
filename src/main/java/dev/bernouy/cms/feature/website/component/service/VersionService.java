@@ -52,19 +52,17 @@ public class VersionService {
             minorVersion = oldVersion.getMinorVersion();
             patchVersion = oldVersion.getPatchVersion();
 
-            if (typeVersion.equals("major")) {
-                majorVersion += 1;
-                minorVersion = 0;
-                patchVersion = 0;
-            }
-
-            else if (typeVersion.equals("minor")) {
-                minorVersion += 1;
-                patchVersion = 0;
-            }
-
-            else if (typeVersion.equals("patch")) {
-                patchVersion += 1;
+            switch (typeVersion) {
+                case "major" -> {
+                    majorVersion += 1;
+                    minorVersion = 0;
+                    patchVersion = 0;
+                }
+                case "minor" -> {
+                    minorVersion += 1;
+                    patchVersion = 0;
+                }
+                case "patch" -> patchVersion += 1;
             }
         }
 
@@ -115,16 +113,14 @@ public class VersionService {
 
         version.setDeploy(true);
 
-        System.out.println("-----------");
-        System.out.println("-----------");
-        System.out.println(version.isDeploy());
-        System.out.println("-----------");
-        System.out.println("-----------");
-
 
     }
 
-    private void authorizeAccount(Component comp, Account account){
+    public Version getById(String versionId ){
+        return versionRepository.findById( versionId ).orElseThrow();
+    }
+
+    public void authorizeAccount(Component comp, Account account){
         if (!comp.getProject().getOwner().equals(account)) throw new BasicException(BasicException.AUTH_ERROR, HttpStatus.FORBIDDEN);
     }
 
