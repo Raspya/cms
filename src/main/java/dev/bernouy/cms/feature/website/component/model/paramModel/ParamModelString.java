@@ -21,16 +21,15 @@ public class ParamModelString extends ParamModel {
     }
 
     @Override
-    public void setValue(String value) {
-        if ( !check(value) ) return;
-        this.value = value;
-    }
-
-    @Override
     public boolean check( String value ){
         if ( value.length() >= min && value.length() <= max )
             return false;
         return true;
+    }
+
+    @Override
+    public void resetOptions() {
+        min = max = null;
     }
 
 }

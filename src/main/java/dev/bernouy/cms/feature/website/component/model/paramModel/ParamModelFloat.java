@@ -5,6 +5,7 @@ public class ParamModelFloat extends ParamModel  {
     private Integer min;
     private Integer max;
 
+
     @Override
     public void updateOption( String key, String value ){
         int i = Integer.parseInt(value);
@@ -21,12 +22,6 @@ public class ParamModelFloat extends ParamModel  {
     }
 
     @Override
-    public void setValue(String value) {
-        if ( !check(value) ) return;
-        this.value = value;
-    }
-
-    @Override
     public boolean check( String value ){
         double i;
         try{
@@ -34,5 +29,11 @@ public class ParamModelFloat extends ParamModel  {
         } catch ( Exception e ) { return false; }
         return i >= min && i <= max;
     }
+
+    @Override
+    public void resetOptions() {
+        min = max = null;
+    }
+
 
 }

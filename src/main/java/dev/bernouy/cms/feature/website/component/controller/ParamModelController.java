@@ -1,10 +1,8 @@
 package dev.bernouy.cms.feature.website.component.controller;
 
 import dev.bernouy.cms.feature.account.Account;
-import dev.bernouy.cms.feature.website.component.dto.ReqCreateParamModel;
-import dev.bernouy.cms.feature.website.component.dto.ReqInfoParamModel;
-import dev.bernouy.cms.feature.website.component.dto.ReqOptionParamModel;
-import dev.bernouy.cms.feature.website.component.model.ParamModel.ParamModel;
+import dev.bernouy.cms.feature.website.component.dto.*;
+import dev.bernouy.cms.feature.website.component.model.paramModel.ParamModel;
 import dev.bernouy.cms.feature.website.component.service.ParamModelService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -44,23 +42,23 @@ public class ParamModelController {
     }
 
     @PostMapping("/{paramModelId}/setKey")
-    public ResponseEntity<String> setKey(@RequestBody ReqInfoParamModel dto, @PathVariable String paramModelId) {
+    public ResponseEntity<String> setKey(@RequestBody ReqKeyParamModel dto, @PathVariable String paramModelId) {
         Account account = (Account) request.getAttribute("account");
         paramModelService.setKey(dto, account, paramModelId);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
     @PostMapping("/{paramModelId}/setName")
-    public ResponseEntity<String> setName(@RequestBody ReqInfoParamModel dto, @PathVariable String paramModelId) {
+    public ResponseEntity<String> setName(@RequestBody ReqNameParamModel dto, @PathVariable String paramModelId) {
         Account account = (Account) request.getAttribute("account");
         paramModelService.setName(dto, account, paramModelId);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
     @PostMapping("/{paramModelId}/setPosition")
-    public ResponseEntity<String> setPosition(@PathVariable String paramModelId) {
+    public ResponseEntity<String> setPosition(@RequestBody ReqPositionParamModel dto, @PathVariable String paramModelId) {
         Account account = (Account) request.getAttribute("account");
-        paramModelService.setPosition(account, paramModelId);
+        paramModelService.setPosition(dto, account, paramModelId);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
@@ -72,7 +70,7 @@ public class ParamModelController {
     }
 
     @PostMapping("/{paramModelId}/resetOption")
-    public ResponseEntity<String> resetOption(@RequestBody ReqInfoParamModel dto, @PathVariable String paramModelId) {
+    public ResponseEntity<String> resetOption(@RequestBody ReqKeyParamModel dto, @PathVariable String paramModelId) {
         Account account = (Account) request.getAttribute("account");
         paramModelService.resetOption(dto, account, paramModelId);
         return new ResponseEntity<>("", HttpStatus.CREATED);

@@ -21,10 +21,11 @@ public abstract class ParamModel extends AbstractDocument implements ParamInterf
     protected String name;
     protected String key;
     protected String type;
-    protected Object value;
+    protected int position;
 
-    public Object getValue() {
-        return value;
+    public int getPosition() { return position;}
+    public void setPosition(int position) {
+        this.position = position;
     }
 
     public Version getComponentVersion() {

@@ -21,12 +21,6 @@ public class ParamModelInt extends ParamModel {
     }
 
     @Override
-    public void setValue(String value) {
-        if ( !check(value) ) return;
-        this.value = value;
-    }
-
-    @Override
     public boolean check( String value ){
         int i;
         try{
@@ -34,6 +28,11 @@ public class ParamModelInt extends ParamModel {
         } catch ( Exception e ) { return false; }
 
         return i >= min && i <= max;
+    }
+
+    @Override
+    public void resetOptions() {
+        min = max = null;
     }
 
 }
