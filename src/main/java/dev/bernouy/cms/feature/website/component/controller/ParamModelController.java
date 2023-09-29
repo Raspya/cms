@@ -83,4 +83,9 @@ public class ParamModelController {
     }
 
     // Set the value of the paramModel
+    @GetMapping("/{paramModelId}/get")
+    public ParamModel get(@PathVariable String paramModelId) {
+        Account account = (Account) request.getAttribute("account");
+        return paramModelService.getById(paramModelId, account);
+    }
 }

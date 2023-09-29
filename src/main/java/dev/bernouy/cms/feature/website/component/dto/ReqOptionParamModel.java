@@ -4,7 +4,7 @@ public class ReqOptionParamModel {
 
     private String key;
     private String value;
-
+    public ReqOptionParamModel() {}
     public ReqOptionParamModel(String key, String value) {
         this.key = key;
         this.value = value;
