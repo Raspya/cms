@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/component/version/param")
+@RequestMapping("/api/v1/component/param")
 public class ParamModelController {
 
     private ParamModelService paramModelService;
@@ -30,7 +30,6 @@ public class ParamModelController {
     public ResponseEntity<String> createParamModel(@RequestBody ReqCreateParamModel dto) {
         Account account = (Account) request.getAttribute("account");
         ParamModel paramModel = paramModelService.create(dto, account);
-        // ajouter le parent du ParamModel dans le dto
         return new ResponseEntity<>(paramModel.getId(), HttpStatus.CREATED);
     }
 
