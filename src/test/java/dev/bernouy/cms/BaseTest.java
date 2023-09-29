@@ -2,10 +2,8 @@ package dev.bernouy.cms;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.bernouy.cms.common.FileSystem;
-import dev.bernouy.cms.tdb.builder.AccountBuilderTDB;
-import dev.bernouy.cms.tdb.builder.ComponentBuilderTDB;
-import dev.bernouy.cms.tdb.builder.ProjectBuilderTDB;
-import dev.bernouy.cms.tdb.builder.VersionBuilderTDB;
+import dev.bernouy.cms.tdb.builder.*;
+import dev.bernouy.cms.tdb.pojo.ParamModelTDB;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +25,8 @@ public class BaseTest {
     protected ComponentBuilderTDB componentBuilderTDB;
     @Autowired
     protected VersionBuilderTDB versionBuilderTDB;
+    @Autowired
+    protected ParamModelBuilderTDB paramModelBuilderTDB;
 
     protected ObjectMapper objectMapper = new ObjectMapper();
 

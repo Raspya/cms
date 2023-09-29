@@ -35,9 +35,12 @@ public class ParamModelService {
         Version componentVersion = versionService.getById(dto.getVersionId());
         versionService.authorizeAccount(componentVersion.getComponent(), account);
 
-        ParamModel parent = paramModelRepository.findById(dto.getParentId()).orElse(null);
-        if ( parent != null && !parent.childAvailable())
-            throw new BasicException(ComponentExceptionMessages.INVALID_PARENT_TYPE);
+        ParamModel parent = null;
+        if ( dto.getParentId() != null ){
+            parent = paramModelRepository.findById(dto.getParentId()).orElse(null);
+            if ( parent != null && !parent.childAvailable())
+                throw new BasicException(ComponentExceptionMessages.INVALID_PARENT_TYPE);
+        }
 
         String type = dto.getType().toLowerCase();
         ParamModel paramModel = switch (type) {
@@ -49,6 +52,7 @@ public class ParamModelService {
         paramModel.setType(dto.getType());
         paramModel.setComponentVersion(componentVersion);
         if ( parent != null ) paramModel.setParent(parent);
+        paramModelRepository.save(paramModel);
         return paramModel;
     }
 

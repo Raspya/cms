@@ -15,6 +15,7 @@ public class VersionBuilderTDB {
 
     private ComponentBuilderTDB componentBuilderTDB;
 
+    private String type = "";
     private ComponentTDB componentTDB;
     private boolean isDeploy = false;
 
@@ -24,7 +25,11 @@ public class VersionBuilderTDB {
     public VersionBuilderTDB(ComponentBuilderTDB componentBuilderTDB, ReqTDB reqTDB){
         this.componentBuilderTDB = componentBuilderTDB;
         this.reqTDB = reqTDB;
+    }
 
+    public VersionBuilderTDB withType(String type){
+        this.type = type;
+        return this;
     }
 
     public VersionBuilderTDB withComponentTDB(ComponentTDB componentTDB){
@@ -39,13 +44,12 @@ public class VersionBuilderTDB {
 
     public VersionTDB build(){
         if (componentTDB == null) this.componentTDB = componentBuilderTDB.build();
-        ReqCreateVersion dto = new ReqCreateVersion("", this.componentTDB.getId());
+        ReqCreateVersion dto = new ReqCreateVersion(this.type, this.componentTDB.getId());
         ResponseEntity<String> res = this.reqTDB.withAuth(this.componentTDB.getWebsite().getAccount().getCookie()).withDto(dto).send("/api/v1/component/version/create");
         VersionTDB versionTDB = new VersionTDB();
         versionTDB.setId(res.getBody());
         versionTDB.setComponentTDB(this.componentTDB);
         versionTDB.setDeploy(this.isDeploy);
-
         reset();
         return versionTDB;
     }
@@ -53,6 +57,7 @@ public class VersionBuilderTDB {
     public void reset(){
         this.componentTDB = null;
         this.isDeploy = false;
+        this.type = "";
     }
 
 
