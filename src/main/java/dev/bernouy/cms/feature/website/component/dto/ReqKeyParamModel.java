@@ -4,6 +4,7 @@ public class ReqKeyParamModel {
 
     private String key;
 
+    public ReqKeyParamModel() {}
     public ReqKeyParamModel(String key) {
         this.key = key;
     }

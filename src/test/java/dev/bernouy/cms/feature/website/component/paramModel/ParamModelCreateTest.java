@@ -19,4 +19,18 @@ public class ParamModelCreateTest extends BaseTest {
         Assertions.assertNull(paramModelTDB.getId());
     }
 
+    @Test
+    public void createParamModelWithParentInvalidType(){
+        ParamModelTDB paramModelParentTDB = this.paramModelBuilderTDB.build();
+        ParamModelTDB paramModelTDB = this.paramModelBuilderTDB.withParent(paramModelParentTDB).build();
+        Assertions.assertNull(paramModelTDB.getId());
+    }
+
+    @Test
+    public void createParamModelWithInvalidParent(){
+        ParamModelTDB paramModelParentTDB = this.paramModelBuilderTDB.withType("Stringg").build();
+        ParamModelTDB paramModelTDB = this.paramModelBuilderTDB.withParent(paramModelParentTDB).build();
+        Assertions.assertNull(paramModelTDB.getParent().getId());
+    }
+
 }

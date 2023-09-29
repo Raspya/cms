@@ -1,5 +1,10 @@
 package dev.bernouy.cms.tdb.pojo;
 
+import dev.bernouy.cms.ReqTDB;
+import dev.bernouy.cms.feature.website.component.dto.ReqPositionParamModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+
 public class ParamModelTDB{
 
     private String id;

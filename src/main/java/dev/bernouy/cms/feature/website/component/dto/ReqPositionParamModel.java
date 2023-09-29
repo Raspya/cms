@@ -2,17 +2,18 @@ package dev.bernouy.cms.feature.website.component.dto;
 
 public class ReqPositionParamModel {
 
-    private String position;
+    private int position;
 
-    public ReqPositionParamModel(String position) {
+    public ReqPositionParamModel() {}
+    public ReqPositionParamModel(int position) {
         this.position = position;
     }
 
-    public String getPosition() {
+    public int getPosition() {
         return position;
     }
 
-    public void setPosition(String position) {
+    public void setPosition(int position) {
         this.position = position;
     }
 

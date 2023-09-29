@@ -51,37 +51,39 @@ public class ParamModelService {
         };
         paramModel.setType(dto.getType());
         paramModel.setComponentVersion(componentVersion);
+        ParamModel paramModelMaxPos = paramModelRepository.findFirstByComponentVersionIdOrderByPositionDesc(componentVersion.getId());
+        int maxPos;
+
+        if (paramModelMaxPos == null) maxPos = 0;
+        else maxPos = paramModelMaxPos.getPosition();
+
+        paramModel.setPosition(maxPos+1);
         if ( parent != null ) paramModel.setParent(parent);
         paramModelRepository.save(paramModel);
         return paramModel;
     }
 
     public void delete(Account account, String paramModelId) {
-        authorizeAccount(paramModelId, account);
-        paramModelRepository.deleteById(paramModelId);
+        ParamModel paramModel = getById(paramModelId, account);
+        paramModelRepository.delete(paramModel);
     }
 
     public void setKey(ReqKeyParamModel dto, Account account, String paramModelId) {
-        authorizeAccount(paramModelId, account);
-        ParamModel paramModel = paramModelRepository.findById(paramModelId).orElseThrow();
+        regexComponent.isKeyValid(dto.getKey());
+        ParamModel paramModel = getById(paramModelId, account);
         paramModel.setKey(dto.getKey());
+        paramModelRepository.save(paramModel);
     }
 
     public void setName(ReqNameParamModel dto, Account account, String paramModelId) {
-        authorizeAccount(paramModelId, account);
-        ParamModel paramModel = paramModelRepository.findById(paramModelId).orElseThrow();
+        ParamModel paramModel = getById(paramModelId, account);
         paramModel.setName(dto.getName());
     }
 
     public void setPosition(ReqPositionParamModel dto, Account account, String paramModelId) {
-        authorizeAccount(paramModelId, account);
-        ParamModel paramModel = paramModelRepository.findById(paramModelId).orElseThrow();
+        ParamModel paramModel = getById(paramModelId, account);
         int position = paramModel.getPosition();
-        int newPosition = 0;
-
-        try {
-            newPosition = Integer.parseInt(dto.getPosition());
-        } catch(Exception e) { throw new BasicException(ComponentExceptionMessages.INVALID_PARAM_MODEL_POSITION); }
+        int newPosition = dto.getPosition();
 
         if (newPosition <= 0 ) throw new BasicException(ComponentExceptionMessages.INVALID_PARAM_MODEL_POSITION);
 
@@ -104,26 +106,29 @@ public class ParamModelService {
     }
 
     public void setOption(ReqOptionParamModel dto, Account account, String paramModelId) {
-        authorizeAccount(paramModelId, account);
-        ParamModel paramModel = paramModelRepository.findById(paramModelId).orElseThrow();
+        ParamModel paramModel = getById(paramModelId, account);
         paramModel.updateOption(dto.getKey(), dto.getValue());
     }
 
     public void resetOption(ReqKeyParamModel dto, Account account, String paramModelId) {
-        authorizeAccount(paramModelId, account);
-        ParamModel paramModel = paramModelRepository.findById(paramModelId).orElseThrow();
+        ParamModel paramModel = getById(paramModelId, account);
         paramModel.updateOption(dto.getKey(), null);
     }
 
     public void resetOptions( Account account, String paramModelId) {
-        authorizeAccount(paramModelId, account);
-        ParamModel paramModel = paramModelRepository.findById(paramModelId).orElseThrow();
+        ParamModel paramModel = getById(paramModelId, account);
         paramModel.resetOptions();
     }
 
+    public ParamModel getById(String paramModelId, Account account) {
+        authorizeAccount(paramModelId, account);
+        ParamModel paramModel = paramModelRepository.findById(paramModelId).orElse(null);
+        if (paramModel == null) throw new BasicException(ComponentExceptionMessages.INVALID_PARAM_MODEL_ID);
+        return paramModel;
+    }
     private void authorizeAccount(String paramModelId, Account account) {
-        ParamModel paramModel = paramModelRepository.findById(paramModelId).orElseThrow();
-        if (!paramModel.getComponentVersion().getComponent().getProject().getOwner().equals(account))
+        ParamModel paramModel = paramModelRepository.findById(paramModelId).orElse(null);
+        if (paramModel == null || !paramModel.getComponentVersion().getComponent().getProject().getOwner().equals(account) )
             throw new BasicException(BasicException.AUTH_ERROR, HttpStatus.FORBIDDEN);
     }
 }

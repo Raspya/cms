@@ -1,7 +1,12 @@
 package dev.bernouy.cms.tdb.builder;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.bernouy.cms.MethodEnum;
 import dev.bernouy.cms.ReqTDB;
 import dev.bernouy.cms.feature.website.component.dto.ReqCreateParamModel;
+import dev.bernouy.cms.feature.website.component.dto.ReqPositionParamModel;
 import dev.bernouy.cms.tdb.pojo.ParamModelTDB;
 import dev.bernouy.cms.tdb.pojo.VersionTDB;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +29,7 @@ public class ParamModelBuilderTDB{
     private String name;
     private ParamModelTDB parent;
     private VersionTDB version;
+    protected ObjectMapper objectMapper = new ObjectMapper();
 
     private void reset(){
         this.type = "String";
@@ -69,23 +75,36 @@ public class ParamModelBuilderTDB{
         return this;
     }
 
-    public ParamModelTDB build(){
+    public ParamModelTDB build() {
         ParamModelTDB paramModelTDB = new ParamModelTDB();
         if ( this.version == null )
             this.version = this.versionBuilderTDB.build();
-        ReqCreateParamModel dto = new ReqCreateParamModel(version.getId(), this.type);
+        ReqCreateParamModel dto;
+
+        if (this.parent != null) dto = new ReqCreateParamModel(version.getId(), this.type, this.parent.getId());
+        else dto = new ReqCreateParamModel(version.getId(), this.type);
+
         ResponseEntity<String> res = this.reqTDB.withAuth(this.version.getComponentTDB().getWebsite().getAccount().getCookie()).withDto(dto).send("/api/v1/component/param/create");
+        if ( res.getStatusCode() == HttpStatus.CREATED )
+            paramModelTDB.setId(res.getBody());
+
+        ResponseEntity<String> res2 = this.reqTDB.withAuth(this.version.getComponentTDB().getWebsite().getAccount().getCookie()).withDto(dto).withMethod(MethodEnum.GET).send("/api/v1/component/param/" + paramModelTDB.getId() +  "/get");
+        JsonNode jsonNode = null;
+        try {
+            jsonNode = objectMapper.readTree(res2.getBody());
+        }catch (Exception e) { return null; }
+
         paramModelTDB.setType(this.type);
         paramModelTDB.setValue(this.value);
         paramModelTDB.setKey(this.key);
-        paramModelTDB.setPosition(this.position);
         paramModelTDB.setName(this.name);
+        paramModelTDB.setPosition(jsonNode.get("position").intValue());
         paramModelTDB.setParent(this.parent);
         paramModelTDB.setVersion(this.version);
-        if ( res.getStatusCode() == HttpStatus.CREATED )
-            paramModelTDB.setId(res.getBody());
+
         reset();
         return paramModelTDB;
     }
+
 
 }
