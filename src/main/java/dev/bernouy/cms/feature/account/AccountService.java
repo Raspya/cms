@@ -21,13 +21,14 @@ public class AccountService {
         this.passwordEncoder   = passwordEncoder;
     }
 
-    public void registerAccount( String email, String password ){
+    public Account registerAccount( String email, String password ){
         Account account = new Account();
         regexComponent.isEmail(email).isPasswordValid(password);
         if ( accountRepository.existsAccountByEmail (email) ) throw new BasicException(AccountExceptionMessages.EMAIL_ALREADY_EXIST);
         account.setPassword(passwordEncoder.encode(password));
         account.setEmail(email);
         accountRepository.save(account);
+        return account;
     }
 
     public String con ( String email, String password ){
