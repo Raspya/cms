@@ -1,4 +1,4 @@
-package dev.bernouy.cms;
+package dev.bernouy.cms.conf;
 
 public enum MethodEnum {
     POST,

@@ -3,6 +3,7 @@ package dev.bernouy.cms.feature.account;
 import dev.bernouy.cms.feature.account.dto.request.RegisterConDTO;
 import dev.bernouy.cms.feature.account.dto.response.ResponseConDTO;
 import dev.bernouy.cms.security.Public;
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,8 @@ public class AccountController {
     @Public
     @PostMapping("/register")
     public ResponseEntity<String> register( @RequestBody RegisterConDTO dto ){
-        accountService.registerAccount(dto.getEmail(), dto.getPassword());
-        return new ResponseEntity<>("", HttpStatus.CREATED);
+        Account account = accountService.registerAccount(dto.getEmail(), dto.getPassword());
+        return new ResponseEntity<>(account.getId(), HttpStatus.CREATED);
     }
 
     @Public
