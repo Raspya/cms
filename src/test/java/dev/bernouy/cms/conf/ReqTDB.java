@@ -1,4 +1,4 @@
-package dev.bernouy.cms;
+package dev.bernouy.cms.conf;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -43,7 +43,7 @@ public class ReqTDB {
         this.method = MethodEnum.POST;
         this.dto = null;
         return restTemplate.exchange(
-                url,
+                "/api/v1/" + url,
                 httpMethod,
                 httpEntity,
                 String.class
