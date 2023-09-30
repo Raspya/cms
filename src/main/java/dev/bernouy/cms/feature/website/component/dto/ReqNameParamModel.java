@@ -4,6 +4,7 @@ public class ReqNameParamModel {
 
     private String name;
 
+    public ReqNameParamModel() {}
     public ReqNameParamModel(String name) {
         this.name = name;
     }

@@ -12,6 +12,7 @@ public class RegexComponent {
     private Pattern passwordPattern = Pattern.compile("^.{4,30}$");
     private Pattern domainPattern = Pattern.compile("^([a-z0-9]+\\.)+[a-z]{1,10}$");
     private Pattern namePattern = Pattern.compile("^[a-zA-Z -_]{5,40}$");
+    private Pattern keyPattern = Pattern.compile("^[a-z_]{3,40}$");
 
     public RegexComponent isEmail (String email ){
         Matcher matcher = emailPattern.matcher(email);
@@ -34,6 +35,12 @@ public class RegexComponent {
     public RegexComponent isNameValid (String name ){
         Matcher matcher = namePattern.matcher(name);
         if ( !matcher.matches() ) throw new BasicException(RegexErrors.INVALID_NAME_FORMAT);
+        return this;
+    }
+
+    public RegexComponent isKeyValid (String key ){
+        Matcher matcher = keyPattern.matcher(key);
+        if ( !matcher.matches() ) throw new BasicException(RegexErrors.INVALID_KEY_FORMAT);
         return this;
     }
 

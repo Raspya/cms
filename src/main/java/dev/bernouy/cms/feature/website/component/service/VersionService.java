@@ -46,7 +46,7 @@ public class VersionService {
         if (!typeVersion.equals("major") && !typeVersion.equals("minor") && !typeVersion.equals("patch") && !typeVersion.equals(""))
             throw new BasicException(ComponentExceptionMessages.INVALID_VERSION_TYPE);
 
-        Version oldVersion = versionRepository.getByComponentIdOrderByPatchVersion(dto.getComponentID());
+        Version oldVersion = versionRepository.getFirstByComponent_IdOrderByMajorVersionDescMinorVersionDescPatchVersionDesc(dto.getComponentID());
         if (oldVersion != null) {
             majorVersion = oldVersion.getMajorVersion();
             minorVersion = oldVersion.getMinorVersion();
