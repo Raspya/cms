@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 @CompoundIndexes({
         @CompoundIndex(name = "keyIndex", def = "{'parent' : 1, 'key': 1}"),
@@ -22,6 +23,7 @@ public abstract class ParamModel extends AbstractDocument implements ParamInterf
     protected String key;
     protected String type;
     protected int position;
+    protected Object value;
 
     public int getPosition() { return position;}
     public void setPosition(int position) {
@@ -66,6 +68,14 @@ public abstract class ParamModel extends AbstractDocument implements ParamInterf
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Object getValue() {
+        return value;
+    }
+
+    public void setValue(Object value) {
+        this.value = value;
     }
 
     public boolean childAvailable() {
