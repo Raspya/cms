@@ -32,9 +32,8 @@ public class ProjectService {
 
     public void editDomain( String domain, String websiteID, Account account ){
         regexComponent.isDomainValid(domain);
+        isOwner(websiteID, account);
         Project website = websiteRepository.findById(websiteID).orElseThrow();
-        if ( !website.getOwner().equals(account) )
-            throw new BasicException(BasicException.AUTH_ERROR, HttpStatus.FORBIDDEN);
         website.setDomain(domain);
         websiteRepository.save(website);
     }

@@ -1,7 +1,13 @@
-package dev.bernouy.cms.tdb;
+package dev.bernouy.cms.tdb.website;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import dev.bernouy.cms.conf.MethodEnum;
 import dev.bernouy.cms.conf.TDBMother;
+import dev.bernouy.cms.conf.TDBUtil;
+import dev.bernouy.cms.feature.account.Account;
+import dev.bernouy.cms.feature.website.project.dto.request.PatchDomainWebsite;
 import dev.bernouy.cms.feature.website.project.dto.request.ReqCreateWebsiteDTO;
+import dev.bernouy.cms.tdb.account.AccountTDB;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -48,6 +54,21 @@ public class ProjectTDB extends TDBMother {
         this.account = account;
         return this;
     }
+
+    public ProjectTDB setForceAccount(AccountTDB account){
+        this.account = account;
+        return this;
+    }
+
+    public ProjectTDB setDomain(String domain){
+        if (!isBuild) return this;
+        PatchDomainWebsite patchDomainWebsite = new PatchDomainWebsite(id, domain);
+        ResponseEntity<String> res = reqTDB.withAuth(account.getCookie()).withDto(patchDomainWebsite).send("project/editDomain");
+        if ( res.getStatusCode() != HttpStatus.CREATED) return this;
+        this.domain = domain;
+        return this;
+    }
+
     // set pour les setters après le build
 
 
@@ -65,6 +86,11 @@ public class ProjectTDB extends TDBMother {
 
     public AccountTDB getAccount() {
         return account;
+    }
+
+    // autres appels de l'api
+    public static JsonNode getList(AccountTDB account){
+        return TDBUtil.toJsonNode(TDBUtil.getReqTDB().withMethod(MethodEnum.GET).withAuth(account.getCookie()).send("project/list").getBody());
     }
 
 }

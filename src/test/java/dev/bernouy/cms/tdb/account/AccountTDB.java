@@ -1,7 +1,8 @@
-package dev.bernouy.cms.tdb;
+package dev.bernouy.cms.tdb.account;
 
+import dev.bernouy.cms.conf.MethodEnum;
 import dev.bernouy.cms.conf.TDBMother;
-import dev.bernouy.cms.feature.account.dto.request.RegisterConDTO;
+import dev.bernouy.cms.feature.account.dto.request.ReqRegisterConDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -15,11 +16,10 @@ public class AccountTDB extends TDBMother {
     private String id       = null;
 
     public AccountTDB build(){
-        if(!isBuild){
-            idCount++;
-            isBuild = true;
-        }
-        RegisterConDTO dto = new RegisterConDTO(email, password);
+        if ( isBuild ) return this;
+        idCount++;
+        isBuild = true;
+        ReqRegisterConDTO dto = new ReqRegisterConDTO(email, password);
         ResponseEntity<String> res = reqTDB.withDto(dto).send("account/register");
         if ( res.getStatusCode() != HttpStatus.CREATED) return this;
         this.id = res.getBody();
@@ -44,6 +44,23 @@ public class AccountTDB extends TDBMother {
 
     // Setters pour après le build
 
+    // Setters forcé pour les tests
+    public void setForceCookie(String cookie) {
+        this.cookie = cookie;
+    }
+
+    public void setForceId(String id) {
+        this.id = id;
+    }
+
+    public void setForceEmail(String email) {
+        this.email = email;
+    }
+
+    public void setForcePassword(String password) {
+        this.password = password;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -58,6 +75,20 @@ public class AccountTDB extends TDBMother {
 
     public String getId() {
         return id;
+    }
+
+
+    // Autres méthodes
+    public boolean isValidToken(String token){
+        ResponseEntity<String> res = reqTDB.withMethod(MethodEnum.GET).withAuth(token).send("account/isValidToken");
+        return res.getStatusCode() == HttpStatus.OK;
+    }
+
+    public boolean login(String email, String password){
+        ReqRegisterConDTO dto = new ReqRegisterConDTO(email, password);
+        ResponseEntity<String> res = reqTDB.withDto(dto).send("account/login");
+        return res.getStatusCode() == HttpStatus.OK;
+
     }
 
 }

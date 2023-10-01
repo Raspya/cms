@@ -1,4 +1,4 @@
-package dev.bernouy.cms.tdb;
+package dev.bernouy.cms.tdb.website;
 
 import dev.bernouy.cms.conf.TDBMother;
 
@@ -12,21 +12,25 @@ public class ParamModelTDB extends TDBMother {
     private int position;
 
     public ParamModelTDB build() {
+        return this;
     }
 
     // With pour avant le build
     // Setters pour après le build
 
     public ParamModelTDB setName(String name){
-
+        this.name = name;
+        return this;
     }
 
     public ParamModelTDB setKey(String key){
-
+        this.key = key;
+        return this;
     }
 
     public ParamModelTDB setValue(String key, Object value){
-
+        this.value = value;
+        return this;
     }
 
     public String getId() {
@@ -41,7 +45,7 @@ public class ParamModelTDB extends TDBMother {
         return key;
     }
 
-    public String getValue() {
+    public Object getValue() {
         return value;
     }
 
@@ -53,5 +57,6 @@ public class ParamModelTDB extends TDBMother {
         // On fera la requête ici
         // On transforme en JsonNode
         // On récupère la position
+        return -1;
     }
 }

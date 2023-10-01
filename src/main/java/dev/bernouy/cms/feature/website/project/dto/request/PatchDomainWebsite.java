@@ -1,11 +1,11 @@
 package dev.bernouy.cms.feature.website.project.dto.request;
 
-public class ReqEditDomainWebsiteDTO {
+public class PatchDomainWebsite {
 
     private String websiteID;
     private String domain;
 
-    public ReqEditDomainWebsiteDTO(String websiteID, String domain ){
+    public PatchDomainWebsite(String websiteID, String domain ){
         this.websiteID = websiteID;
         this.domain = domain;
     }

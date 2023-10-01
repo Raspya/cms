@@ -1,9 +1,8 @@
 package dev.bernouy.cms.feature.account;
 
-import dev.bernouy.cms.feature.account.dto.request.RegisterConDTO;
+import dev.bernouy.cms.feature.account.dto.request.ReqRegisterConDTO;
 import dev.bernouy.cms.feature.account.dto.response.ResponseConDTO;
 import dev.bernouy.cms.security.Public;
-import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,16 +27,21 @@ public class AccountController {
 
     @Public
     @PostMapping("/register")
-    public ResponseEntity<String> register( @RequestBody RegisterConDTO dto ){
+    public ResponseEntity<String> register( @RequestBody ReqRegisterConDTO dto ){
         Account account = accountService.registerAccount(dto.getEmail(), dto.getPassword());
         return new ResponseEntity<>(account.getId(), HttpStatus.CREATED);
     }
 
     @Public
     @PostMapping("/login")
-    public ResponseEntity<String> con( @RequestBody RegisterConDTO dto ){
+    public ResponseEntity<String> con( @RequestBody ReqRegisterConDTO dto ){
         String token = accountService.con(dto.getEmail(), dto.getPassword());
         return new ResponseConDTO(response, token);
+    }
+
+    @GetMapping("/isValidToken")
+    public ResponseEntity<String> isValidToken(){
+        return new ResponseEntity<>("", HttpStatus.OK);
     }
 
 }

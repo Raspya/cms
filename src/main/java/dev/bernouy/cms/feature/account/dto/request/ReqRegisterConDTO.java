@@ -1,11 +1,11 @@
 package dev.bernouy.cms.feature.account.dto.request;
 
-public class RegisterConDTO {
+public class ReqRegisterConDTO {
 
     private String email;
     private String password;
 
-    public RegisterConDTO(String email, String password ){
+    public ReqRegisterConDTO(String email, String password ){
         this.email = email;
         this.password = password;
     }

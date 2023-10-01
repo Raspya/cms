@@ -1,8 +1,8 @@
-package dev.bernouy.cms.tdb;
+package dev.bernouy.cms.tdb.website;
 
 import dev.bernouy.cms.conf.TDBMother;
-import dev.bernouy.cms.feature.account.dto.request.RegisterConDTO;
 import dev.bernouy.cms.feature.website.component.dto.ReqCreateComponentDTO;
+import dev.bernouy.cms.tdb.account.AccountTDB;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -16,10 +16,9 @@ public class ComponentTDB extends TDBMother {
 
 
     public ComponentTDB build(){
-        if(!isBuild){
-            isBuild = true;
-            count++;
-        }
+        if ( isBuild ) return this;
+        isBuild = true;
+        count++;
         if ( project == null ) project = new ProjectTDB().build();
         ReqCreateComponentDTO dto = new ReqCreateComponentDTO(name, project.getId());
         ResponseEntity<String> res = reqTDB.withAuth(getAccount().getCookie()).withDto(dto).send("component/create");
