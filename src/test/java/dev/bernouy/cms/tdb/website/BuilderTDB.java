@@ -1,7 +1,7 @@
 package dev.bernouy.cms.tdb.website;
 
 import dev.bernouy.cms.conf.TDBMother;
-import dev.bernouy.cms.feature.website.component.dto.PostBuilder;
+import dev.bernouy.cms.feature.website.builder.dto.ReqPostBuilder;
 import dev.bernouy.cms.tdb.account.AccountTDB;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ public class BuilderTDB extends TDBMother {
 
     public BuilderTDB build(){
         ResponseEntity<String> res = null;
-        PostBuilder dto = new PostBuilder();
+        ReqPostBuilder dto = new ReqPostBuilder();
         if ( this.page == null && this.layout == null ) {
             // this.page = new PageTDB().build();
         } else if ( this.page == null ){

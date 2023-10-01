@@ -1,7 +1,7 @@
 package dev.bernouy.cms.feature.website.version;
 
 import dev.bernouy.cms.conf.BaseTest;
-import dev.bernouy.cms.tdb.VersionTDB;
+import dev.bernouy.cms.tdb.website.VersionTDB;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

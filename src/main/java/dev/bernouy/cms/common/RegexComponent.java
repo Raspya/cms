@@ -41,7 +41,6 @@ public class RegexComponent {
     public RegexComponent isKeyValid (String key ){
         Matcher matcher = keyPattern.matcher(key);
         if ( !matcher.matches() ) throw new BasicException(RegexErrors.INVALID_KEY_FORMAT);
-        System.out.println("coucouuuuuuuuu");
         return this;
     }
 
