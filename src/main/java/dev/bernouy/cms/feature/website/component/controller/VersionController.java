@@ -4,6 +4,7 @@ import dev.bernouy.cms.feature.account.Account;
 import dev.bernouy.cms.feature.website.component.dto.ReqCreateVersion;
 import dev.bernouy.cms.feature.website.component.dto.ReqUploadFile;
 import dev.bernouy.cms.feature.website.component.model.Version;
+import dev.bernouy.cms.feature.website.component.model.paramModel.ParamModel;
 import dev.bernouy.cms.feature.website.component.service.VersionService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -55,6 +56,12 @@ public class VersionController {
         Account account = (Account) request.getAttribute("account");
         versionService.deploy(account, versionID);
         return new ResponseEntity<>("", HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{versionID}/get")
+    public Version get(@PathVariable String versionID) {
+        Account account = (Account) request.getAttribute("account");
+        return versionService.getByIdAccount(versionID, account);
     }
 
 }

@@ -10,6 +10,7 @@ import dev.bernouy.cms.feature.website.component.dto.ReqCreateVersion;
 import dev.bernouy.cms.feature.website.component.dto.ReqUploadFile;
 import dev.bernouy.cms.feature.website.component.model.Component;
 import dev.bernouy.cms.feature.website.component.model.Version;
+import dev.bernouy.cms.feature.website.component.model.paramModel.ParamModel;
 import dev.bernouy.cms.feature.website.component.repository.VersionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -118,6 +119,13 @@ public class VersionService {
 
     public Version getById(String versionId ){
         return versionRepository.findById( versionId ).orElseThrow();
+    }
+
+    public Version getByIdAccount(String versionId, Account account ){
+        Version version = versionRepository.findById(versionId).orElse(null);
+        if (version == null) throw new BasicException(ComponentExceptionMessages.INVALID_VERSION_ID);
+        authorizeAccount(version.getComponent(), account);
+        return version;
     }
 
     public void authorizeAccount(Component comp, Account account){

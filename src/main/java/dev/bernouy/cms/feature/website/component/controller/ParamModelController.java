@@ -82,7 +82,13 @@ public class ParamModelController {
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
-    // Set the value of the paramModel
+    @PostMapping("/{paramModelId}/setValue")
+    public ResponseEntity<String> setValue(@RequestBody ReqValueParamModel dto, @PathVariable String paramModelId) {
+        Account account = (Account) request.getAttribute("account");
+        paramModelService.setValue(dto, account, paramModelId);
+        return new ResponseEntity<>("", HttpStatus.CREATED);
+    }
+
     @GetMapping("/{paramModelId}/get")
     public ParamModel get(@PathVariable String paramModelId) {
         Account account = (Account) request.getAttribute("account");
