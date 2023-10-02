@@ -93,4 +93,5 @@ public class ParamModelController {
         Account account = (Account) request.getAttribute("account");
         return paramModelService.getById(paramModelId, account);
     }
+
 }

@@ -14,6 +14,7 @@ import dev.bernouy.cms.feature.website.version.VersionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.tags.Param;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +84,33 @@ public class ParamModelService {
         paramModelRepository.save(paramModel);
     }
 
-    public void setPosition(ReqPositionParamModel dto, Account account, String paramModelId) {
+    public void setPosition(ReqPositionParamModel dto, Account account, String paramModelId){
+        ParamModel paramModel = getById(paramModelId, account);
+        List<ParamModel> paramModelList = paramModelRepository.findAllByComponentVersionIdOrderByPositionAsc(paramModel.getComponentVersion().getId());
+        List<ParamModel> toUpdate = new ArrayList<>();
+        int i, min, max;
+        if ( paramModel.getPosition() > dto.getPosition() ) {
+            i = 1;
+            min = dto.getPosition();
+            max = paramModel.getPosition();
+        }
+        else {
+            i = -1;
+            min = paramModel.getPosition();
+            max = dto.getPosition();
+        }
+        for ( int j = min ; j < max ; j++ ){
+            paramModelList.get(j-1).setPosition(paramModelList.get(j-1).getPosition()+i);
+            toUpdate.add(paramModelList.get(j-1));
+        }
+        paramModel.setPosition(dto.getPosition());
+        toUpdate.add(paramModel);
+
+        paramModelRepository.saveAll(toUpdate);
+    }
+
+    // ça va dégager le 25 Octobre
+    /*public void setPosition(ReqPositionParamModel dto, Account account, String paramModelId) {
         ParamModel paramModel = getById(paramModelId, account);
         int position = paramModel.getPosition();
         int newPosition = dto.getPosition();
@@ -116,7 +143,7 @@ public class ParamModelService {
             paramModel.setPosition(newPosition);
             paramModelRepository.save(paramModel);
         }
-    }
+    }*/
 
     public void setOption(ReqOptionParamModel dto, Account account, String paramModelId) {
         ParamModel paramModel = getById(paramModelId, account);
