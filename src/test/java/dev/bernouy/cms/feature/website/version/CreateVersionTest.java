@@ -47,5 +47,25 @@ public class CreateVersionTest extends BaseTest {
         Assertions.assertEquals(2, versionTDB6.getMajorVersion());
         Assertions.assertEquals(0, versionTDB6.getMinorVersion());
         Assertions.assertEquals(0, versionTDB6.getPatchVersion());
+
+        VersionTDB versionTDB7 = new VersionTDB().withTypeVersion("patch").withComponent(versionTDB1.getComponent()).build();
+        Assertions.assertEquals(2, versionTDB7.getMajorVersion());
+        Assertions.assertEquals(0, versionTDB7.getMinorVersion());
+        Assertions.assertEquals(1, versionTDB7.getPatchVersion());
+
+        VersionTDB versionTDB8 = new VersionTDB().withTypeVersion("patch").withComponent(versionTDB1.getComponent()).build();
+        Assertions.assertEquals(2, versionTDB8.getMajorVersion());
+        Assertions.assertEquals(0, versionTDB8.getMinorVersion());
+        Assertions.assertEquals(2, versionTDB8.getPatchVersion());
+
+        VersionTDB versionTDB9 = new VersionTDB().withTypeVersion("patch").withComponent(versionTDB1.getComponent()).build();
+        Assertions.assertEquals(2, versionTDB9.getMajorVersion());
+        Assertions.assertEquals(0, versionTDB9.getMinorVersion());
+        Assertions.assertEquals(3, versionTDB9.getPatchVersion());
+
+        VersionTDB versionTDB10 = new VersionTDB().withTypeVersion("major").withComponent(versionTDB1.getComponent()).build();
+        Assertions.assertEquals(3, versionTDB10.getMajorVersion());
+        Assertions.assertEquals(0, versionTDB10.getMinorVersion());
+        Assertions.assertEquals(0, versionTDB10.getPatchVersion());
     }
 }

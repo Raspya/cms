@@ -16,16 +16,24 @@ public class SetPositionParamModelTest extends BaseTest {
         Assertions.assertEquals(2, paramModelTDB2.getPosition());
         ParamModelTDB paramModelTDB3 = new ParamModelTDB().withVersion(paramModelTDB1.getVersion()).build();
         Assertions.assertEquals(3, paramModelTDB3.getPosition());
+        ParamModelTDB paramModelTDB4 = new ParamModelTDB().withVersion(paramModelTDB1.getVersion()).build();
+        ParamModelTDB paramModelTDB5 = new ParamModelTDB().withVersion(paramModelTDB1.getVersion()).build();
 
-        paramModelTDB3.setPosition(1);
-        Assertions.assertEquals(1, paramModelTDB3.getPosition());
+
+
+        paramModelTDB5.setPosition(1);
+        Assertions.assertEquals(1, paramModelTDB5.getPosition());
         Assertions.assertEquals(2, paramModelTDB1.getPosition());
         Assertions.assertEquals(3, paramModelTDB2.getPosition());
+        Assertions.assertEquals(4, paramModelTDB3.getPosition());
+        Assertions.assertEquals(5, paramModelTDB4.getPosition());
 
         paramModelTDB3.setPosition(3);
-        Assertions.assertEquals(1, paramModelTDB1.getPosition());
-        Assertions.assertEquals(2, paramModelTDB2.getPosition());
+        Assertions.assertEquals(1, paramModelTDB5.getPosition());
+        Assertions.assertEquals(2, paramModelTDB1.getPosition());
         Assertions.assertEquals(3, paramModelTDB3.getPosition());
+        Assertions.assertEquals(4, paramModelTDB2.getPosition());
+        Assertions.assertEquals(5, paramModelTDB4.getPosition());
     }
 
 @Test
