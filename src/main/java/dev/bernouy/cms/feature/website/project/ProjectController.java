@@ -1,9 +1,8 @@
 package dev.bernouy.cms.feature.website.project;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import dev.bernouy.cms.feature.account.Account;
 import dev.bernouy.cms.feature.website.project.dto.request.ReqCreateWebsiteDTO;
-import dev.bernouy.cms.feature.website.project.dto.request.ReqEditDomainWebsiteDTO;
+import dev.bernouy.cms.feature.website.project.dto.request.PatchDomainWebsite;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +35,7 @@ public class ProjectController {
     }
 
     @PostMapping("editDomain")
-    public ResponseEntity<String> editDomain( @RequestBody ReqEditDomainWebsiteDTO dto ){
+    public ResponseEntity<String> editDomain( @RequestBody PatchDomainWebsite dto ){
         Account account = (Account) request.getAttribute("account");
         websiteService.editDomain(dto.getDomain(), dto.getWebsiteID(), account);
         return new ResponseEntity<>("", HttpStatus.CREATED);

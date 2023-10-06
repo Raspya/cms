@@ -1,7 +1,7 @@
 package dev.bernouy.cms.feature.account;
 
 import dev.bernouy.cms.conf.BaseTest;
-import dev.bernouy.cms.tdb.AccountTDB;
+import dev.bernouy.cms.tdb.account.AccountTDB;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -25,4 +25,5 @@ public class RegisterAccountTest extends BaseTest {
         AccountTDB account = new AccountTDB().withPassword("aze").build();
         Assertions.assertNull(account.getId());
     }
+
 }
