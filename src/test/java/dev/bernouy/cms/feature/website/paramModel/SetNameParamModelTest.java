@@ -11,8 +11,16 @@ public class SetNameParamModelTest extends BaseTest {
     public void TestSetNameParamModel() {
         ParamModelTDB paramModelTDB = new ParamModelTDB().build();
         Assertions.assertNotNull(paramModelTDB.getId());
-        paramModelTDB.setName("test");
-        Assertions.assertEquals("test" , paramModelTDB.getName());
+        paramModelTDB.setName("matthew");
+        Assertions.assertEquals("matthew" , paramModelTDB.getName());
+    }
+
+    @Test
+    public void testSetInvalidNameParamModel() {
+        ParamModelTDB paramModelTDB = new ParamModelTDB().build();
+        Assertions.assertNotNull(paramModelTDB.getId());
+        paramModelTDB.setKey("ok");
+        Assertions.assertNull(paramModelTDB.getName());
     }
 
 }

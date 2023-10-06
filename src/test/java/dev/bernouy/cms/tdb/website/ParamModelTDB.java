@@ -84,7 +84,7 @@ public class ParamModelTDB extends TDBMother {
         return this;
     }
 
-    public ParamModelTDB setValue(Object value){
+    public ParamModelTDB setValue(String value){
         ReqValueParamModel dto = new ReqValueParamModel(value);
         ResponseEntity<String> res = reqTDB.withAuth(versionTDB.getComponent().getAccount().getCookie())
                 .withDto(dto).send("component/param/" + this.getId() + "/setValue");
@@ -152,7 +152,15 @@ public class ParamModelTDB extends TDBMother {
     }
 
     public Object getValue() {
-        return value;
+        ResponseEntity<String> res = reqTDB.withMethod(MethodEnum.GET).withAuth(versionTDB.getComponent().getAccount().getCookie())
+                .send("component/param/" + this.getId() + "/get");
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode = null;
+        try {
+            jsonNode = objectMapper.readTree(res.getBody());
+        } catch (Exception e) {return null;}
+
+        return jsonNode.get("value").textValue();
     }
 
     public String getType() {
@@ -167,6 +175,7 @@ public class ParamModelTDB extends TDBMother {
         try {
             jsonNode = objectMapper.readTree(res.getBody());
         } catch (Exception e) {return null;}
+
         return jsonNode.get(key);
     }
 

@@ -71,10 +71,6 @@ public abstract class ParamModel extends AbstractDocument implements ParamInterf
         return value;
     }
 
-    public void setValue(Object value) {
-        this.value = value;
-    }
-
     public boolean childAvailable() {
         return false;
     }

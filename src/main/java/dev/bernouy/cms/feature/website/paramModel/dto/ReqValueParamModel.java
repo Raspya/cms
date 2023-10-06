@@ -2,17 +2,17 @@ package dev.bernouy.cms.feature.website.paramModel.dto;
 
 public class ReqValueParamModel {
 
-    private Object value;
+    private String value;
 
     public ReqValueParamModel() {}
-    public ReqValueParamModel(Object value) {
+    public ReqValueParamModel(String value) {
         this.value = value;
     }
-    public Object getValue() {
+    public String getValue() {
         return value;
     }
 
-    public void setName(Object value) {
+    public void setName(String value) {
         this.value = value;
     }
 

@@ -79,6 +79,7 @@ public class ParamModelService {
     }
 
     public void setName(ReqNameParamModel dto, Account account, String paramModelId) {
+        regexComponent.isNameValid(dto.getName());
         ParamModel paramModel = getById(paramModelId, account);
         paramModel.setName(dto.getName());
         paramModelRepository.save(paramModel);
@@ -109,41 +110,6 @@ public class ParamModelService {
         paramModelRepository.saveAll(toUpdate);
     }
 
-    // ça va dégager le 25 Octobre
-    /*public void setPosition(ReqPositionParamModel dto, Account account, String paramModelId) {
-        ParamModel paramModel = getById(paramModelId, account);
-        int position = paramModel.getPosition();
-        int newPosition = dto.getPosition();
-
-        if (newPosition <= 0 ) throw new BasicException(ComponentExceptionMessages.INVALID_PARAM_MODEL_POSITION);
-        if (newPosition < position) setPositionInf(new ReqPositionParamModel(newPosition+1), account, paramModelRepository.findByPosition(newPosition).getId(), position);
-        else if (newPosition > position) setPositionSup(new ReqPositionParamModel(newPosition-1), account, paramModelRepository.findByPosition(newPosition).getId(), position);
-
-        paramModel.setPosition(newPosition);
-        paramModelRepository.save(paramModel);
-    }
-
-    private void setPositionInf(ReqPositionParamModel dto, Account account, String paramModelId, int oldPos) {
-        ParamModel paramModel = getById(paramModelId, account);
-        int position = paramModel.getPosition();
-        int newPosition = dto.getPosition();
-        if (newPosition <= oldPos ) {
-            setPositionInf(new ReqPositionParamModel(newPosition+1), account, paramModelRepository.findByPosition(newPosition).getId(), oldPos);
-            paramModel.setPosition(newPosition);
-            paramModelRepository.save(paramModel);
-        }
-    }
-
-    private void setPositionSup(ReqPositionParamModel dto, Account account, String paramModelId, int oldPos) {
-        ParamModel paramModel = getById(paramModelId, account);
-        int position = paramModel.getPosition();
-        int newPosition = dto.getPosition();
-        if (newPosition >= oldPos ) {
-            setPositionSup(new ReqPositionParamModel(newPosition-1), account, paramModelRepository.findByPosition(newPosition).getId(), oldPos);
-            paramModel.setPosition(newPosition);
-            paramModelRepository.save(paramModel);
-        }
-    }*/
 
     public void setOption(ReqOptionParamModel dto, Account account, String paramModelId) {
         ParamModel paramModel = getById(paramModelId, account);
@@ -153,7 +119,7 @@ public class ParamModelService {
 
     public void resetOption(ReqKeyParamModel dto, Account account, String paramModelId) {
         ParamModel paramModel = getById(paramModelId, account);
-        paramModel.updateOption(dto.getKey(), null);
+        paramModel.resetOption(dto.getKey());
         paramModelRepository.save(paramModel);
     }
 

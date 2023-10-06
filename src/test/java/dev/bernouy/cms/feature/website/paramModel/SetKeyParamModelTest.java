@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 public class SetKeyParamModelTest extends BaseTest {
 
     @Test
-    public void TestSetKeyParamModel() {
+    public void testSetKeyParamModel() {
         ParamModelTDB paramModelTDB = new ParamModelTDB().build();
         Assertions.assertNotNull(paramModelTDB.getId());
         paramModelTDB.setKey("test");
@@ -16,7 +16,7 @@ public class SetKeyParamModelTest extends BaseTest {
     }
 
     @Test
-    public void test2() {
+    public void testSetInvalidKeyParamModel() {
         ParamModelTDB paramModelTDB = new ParamModelTDB().build();
         Assertions.assertNotNull(paramModelTDB.getId());
         paramModelTDB.setKey("ok");

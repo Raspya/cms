@@ -11,11 +11,11 @@ public class ParamModelFloat extends ParamModel  {
         int i = Integer.parseInt(value);
         switch ( key ){
             case "min" -> {
-                if ( max == null || i < max )
+                if ( max == null || i < max)
                     this.min = i;
             }
             case "max" -> {
-                if ( min == null || i > min )
+                if ( min == null || i > min)
                     this.max = i;
             }
         }
@@ -31,9 +31,36 @@ public class ParamModelFloat extends ParamModel  {
     }
 
     @Override
+    public void resetOption(String key) {
+        switch (key) {
+            case "min" -> {min = null;}
+            case "max" -> {max = null;}
+        }
+    }
+
+    @Override
     public void resetOptions() {
         min = max = null;
     }
 
+    public Integer getMin() {
+        return min;
+    }
 
+    public void setValue(String value) {
+        if (check(value))
+            this.value = value;
+    }
+
+    public void setMin(Integer min) {
+        this.min = min;
+    }
+
+    public Integer getMax() {
+        return max;
+    }
+
+    public void setMax(Integer max) {
+        this.max = max;
+    }
 }
