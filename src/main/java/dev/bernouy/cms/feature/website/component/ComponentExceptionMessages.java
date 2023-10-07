@@ -9,6 +9,7 @@ public class ComponentExceptionMessages extends RuntimeException{
     public final static String INVALID_PARAM_MODEL_TYPE = "Invalid ParamModel type";
     public final static String INVALID_PARAM_MODEL_POSITION = "Invalid ParamModel position";
 
+    public final static  String INVALID_LIBRARY_ID = "Invalid Library id";
     public final static String INVALID_PARAM_MODEL_ID = "Invalid ParamModel";
 
 
