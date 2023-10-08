@@ -41,7 +41,7 @@ public class LibraryService {
         Library library = new Library();
         library.setProject(project);
         library.setLstVersion(new ArrayList<>());
-        library.setName("undefined");
+        library.setName(dto.getName());
         libraryRepository.save(library);
         return library;
     }

@@ -1,6 +1,7 @@
 package dev.bernouy.cms.feature.website.page;
 
 import dev.bernouy.cms.common.AbstractDocument;
+import dev.bernouy.cms.feature.website.layout.Layout;
 import dev.bernouy.cms.feature.website.project.Project;
 
 public class Page extends AbstractDocument {
@@ -11,6 +12,8 @@ public class Page extends AbstractDocument {
     private String url;
     private String description;
     private boolean isPublished;
+
+    private Layout layout;
 
     public Project getProject() {
         return project;
@@ -58,5 +61,13 @@ public class Page extends AbstractDocument {
 
     public void setPublished(boolean published) {
         isPublished = published;
+    }
+
+    public Layout getLayout() {
+        return layout;
+    }
+
+    public void setLayout(Layout layout) {
+        this.layout = layout;
     }
 }

@@ -23,7 +23,7 @@ public class LibraryTDB extends TDBMother {
             isBuild = true;
         }
         if ( project == null ) this.project = new ProjectTDB().build();
-        ReqCreateLibrary dto = new ReqCreateLibrary(this.project.getId());
+        ReqCreateLibrary dto = new ReqCreateLibrary(this.project.getId(), "undefined");
         ResponseEntity<String> res = reqTDB.withAuth(this.project.getAccount().getCookie()).withDto(dto).send("library/create");
         if ( res.getStatusCode() != HttpStatus.CREATED) return this;
         this.id = res.getBody();

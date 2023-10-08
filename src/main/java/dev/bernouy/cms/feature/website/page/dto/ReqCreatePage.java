@@ -1,12 +1,12 @@
-package dev.bernouy.cms.feature.website.library.dto;
+package dev.bernouy.cms.feature.website.page.dto;
 
-public class ReqCreateLibrary {
+public class ReqCreatePage {
 
     private String projectId;
     private String name;
 
-    public ReqCreateLibrary() {}
-    public ReqCreateLibrary(String projectId, String name) {
+    public ReqCreatePage() {}
+    public ReqCreatePage(String projectId, String name) {
         this.projectId = projectId;
         this.name = name;
     }
