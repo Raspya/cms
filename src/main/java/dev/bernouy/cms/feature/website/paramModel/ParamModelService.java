@@ -3,7 +3,7 @@ package dev.bernouy.cms.feature.website.paramModel;
 import dev.bernouy.cms.common.BasicException;
 import dev.bernouy.cms.common.RegexComponent;
 import dev.bernouy.cms.feature.account.Account;
-import dev.bernouy.cms.feature.website.component.ComponentExceptionMessages;
+import dev.bernouy.cms.feature.website.WebsiteExceptionMessages;
 import dev.bernouy.cms.feature.website.paramModel.dto.*;
 import dev.bernouy.cms.feature.website.version.Version;
 import dev.bernouy.cms.feature.website.paramModel.model.ParamModel;
@@ -12,9 +12,9 @@ import dev.bernouy.cms.feature.website.paramModel.model.ParamModelInt;
 import dev.bernouy.cms.feature.website.paramModel.model.ParamModelString;
 import dev.bernouy.cms.feature.website.version.VersionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.tags.Param;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +42,7 @@ public class ParamModelService {
         if ( dto.getParentId() != null ){
             parent = paramModelRepository.findById(dto.getParentId()).orElse(null);
             if ( parent != null && !parent.childAvailable())
-                throw new BasicException(ComponentExceptionMessages.INVALID_PARENT_TYPE);
+                throw new BasicException(WebsiteExceptionMessages.INVALID_PARENT_TYPE);
         }
 
         String type = dto.getType().toLowerCase();
@@ -50,7 +50,7 @@ public class ParamModelService {
             case "string" -> new ParamModelString();
             case "int"    -> new ParamModelInt();
             case "float"  -> new ParamModelFloat();
-            default       -> throw new BasicException(ComponentExceptionMessages.INVALID_PARAM_MODEL_TYPE);
+            default       -> throw new BasicException(WebsiteExceptionMessages.INVALID_PARAM_MODEL_TYPE);
         };
         paramModel.setType(dto.getType());
         paramModel.setComponentVersion(componentVersion);
@@ -86,6 +86,7 @@ public class ParamModelService {
     }
 
     public void setPosition(ReqPositionParamModel dto, Account account, String paramModelId){
+        if (dto.getPosition() < 1) throw new BasicException(WebsiteExceptionMessages.INVALID_PARAM_MODEL_POSITION);
         ParamModel paramModel = getById(paramModelId, account);
         List<ParamModel> paramModelList = paramModelRepository.findAllByComponentVersionIdOrderByPositionAsc(paramModel.getComponentVersion().getId());
         List<ParamModel> toUpdate = new ArrayList<>();
@@ -138,7 +139,7 @@ public class ParamModelService {
 
     public ParamModel getById(String paramModelId, Account account) {
         ParamModel paramModel = paramModelRepository.findById(paramModelId).orElse(null);
-        if (paramModel == null) throw new BasicException(ComponentExceptionMessages.INVALID_PARAM_MODEL_ID);
+        if (paramModel == null) throw new BasicException(WebsiteExceptionMessages.INVALID_PARAM_MODEL_ID);
         authorizeAccount(paramModelId, account);
         return paramModel;
     }

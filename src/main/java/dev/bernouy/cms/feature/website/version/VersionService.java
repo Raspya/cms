@@ -4,29 +4,39 @@ import dev.bernouy.cms.common.BasicException;
 import dev.bernouy.cms.common.FileSystem;
 import dev.bernouy.cms.common.RegexComponent;
 import dev.bernouy.cms.feature.account.Account;
-import dev.bernouy.cms.feature.website.component.ComponentExceptionMessages;
+import dev.bernouy.cms.feature.website.WebsiteExceptionMessages;
+import dev.bernouy.cms.feature.website.paramModel.ParamModelRepository;
+import dev.bernouy.cms.feature.website.paramModel.ParamModelService;
+import dev.bernouy.cms.feature.website.paramModel.model.ParamModel;
+import dev.bernouy.cms.feature.website.paramModel.model.ParamModelFloat;
+import dev.bernouy.cms.feature.website.paramModel.model.ParamModelInt;
+import dev.bernouy.cms.feature.website.paramModel.model.ParamModelString;
 import dev.bernouy.cms.feature.website.version.dto.ReqCreateVersion;
 import dev.bernouy.cms.feature.website.version.dto.ReqUploadFile;
 import dev.bernouy.cms.feature.website.component.Component;
 import dev.bernouy.cms.feature.website.component.ComponentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.util.List;
 
 @Service
 public class VersionService {
 
     private VersionRepository versionRepository;
+    private ParamModelRepository paramModelRepository;
     private RegexComponent regexComponent;
     private ComponentService componentService;
 
     @Autowired
-    public VersionService(VersionRepository versionRepository, RegexComponent regexComponent, ComponentService componentService){
+    public VersionService(VersionRepository versionRepository, ParamModelRepository paramModelRepository, RegexComponent regexComponent, ComponentService componentService){
         this.regexComponent = regexComponent;
         this.versionRepository = versionRepository;
+        this.paramModelRepository = paramModelRepository;
         this.componentService = componentService;
     }
 
@@ -42,7 +52,7 @@ public class VersionService {
         String typeVersion = dto.getTypeVersion().toLowerCase();
 
         if (!typeVersion.equals("major") && !typeVersion.equals("minor") && !typeVersion.equals("patch") && !typeVersion.equals(""))
-            throw new BasicException(ComponentExceptionMessages.INVALID_VERSION_TYPE);
+            throw new BasicException(WebsiteExceptionMessages.INVALID_VERSION_TYPE);
 
         Version oldVersion = versionRepository.getFirstByComponent_IdOrderByMajorVersionDescMinorVersionDescPatchVersionDesc(dto.getComponentID());
         if (oldVersion != null) {
@@ -71,6 +81,9 @@ public class VersionService {
         version.setComponent(comp);
         version.setDeploy(false);
         versionRepository.save(version);
+
+        update(version, null);
+
         return version;
     }
 
@@ -78,6 +91,7 @@ public class VersionService {
         Version version = versionRepository.findById(versionId).orElseThrow();
         authorizeAccount(version.getComponent(), account);
 
+        if (version.isDeploy()) throw new BasicException(WebsiteExceptionMessages.VERSION_ALREADY_DEPLOY);
         String url = FileSystem.COMPONENT_PATH + File.separator + "js" + File.separator + "C" + version.getId() + ".js";
         try {
             FileWriter fw = new FileWriter(url);
@@ -90,6 +104,7 @@ public class VersionService {
         Version version = versionRepository.findById(versionId).orElseThrow();
         authorizeAccount(version.getComponent(), account);
 
+        if (version.isDeploy()) throw new BasicException(WebsiteExceptionMessages.VERSION_ALREADY_DEPLOY);
         String url = FileSystem.COMPONENT_PATH + File.separator + "css" + File.separator + "C" + version.getId() + ".css";
         try {
             FileWriter fw = new FileWriter(url);
@@ -107,7 +122,7 @@ public class VersionService {
         File fileJS = new File(urlJS);
         File fileCSS = new File(urlCSS);
 
-        if (!fileJS.exists() || !fileCSS.exists()) throw new BasicException(ComponentExceptionMessages.FILE_DOES_NOT_EXIST);
+        if (!fileJS.exists() || !fileCSS.exists()) throw new BasicException(WebsiteExceptionMessages.FILE_DOES_NOT_EXIST);
 
         version.setDeploy(true);
 
@@ -120,7 +135,7 @@ public class VersionService {
 
     public Version getByIdAccount(String versionId, Account account ){
         Version version = versionRepository.findById(versionId).orElse(null);
-        if (version == null) throw new BasicException(ComponentExceptionMessages.INVALID_VERSION_ID);
+        if (version == null) throw new BasicException(WebsiteExceptionMessages.INVALID_VERSION_ID);
         authorizeAccount(version.getComponent(), account);
         return version;
     }
@@ -128,6 +143,37 @@ public class VersionService {
     public void authorizeAccount(Component comp, Account account){
         if (!comp.getProject().getOwner().equals(account)) throw new BasicException(BasicException.AUTH_ERROR, HttpStatus.FORBIDDEN);
     }
+
+    public void update(Version version, String parentId) {
+        List<ParamModel> lstParamModel = paramModelRepository.findAllByComponentVersionAndParentId(version.getId(), parentId);
+        ParamModel paramModelTmp = null;
+
+        for (ParamModel paramModel : lstParamModel) {
+            paramModelTmp = create(paramModel, version, parentId);
+            paramModelRepository.save(paramModelTmp);
+            update(version, paramModelTmp.getId());
+        }
+
+    }
+    public ParamModel create(ParamModel oldParamModel, Version newVersion, String parentId){
+        ParamModel paramModel = switch (oldParamModel.getType()) {
+            case "string" -> new ParamModelString(((ParamModelString) oldParamModel).getMin(), ((ParamModelString) oldParamModel).getMax());
+            case "int"    -> new ParamModelInt(((ParamModelInt) oldParamModel).getMin(), ((ParamModelInt) oldParamModel).getMax());
+            case "float"  -> new ParamModelFloat(((ParamModelFloat) oldParamModel).getMin(), ((ParamModelFloat) oldParamModel).getMax());
+            default       -> throw new BasicException(WebsiteExceptionMessages.INVALID_PARAM_MODEL_TYPE);
+        };
+
+        paramModel.setComponentVersion(newVersion);
+        paramModel.setParent(paramModelRepository.findById(parentId).orElse(null));
+        paramModel.setName(oldParamModel.getName());
+        paramModel.setKey(oldParamModel.getKey());
+        paramModel.setType(oldParamModel.getType());
+        paramModel.setValue(oldParamModel.getValue());
+        paramModel.setPosition(oldParamModel.getPosition());
+
+        return paramModel;
+    }
+
 
 
 

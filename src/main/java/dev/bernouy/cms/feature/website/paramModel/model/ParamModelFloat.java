@@ -6,6 +6,15 @@ public class ParamModelFloat extends ParamModel  {
     private Integer max;
 
 
+    public ParamModelFloat(Integer min, Integer max) {
+        this.min = min;
+        this.max = max;
+    }
+
+    public ParamModelFloat() {
+        this.min = null;
+        this.max = null;
+    }
     @Override
     public void updateOption( String key, String value ){
         int i = Integer.parseInt(value);

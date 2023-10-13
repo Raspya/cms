@@ -36,21 +36,21 @@ public class LayoutController {
         return new ResponseEntity<>(layout.getId(), HttpStatus.CREATED);
     }
 
-    @PostMapping("/{layoutId]/delete")
+    @PostMapping("/{layoutId}/delete")
     public ResponseEntity<String> delete(@PathVariable String layoutId) {
         Account account = (Account) request.getAttribute("account");
         service.delete(layoutId, account);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
-    @PostMapping("/{layoutId]/setName")
+    @PostMapping("/{layoutId}/setName")
     public ResponseEntity<String> setName(@PathVariable String layoutId, @RequestBody ReqSetNameLayout dto) {
         Account account = (Account) request.getAttribute("account");
         service.setName(layoutId, dto, account);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
-    @PostMapping("/{layoutId]/setDefault")
+    @PostMapping("/{layoutId}/setDefault")
     public ResponseEntity<String> setDefault(@PathVariable String layoutId, @RequestBody ReqSetDefaultLayout dto) {
         Account account = (Account) request.getAttribute("account");
         service.setDefault(layoutId, dto, account);

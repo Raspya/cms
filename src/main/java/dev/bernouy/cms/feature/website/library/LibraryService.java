@@ -3,7 +3,7 @@ package dev.bernouy.cms.feature.website.library;
 import dev.bernouy.cms.common.BasicException;
 import dev.bernouy.cms.common.RegexComponent;
 import dev.bernouy.cms.feature.account.Account;
-import dev.bernouy.cms.feature.website.component.ComponentExceptionMessages;
+import dev.bernouy.cms.feature.website.WebsiteExceptionMessages;
 import dev.bernouy.cms.feature.website.library.dto.ReqAddRemoveVersionLibrary;
 import dev.bernouy.cms.feature.website.library.dto.ReqCreateLibrary;
 import dev.bernouy.cms.feature.website.library.dto.ReqNameLibrary;
@@ -52,7 +52,7 @@ public class LibraryService {
         Version version = versionService.getById(dto.getVersionId());
         ArrayList<Version> lstVersion = getVersionList(libraryId, account);
         for (Version v : lstVersion)
-            if (v.getId().equals(version.getId())) throw new BasicException(ComponentExceptionMessages.INVALID_VERSION_ID);
+            if (v.getId().equals(version.getId())) throw new BasicException(WebsiteExceptionMessages.INVALID_VERSION_ID);
         lstVersion.add(version);
         library.setLstVersion(lstVersion);
         libraryRepository.save(library);
@@ -67,7 +67,7 @@ public class LibraryService {
             if (lstVersion.get(i).getId().equals(version.getId())) lstVersion.remove(i);
         library.setLstVersion(lstVersion);
         libraryRepository.save(library);
-        throw new BasicException(ComponentExceptionMessages.INVALID_VERSION_ID);
+        throw new BasicException(WebsiteExceptionMessages.INVALID_VERSION_ID);
     }
 
     public void setName(String libraryId, ReqNameLibrary dto, Account account) {
@@ -80,14 +80,14 @@ public class LibraryService {
 
     public Library getById(String libraryId, Account account) {
         Library library = libraryRepository.findById(libraryId).orElse(null);
-        if (library == null) throw new BasicException(ComponentExceptionMessages.INVALID_LIBRARY_ID);
+        if (library == null) throw new BasicException(WebsiteExceptionMessages.INVALID_LIBRARY_ID);
         authorizeAccount(libraryId, account);
         return library;
     }
 
     public ArrayList<Version> getVersionList(String libraryId, Account account) {
         Library library = libraryRepository.findById(libraryId).orElse(null);
-        if (library == null) throw new BasicException(ComponentExceptionMessages.INVALID_LIBRARY_ID);
+        if (library == null) throw new BasicException(WebsiteExceptionMessages.INVALID_LIBRARY_ID);
         authorizeAccount(libraryId, account);
         return library.getLstVersion();
     }

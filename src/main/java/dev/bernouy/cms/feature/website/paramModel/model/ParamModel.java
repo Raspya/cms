@@ -20,7 +20,7 @@ public abstract class ParamModel extends AbstractDocument implements ParamInterf
     protected String key;
     protected String type;
     protected int position;
-    protected Object value;
+    protected String value;
 
     public int getPosition() { return position;}
     public void setPosition(int position) {
@@ -67,7 +67,7 @@ public abstract class ParamModel extends AbstractDocument implements ParamInterf
         this.type = type;
     }
 
-    public Object getValue() {
+    public String getValue() {
         return value;
     }
 

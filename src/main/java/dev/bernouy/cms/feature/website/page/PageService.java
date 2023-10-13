@@ -3,17 +3,11 @@ package dev.bernouy.cms.feature.website.page;
 import dev.bernouy.cms.common.BasicException;
 import dev.bernouy.cms.common.RegexComponent;
 import dev.bernouy.cms.feature.account.Account;
-import dev.bernouy.cms.feature.website.component.ComponentExceptionMessages;
-import dev.bernouy.cms.feature.website.layout.Layout;
-import dev.bernouy.cms.feature.website.layout.LayoutRepository;
+import dev.bernouy.cms.feature.website.WebsiteExceptionMessages;
 import dev.bernouy.cms.feature.website.layout.LayoutService;
-import dev.bernouy.cms.feature.website.layout.dto.ReqCreateLayout;
 import dev.bernouy.cms.feature.website.page.dto.*;
-import dev.bernouy.cms.feature.website.paramModel.dto.ReqNameParamModel;
-import dev.bernouy.cms.feature.website.paramModel.model.ParamModel;
 import dev.bernouy.cms.feature.website.project.Project;
 import dev.bernouy.cms.feature.website.project.ProjectService;
-import dev.bernouy.cms.feature.website.version.VersionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -89,7 +83,7 @@ public class PageService {
 
     public Page getById(String layoutId, Account account) {
         Page page = pageRepository.findById(layoutId).orElse(null);
-        if (page == null) throw new BasicException(ComponentExceptionMessages.INVALID_PARAM_MODEL_ID);
+        if (page == null) throw new BasicException(WebsiteExceptionMessages.INVALID_PARAM_MODEL_ID);
         authorizeAccount(layoutId, account);
         return page;
     }

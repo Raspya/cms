@@ -3,22 +3,15 @@ package dev.bernouy.cms.feature.website.layout;
 import dev.bernouy.cms.common.BasicException;
 import dev.bernouy.cms.common.RegexComponent;
 import dev.bernouy.cms.feature.account.Account;
-import dev.bernouy.cms.feature.website.component.ComponentExceptionMessages;
+import dev.bernouy.cms.feature.website.WebsiteExceptionMessages;
 import dev.bernouy.cms.feature.website.layout.dto.ReqCreateLayout;
 import dev.bernouy.cms.feature.website.layout.dto.ReqSetDefaultLayout;
 import dev.bernouy.cms.feature.website.layout.dto.ReqSetNameLayout;
-import dev.bernouy.cms.feature.website.library.Library;
-import dev.bernouy.cms.feature.website.library.LibraryRepository;
-import dev.bernouy.cms.feature.website.library.dto.ReqCreateLibrary;
-import dev.bernouy.cms.feature.website.paramModel.model.ParamModel;
 import dev.bernouy.cms.feature.website.project.Project;
 import dev.bernouy.cms.feature.website.project.ProjectService;
-import dev.bernouy.cms.feature.website.version.VersionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 
 @Service
 public class LayoutService {
@@ -58,14 +51,24 @@ public class LayoutService {
     }
 
     public void setDefault(String layoutId, ReqSetDefaultLayout dto, Account account) {
+        System.out.println("0");
+        Layout layoutDefault = getById(layoutRepository.getLayoutByABooleanIs(true).getId(), account);
+        System.out.println("1");
+        if (layoutDefault != null) {
+            System.out.println("2");
+            layoutDefault.setaBoolean(false);
+            layoutRepository.save(layoutDefault);
+
+        }
+
         Layout layout = getById(layoutId, account);
-        layout.setDefault(dto.getDefault());
+        layout.setaBoolean(dto.getDefault());
         layoutRepository.save(layout);
     }
 
     public Layout getById(String layoutId, Account account) {
         Layout layout = layoutRepository.findById(layoutId).orElse(null);
-        if (layout == null) throw new BasicException(ComponentExceptionMessages.INVALID_PARAM_MODEL_ID);
+        if (layout == null) throw new BasicException(WebsiteExceptionMessages.INVALID_PARAM_MODEL_ID);
         authorizeAccount(layoutId, account);
         return layout;
     }

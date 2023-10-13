@@ -10,4 +10,6 @@ public interface ParamModelRepository extends CrudRepository<ParamModel, String>
     ParamModel findByPosition(int i);
     ParamModel findFirstByComponentVersionIdOrderByPositionDesc(String id);
     List<ParamModel> findAllByComponentVersionIdOrderByPositionAsc(String id);
+
+    List<ParamModel> findAllByComponentVersionAndParentId(String VersionId, String parentId);
 }

@@ -5,6 +5,15 @@ public class ParamModelInt extends ParamModel {
     private Integer min;
     private Integer max;
 
+    public ParamModelInt(Integer min, Integer max) {
+        this.min = min;
+        this.max = max;
+    }
+
+    public ParamModelInt() {
+        this.min = null;
+        this.max = null;
+    }
     @Override
     public void updateOption( String key, String value ){
         int i = Integer.parseInt(value);

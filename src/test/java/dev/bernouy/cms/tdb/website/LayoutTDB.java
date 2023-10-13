@@ -47,7 +47,9 @@ public class LayoutTDB extends TDBMother {
     public LayoutTDB setDefault(boolean aDefault) {
         ReqSetDefaultLayout dto = new ReqSetDefaultLayout(aDefault);
         ResponseEntity<String> res = reqTDB.withAuth(this.project.getAccount().getCookie()).withDto(dto).send("layout/" + this.id + "/setDefault");
+        System.out.println(res.getStatusCode());
         if (res.getStatusCode() != HttpStatus.CREATED) return this;
+        System.out.println("coucou");
         this.isDefault = aDefault;
         return this;
     }
