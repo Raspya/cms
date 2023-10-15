@@ -28,17 +28,18 @@ public class PageTDB extends TDBMother {
             isBuild = true;
         }
         if ( project == null ) this.project = new ProjectTDB().build();
-        ReqCreatePage dto = new ReqCreatePage(this.project.getId(), "undefined");
+        ReqCreatePage dto = new ReqCreatePage(this.project.getId(), "undefined", "url");
         ResponseEntity<String> res = reqTDB.withAuth(this.project.getAccount().getCookie()).withDto(dto).send("page/create");
         if ( res.getStatusCode() != HttpStatus.CREATED) return this;
         this.id = res.getBody();
         this.name = "undefined";
+        this.url = "url";
         return this;
     }
 
     public PageTDB delete() {
         ResponseEntity<String> res = reqTDB.withAuth(this.project.getAccount().getCookie())
-                .send("layout/" + this.getId() + "/delete");
+                .send("page/" + this.getId() + "/delete");
         if ( res.getStatusCode() != HttpStatus.CREATED) return this;
         this.id = null;
         return this;
@@ -112,16 +113,16 @@ public class PageTDB extends TDBMother {
     public boolean isPublished() {
         return isPublished;
     }
-    public JsonNode getLayout() {
+    public String getLayoutId() {
         ResponseEntity<String> res = reqTDB.withMethod(MethodEnum.GET).withAuth(this.project.getAccount().getCookie())
-                .send("page/" + this.getId() + "/list");
+                .send("page/" + this.getId() + "/get");
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = null;
         try {
             jsonNode = objectMapper.readTree(res.getBody());
         } catch (Exception e) {return null;}
 
-        return jsonNode.get("layout");
+        return jsonNode.get("layout").get("id").textValue();
     }
 
     public PageTDB withProject(ProjectTDB project) {

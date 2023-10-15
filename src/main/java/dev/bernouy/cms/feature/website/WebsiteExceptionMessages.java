@@ -13,5 +13,10 @@ public class WebsiteExceptionMessages extends RuntimeException{
     public final static  String INVALID_LIBRARY_ID = "Invalid Library id";
     public final static String INVALID_PARAM_MODEL_ID = "Invalid ParamModel";
 
+    public final static String INVALID_PAGE_URL = "Invalid Page url";
+    public final static String INVALID_PAGE_TITLE = "Invalid Page title";
+
+    public final static String INVALID_BUILDER_PAGEORLAYOUT = "Invalid Builder Page or Layout";
+    public final static String INVALID_BUILDER_POSITION = "Invalid Builder position";
 
 }

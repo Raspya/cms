@@ -1,5 +1,8 @@
 package dev.bernouy.cms.tdb.website;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.bernouy.cms.conf.MethodEnum;
 import dev.bernouy.cms.conf.TDBMother;
 import dev.bernouy.cms.feature.website.layout.Layout;
 import dev.bernouy.cms.feature.website.layout.dto.ReqCreateLayout;
@@ -47,9 +50,7 @@ public class LayoutTDB extends TDBMother {
     public LayoutTDB setDefault(boolean aDefault) {
         ReqSetDefaultLayout dto = new ReqSetDefaultLayout(aDefault);
         ResponseEntity<String> res = reqTDB.withAuth(this.project.getAccount().getCookie()).withDto(dto).send("layout/" + this.id + "/setDefault");
-        System.out.println(res.getStatusCode());
         if (res.getStatusCode() != HttpStatus.CREATED) return this;
-        System.out.println("coucou");
         this.isDefault = aDefault;
         return this;
     }
@@ -65,8 +66,16 @@ public class LayoutTDB extends TDBMother {
         return name;
     }
 
-    public boolean isDefault() {
-        return isDefault;
+    public Boolean isDefault() {
+        ResponseEntity<String> res = reqTDB.withMethod(MethodEnum.GET).withAuth(this.project.getAccount().getCookie())
+                .send("layout/" + this.getId() + "/get");
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode = null;
+        try {
+            jsonNode = objectMapper.readTree(res.getBody());
+        }catch (Exception e) {return null;}
+
+        return jsonNode.get("aBoolean").booleanValue();
     }
 
     public ProjectTDB getProject() {

@@ -4,6 +4,7 @@ import dev.bernouy.cms.common.BasicException;
 import dev.bernouy.cms.common.RegexComponent;
 import dev.bernouy.cms.feature.account.Account;
 import dev.bernouy.cms.feature.website.WebsiteExceptionMessages;
+import dev.bernouy.cms.feature.website.layout.Layout;
 import dev.bernouy.cms.feature.website.layout.LayoutService;
 import dev.bernouy.cms.feature.website.page.dto.*;
 import dev.bernouy.cms.feature.website.project.Project;
@@ -35,6 +36,10 @@ public class PageService {
         Page page = new Page();
         page.setProject(project);
         page.setName(dto.getName());
+        if (pageRepository.findByUrl(dto.getUrl()) != null) throw new BasicException(WebsiteExceptionMessages.INVALID_PAGE_URL);
+        page.setUrl(dto.getUrl());
+        page.setPublished(false);
+        page.setLayout(layoutService.getLayoutDefault(account, project));
         pageRepository.save(page);
         return page;
     }
@@ -53,11 +58,13 @@ public class PageService {
 
     public void setDeploy(String pageId, ReqSetDeployPage dto, Account account) {
         Page page = getById(pageId, account);
+        if (page.getTitle() == null) throw new BasicException(WebsiteExceptionMessages.INVALID_PAGE_TITLE);
         page.setPublished(dto.getDeploy());
         pageRepository.save(page);
     }
 
     public void setUrl(String pageId, ReqSetUrlPage dto, Account account) {
+        if (pageRepository.findByUrl(dto.getUrl()) != null) throw new BasicException(WebsiteExceptionMessages.INVALID_PAGE_URL);
         Page page = getById(pageId, account);
         page.setUrl(dto.getUrl());
         pageRepository.save(page);
@@ -65,13 +72,13 @@ public class PageService {
 
     public void setTitle(String pageId, ReqSetTitlePage dto, Account account) {
         Page page = getById(pageId, account);
-        page.setTitle(dto.getTitle());
+        System.out.println(page.getTitle());
         pageRepository.save(page);
     }
 
     public void setDescription(String pageId, ReqSetDescriptionPage dto, Account account) {
         Page page = getById(pageId, account);
-        page.setTitle(dto.getDescription());
+        page.setDescription(dto.getDescription());
         pageRepository.save(page);
     }
 

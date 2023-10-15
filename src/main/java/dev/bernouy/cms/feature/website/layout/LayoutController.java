@@ -7,12 +7,15 @@ import dev.bernouy.cms.feature.website.layout.dto.ReqSetDefaultLayout;
 import dev.bernouy.cms.feature.website.layout.dto.ReqSetNameLayout;
 import dev.bernouy.cms.feature.website.library.Library;
 import dev.bernouy.cms.feature.website.library.dto.ReqCreateLibrary;
+import dev.bernouy.cms.feature.website.version.Version;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/api/v1/layout")
@@ -55,5 +58,11 @@ public class LayoutController {
         Account account = (Account) request.getAttribute("account");
         service.setDefault(layoutId, dto, account);
         return new ResponseEntity<>("", HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{layoutId}/get")
+    public Layout get(@PathVariable String layoutId) {
+        Account account = (Account) request.getAttribute("account");
+        return service.getById(layoutId, account);
     }
 }

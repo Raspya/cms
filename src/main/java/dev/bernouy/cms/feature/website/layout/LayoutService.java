@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class LayoutService {
 
@@ -51,17 +53,12 @@ public class LayoutService {
     }
 
     public void setDefault(String layoutId, ReqSetDefaultLayout dto, Account account) {
-        System.out.println("0");
-        Layout layoutDefault = getById(layoutRepository.getLayoutByABooleanIs(true).getId(), account);
-        System.out.println("1");
+        Layout layout = getById(layoutId, account);
+        Layout layoutDefault = getLayoutDefault(account, layout.getProject());
         if (layoutDefault != null) {
-            System.out.println("2");
             layoutDefault.setaBoolean(false);
             layoutRepository.save(layoutDefault);
-
         }
-
-        Layout layout = getById(layoutId, account);
         layout.setaBoolean(dto.getDefault());
         layoutRepository.save(layout);
     }
@@ -77,5 +74,16 @@ public class LayoutService {
         Layout layout = layoutRepository.findById(layoutId).orElse(null);
         if (layout == null || !layout.getProject().getOwner().equals(account) )
             throw new BasicException(BasicException.AUTH_ERROR, HttpStatus.FORBIDDEN);
+    }
+
+    public Layout getLayoutDefault(Account account, Project project) {
+        List<Layout> lstLayout = layoutRepository.findAllByProject(project);
+        for (Layout l : lstLayout) {
+            if (l.isaBoolean()) {
+                authorizeAccount(l.getId(), account);
+                return l;
+            }
+        }
+        return null;
     }
 }

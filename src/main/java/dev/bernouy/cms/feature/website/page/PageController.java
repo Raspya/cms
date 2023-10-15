@@ -83,8 +83,8 @@ public class PageController {
         service.setLayout(pageId, dto, account);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
-    @GetMapping("/{pageId}/list")
-    public Page list(@PathVariable String pageId) {
+    @GetMapping("/{pageId}/get")
+    public Page get(@PathVariable String pageId) {
         Account account = (Account) request.getAttribute("account");
         return service.getById(pageId, account);
     }
