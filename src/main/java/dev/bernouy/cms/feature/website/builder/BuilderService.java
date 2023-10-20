@@ -3,6 +3,7 @@ package dev.bernouy.cms.feature.website.builder;
 import dev.bernouy.cms.common.BasicException;
 import dev.bernouy.cms.common.RegexComponent;
 import dev.bernouy.cms.feature.account.Account;
+import dev.bernouy.cms.feature.website.AuthWebsiteService;
 import dev.bernouy.cms.feature.website.WebsiteExceptionMessages;
 import dev.bernouy.cms.feature.website.builder.dto.ReqCreateBuilder;
 import dev.bernouy.cms.feature.website.builder.dto.ReqPositionBuilder;
@@ -10,10 +11,8 @@ import dev.bernouy.cms.feature.website.layout.Layout;
 import dev.bernouy.cms.feature.website.layout.LayoutService;
 import dev.bernouy.cms.feature.website.page.Page;
 import dev.bernouy.cms.feature.website.page.PageService;
-import dev.bernouy.cms.feature.website.paramModel.model.ParamModel;
-import dev.bernouy.cms.feature.website.project.Project;
 import dev.bernouy.cms.feature.website.version.Version;
-import dev.bernouy.cms.feature.website.version.VersionService;
+import dev.bernouy.cms.feature.website.version.service.BusinessLogicVersionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -26,17 +25,19 @@ public class BuilderService {
 
     private BuilderRepository builderRepository;
     private RegexComponent regexComponent;
-    private VersionService versionService;
+    private BusinessLogicVersionService versionService;
     private PageService pageService;
     private LayoutService layoutService;
+    private AuthWebsiteService authWebsiteService;
 
     @Autowired
-    public BuilderService(BuilderRepository builderRepository, RegexComponent regexComponent, VersionService versionService, PageService pageService, LayoutService layoutService) {
+    public BuilderService(BuilderRepository builderRepository, RegexComponent regexComponent, BusinessLogicVersionService versionService, PageService pageService, LayoutService layoutService, AuthWebsiteService authWebsiteService) {
         this.builderRepository = builderRepository;
         this.regexComponent = regexComponent;
         this.versionService = versionService;
         this.pageService = pageService;
         this.layoutService = layoutService;
+        this.authWebsiteService = authWebsiteService;
     }
 
     public Builder create(ReqCreateBuilder dto, Account account) {

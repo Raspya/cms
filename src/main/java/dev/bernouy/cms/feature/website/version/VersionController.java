@@ -1,8 +1,9 @@
 package dev.bernouy.cms.feature.website.version;
 
 import dev.bernouy.cms.feature.account.Account;
-import dev.bernouy.cms.feature.website.version.dto.ReqCreateVersion;
-import dev.bernouy.cms.feature.website.version.dto.ReqUploadFile;
+import dev.bernouy.cms.feature.website.version.formatting.request.ReqCreateVersion;
+import dev.bernouy.cms.feature.website.version.formatting.request.ReqUploadFile;
+import dev.bernouy.cms.feature.website.version.service.BusinessLogicVersionService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +16,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/component/version")
 public class VersionController {
 
-    private VersionService versionService;
+    private BusinessLogicVersionService versionService;
     private HttpServletResponse response;
     private HttpServletRequest request;
 
     @Autowired
-    public VersionController(VersionService versionService, HttpServletResponse response, HttpServletRequest request) {
+    public VersionController(BusinessLogicVersionService versionService, HttpServletResponse response, HttpServletRequest request) {
         this.versionService = versionService;
         this.response = response;
         this.request = request;

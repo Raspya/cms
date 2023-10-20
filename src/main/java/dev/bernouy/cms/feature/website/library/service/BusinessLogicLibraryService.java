@@ -1,37 +1,47 @@
-package dev.bernouy.cms.feature.website.library;
+package dev.bernouy.cms.feature.website.library.service;
 
 import dev.bernouy.cms.common.BasicException;
 import dev.bernouy.cms.common.RegexComponent;
 import dev.bernouy.cms.feature.account.Account;
+import dev.bernouy.cms.feature.website.AuthWebsiteService;
 import dev.bernouy.cms.feature.website.WebsiteExceptionMessages;
+import dev.bernouy.cms.feature.website.library.Library;
+import dev.bernouy.cms.feature.website.library.LibraryRepository;
 import dev.bernouy.cms.feature.website.library.dto.ReqAddRemoveVersionLibrary;
 import dev.bernouy.cms.feature.website.library.dto.ReqCreateLibrary;
 import dev.bernouy.cms.feature.website.library.dto.ReqNameLibrary;
+import dev.bernouy.cms.feature.website.library.response.LibraryDTO;
 import dev.bernouy.cms.feature.website.project.Project;
 import dev.bernouy.cms.feature.website.project.ProjectService;
 import dev.bernouy.cms.feature.website.version.Version;
-import dev.bernouy.cms.feature.website.version.VersionService;
+import dev.bernouy.cms.feature.website.version.service.BusinessLogicVersionService;
+import dev.bernouy.cms.feature.website.version.service.DataPersistentVersionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
-public class LibraryService {
+public class BusinessLogicLibraryService {
 
     private LibraryRepository libraryRepository;
     private RegexComponent regexComponent;
-    private VersionService versionService;
+    private BusinessLogicVersionService versionService;
     private ProjectService projectService;
+    private AuthWebsiteService authWebsiteService;
+    private DataPersistentVersionService dataPersistentVersionService;
 
 
     @Autowired
-    public LibraryService(LibraryRepository repository, RegexComponent regexComponent, VersionService versionService, ProjectService projectService){
+    public BusinessLogicLibraryService(LibraryRepository repository, RegexComponent regexComponent, BusinessLogicVersionService versionService, ProjectService projectService, AuthWebsiteService authWebsiteService, DataPersistentVersionService dataPersistentVersionService){
         this.libraryRepository = repository;
         this.regexComponent = regexComponent;
         this.versionService = versionService;
         this.projectService = projectService;
+        this.authWebsiteService = authWebsiteService;
+        this.dataPersistentVersionService = dataPersistentVersionService;
     }
 
 
@@ -48,8 +58,8 @@ public class LibraryService {
 
 
     public void add(String libraryId, ReqAddRemoveVersionLibrary dto, Account account) {
-        Library library = getById(libraryId, account);
-        Version version = versionService.getById(dto.getVersionId());
+        Library library = authWebsiteService.isAuthByLibraryAndGetIt(libraryId, account);
+        Version version = dataPersistentVersionService.getById(dto.getVersionId());
         ArrayList<Version> lstVersion = getVersionList(libraryId, account);
         for (Version v : lstVersion)
             if (v.getId().equals(version.getId())) throw new BasicException(WebsiteExceptionMessages.INVALID_VERSION_ID);
@@ -83,6 +93,11 @@ public class LibraryService {
         if (library == null) throw new BasicException(WebsiteExceptionMessages.INVALID_LIBRARY_ID);
         authorizeAccount(libraryId, account);
         return library;
+    }
+
+    public List<LibraryDTO> listLibrary(Account account, String projectId){
+        projectService.isOwner(projectId, account);
+        return LibraryDTO.from(libraryRepository.getLibrariesByProjectId(projectId));
     }
 
     public ArrayList<Version> getVersionList(String libraryId, Account account) {

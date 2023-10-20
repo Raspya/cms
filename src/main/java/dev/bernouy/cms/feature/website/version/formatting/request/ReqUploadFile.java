@@ -1,4 +1,4 @@
-package dev.bernouy.cms.feature.website.version.dto;
+package dev.bernouy.cms.feature.website.version.formatting.request;
 
 public class ReqUploadFile {
 

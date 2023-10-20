@@ -1,22 +1,24 @@
-package dev.bernouy.cms.feature.website.version;
+package dev.bernouy.cms.feature.website.version.service;
 
 import dev.bernouy.cms.common.BasicException;
 import dev.bernouy.cms.common.FileSystem;
 import dev.bernouy.cms.common.RegexComponent;
 import dev.bernouy.cms.feature.account.Account;
+import dev.bernouy.cms.feature.website.AuthWebsiteService;
 import dev.bernouy.cms.feature.website.WebsiteExceptionMessages;
 import dev.bernouy.cms.feature.website.paramModel.ParamModelRepository;
-import dev.bernouy.cms.feature.website.paramModel.ParamModelService;
 import dev.bernouy.cms.feature.website.paramModel.model.ParamModel;
 import dev.bernouy.cms.feature.website.paramModel.model.ParamModelFloat;
 import dev.bernouy.cms.feature.website.paramModel.model.ParamModelInt;
 import dev.bernouy.cms.feature.website.paramModel.model.ParamModelString;
-import dev.bernouy.cms.feature.website.version.dto.ReqCreateVersion;
-import dev.bernouy.cms.feature.website.version.dto.ReqUploadFile;
+import dev.bernouy.cms.feature.website.version.Version;
+import dev.bernouy.cms.feature.website.version.VersionRepository;
+import dev.bernouy.cms.feature.website.version.formatting.request.ReqCreateVersion;
+import dev.bernouy.cms.feature.website.version.formatting.request.ReqUploadFile;
 import dev.bernouy.cms.feature.website.component.Component;
 import dev.bernouy.cms.feature.website.component.ComponentService;
+import dev.bernouy.cms.feature.website.version.formatting.response.FormattingVersion;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -25,19 +27,23 @@ import java.io.FileWriter;
 import java.util.List;
 
 @Service
-public class VersionService {
+public class BusinessLogicVersionService {
 
     private VersionRepository versionRepository;
     private ParamModelRepository paramModelRepository;
     private RegexComponent regexComponent;
     private ComponentService componentService;
+    private DataFormattingVersionService dataFormattingVersionService;
+    private AuthWebsiteService authWebsiteService;
 
     @Autowired
-    public VersionService(VersionRepository versionRepository, ParamModelRepository paramModelRepository, RegexComponent regexComponent, ComponentService componentService){
+    public BusinessLogicVersionService(VersionRepository versionRepository, ParamModelRepository paramModelRepository, RegexComponent regexComponent, ComponentService componentService, DataFormattingVersionService dataFormattingVersionService, AuthWebsiteService authWebsiteService){
         this.regexComponent = regexComponent;
         this.versionRepository = versionRepository;
         this.paramModelRepository = paramModelRepository;
         this.componentService = componentService;
+        this.dataFormattingVersionService = dataFormattingVersionService;
+        this.authWebsiteService = authWebsiteService;
     }
 
 
@@ -88,8 +94,7 @@ public class VersionService {
     }
 
     public void uploadJS(ReqUploadFile dto, Account account, String versionId){
-        Version version = versionRepository.findById(versionId).orElseThrow();
-        authorizeAccount(version.getComponent(), account);
+        Version version = authWebsiteService.isAuthByVersionAndGetIt(versionId, account);
 
         if (version.isDeploy()) throw new BasicException(WebsiteExceptionMessages.VERSION_ALREADY_DEPLOY);
         String url = FileSystem.COMPONENT_PATH + File.separator + "js" + File.separator + "C" + version.getId() + ".js";
@@ -101,8 +106,7 @@ public class VersionService {
     }
 
     public void uploadCSS(ReqUploadFile dto, Account account, String versionId){
-        Version version = versionRepository.findById(versionId).orElseThrow();
-        authorizeAccount(version.getComponent(), account);
+        Version version = authWebsiteService.isAuthByVersionAndGetIt(versionId, account);
 
         if (version.isDeploy()) throw new BasicException(WebsiteExceptionMessages.VERSION_ALREADY_DEPLOY);
         String url = FileSystem.COMPONENT_PATH + File.separator + "css" + File.separator + "C" + version.getId() + ".css";
@@ -114,8 +118,7 @@ public class VersionService {
     }
 
     public void deploy(Account account, String versionId){
-        Version version = versionRepository.findById(versionId).orElseThrow();
-        authorizeAccount(version.getComponent(), account);
+        Version version = authWebsiteService.isAuthByVersionAndGetIt(versionId, account);
 
         String urlJS = FileSystem.COMPONENT_PATH + File.separator + "js" + File.separator + "C" + version.getId() + ".js";
         String urlCSS = FileSystem.COMPONENT_PATH + File.separator + "css" + File.separator + "C" + version.getId() + ".css";
@@ -125,7 +128,6 @@ public class VersionService {
         if (!fileJS.exists() || !fileCSS.exists()) throw new BasicException(WebsiteExceptionMessages.FILE_DOES_NOT_EXIST);
 
         version.setDeploy(true);
-
 
     }
 
@@ -170,13 +172,7 @@ public class VersionService {
         paramModel.setType(oldParamModel.getType());
         paramModel.setValue(oldParamModel.getValue());
         paramModel.setPosition(oldParamModel.getPosition());
-
         return paramModel;
     }
-
-
-
-
-
 
 }

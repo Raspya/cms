@@ -4,6 +4,8 @@ import dev.bernouy.cms.feature.account.Account;
 import dev.bernouy.cms.feature.website.library.dto.ReqAddRemoveVersionLibrary;
 import dev.bernouy.cms.feature.website.library.dto.ReqCreateLibrary;
 import dev.bernouy.cms.feature.website.library.dto.ReqNameLibrary;
+import dev.bernouy.cms.feature.website.library.response.LibraryDTO;
+import dev.bernouy.cms.feature.website.library.service.BusinessLogicLibraryService;
 import dev.bernouy.cms.feature.website.version.Version;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,17 +15,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/library")
 public class LibraryController {
 
-    private LibraryService service;
+    private BusinessLogicLibraryService service;
     private HttpServletResponse response;
     private HttpServletRequest request;
 
     @Autowired
-    public LibraryController(LibraryService service, HttpServletResponse response, HttpServletRequest request) {
+    public LibraryController(BusinessLogicLibraryService service, HttpServletResponse response, HttpServletRequest request) {
         this.service = service;
         this.response = response;
         this.request = request;
@@ -34,6 +37,12 @@ public class LibraryController {
         Account account = (Account) request.getAttribute("account");
         Library library = service.create(dto, account);
         return new ResponseEntity<>(library.getId(), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/list")
+    public List<LibraryDTO> listLibrary(@RequestParam String projectId){
+        Account account = (Account) request.getAttribute("account");
+        return service.listLibrary(account, projectId);
     }
 
     @PostMapping("/{libraryId}/add")

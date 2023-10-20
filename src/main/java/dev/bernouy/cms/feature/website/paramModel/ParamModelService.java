@@ -10,9 +10,8 @@ import dev.bernouy.cms.feature.website.paramModel.model.ParamModel;
 import dev.bernouy.cms.feature.website.paramModel.model.ParamModelFloat;
 import dev.bernouy.cms.feature.website.paramModel.model.ParamModelInt;
 import dev.bernouy.cms.feature.website.paramModel.model.ParamModelString;
-import dev.bernouy.cms.feature.website.version.VersionService;
+import dev.bernouy.cms.feature.website.version.service.BusinessLogicVersionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -24,10 +23,10 @@ public class ParamModelService {
 
     private ParamModelRepository paramModelRepository;
     private RegexComponent regexComponent;
-    private VersionService versionService;
+    private BusinessLogicVersionService versionService;
 
     @Autowired
-    public ParamModelService(ParamModelRepository paramModelRepository, RegexComponent regexComponent, VersionService versionService){
+    public ParamModelService(ParamModelRepository paramModelRepository, RegexComponent regexComponent, BusinessLogicVersionService versionService){
         this.regexComponent = regexComponent;
         this.paramModelRepository = paramModelRepository;
         this.versionService = versionService;
