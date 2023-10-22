@@ -136,6 +136,12 @@ public class ParamModelService {
 
     }
 
+    public ParamModel getByParentId(String paramModelId, Account account) {
+        ParamModel paramModel = paramModelRepository.findByParentId(paramModelId);
+        if (paramModel == null) throw new BasicException(WebsiteExceptionMessages.INVALID_PARAM_MODEL_ID);
+        authorizeAccount(paramModelId, account);
+        return paramModel;
+    }
     public ParamModel getById(String paramModelId, Account account) {
         ParamModel paramModel = paramModelRepository.findById(paramModelId).orElse(null);
         if (paramModel == null) throw new BasicException(WebsiteExceptionMessages.INVALID_PARAM_MODEL_ID);

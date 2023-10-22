@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -140,6 +141,10 @@ public class BusinessLogicVersionService {
         if (version == null) throw new BasicException(WebsiteExceptionMessages.INVALID_VERSION_ID);
         authorizeAccount(version.getComponent(), account);
         return version;
+    }
+
+    public ArrayList<ParamModel> getLstParamModel(String versionId){
+        return paramModelRepository.findAllByComponentVersion(versionId);
     }
 
     public void authorizeAccount(Component comp, Account account){

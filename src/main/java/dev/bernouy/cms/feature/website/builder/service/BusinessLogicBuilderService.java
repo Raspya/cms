@@ -1,29 +1,31 @@
-package dev.bernouy.cms.feature.website.builder;
+package dev.bernouy.cms.feature.website.builder.service;
 
 import dev.bernouy.cms.common.BasicException;
 import dev.bernouy.cms.common.RegexComponent;
 import dev.bernouy.cms.feature.account.Account;
 import dev.bernouy.cms.feature.website.AuthWebsiteService;
 import dev.bernouy.cms.feature.website.WebsiteExceptionMessages;
+import dev.bernouy.cms.feature.website.builder.Builder;
 import dev.bernouy.cms.feature.website.builder.dto.ReqCreateBuilder;
 import dev.bernouy.cms.feature.website.builder.dto.ReqPositionBuilder;
 import dev.bernouy.cms.feature.website.layout.Layout;
 import dev.bernouy.cms.feature.website.layout.LayoutService;
 import dev.bernouy.cms.feature.website.page.Page;
 import dev.bernouy.cms.feature.website.page.PageService;
+import dev.bernouy.cms.feature.website.paramBuilder.ParamBuilder;
+import dev.bernouy.cms.feature.website.paramModel.model.ParamModel;
 import dev.bernouy.cms.feature.website.version.Version;
 import dev.bernouy.cms.feature.website.version.service.BusinessLogicVersionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class BuilderService {
+public class BusinessLogicBuilderService {
 
-    private BuilderRepository builderRepository;
+    private DataPersistentBuilderService dataPersistentBuilderService;
     private RegexComponent regexComponent;
     private BusinessLogicVersionService versionService;
     private PageService pageService;
@@ -31,8 +33,8 @@ public class BuilderService {
     private AuthWebsiteService authWebsiteService;
 
     @Autowired
-    public BuilderService(BuilderRepository builderRepository, RegexComponent regexComponent, BusinessLogicVersionService versionService, PageService pageService, LayoutService layoutService, AuthWebsiteService authWebsiteService) {
-        this.builderRepository = builderRepository;
+    public BusinessLogicBuilderService(DataPersistentBuilderService dataPersistentBuilderService, RegexComponent regexComponent, BusinessLogicVersionService versionService, PageService pageService, LayoutService layoutService, AuthWebsiteService authWebsiteService) {
+        this.dataPersistentBuilderService = dataPersistentBuilderService;
         this.regexComponent = regexComponent;
         this.versionService = versionService;
         this.pageService = pageService;
@@ -54,25 +56,33 @@ public class BuilderService {
         builder.setLayout(layout);
         builder.setComponentVersion(version);
 
-        Integer maxPos = builderRepository.findFirstByComponentVersionOrderByPositionDesc(version.getId()).getPosition();
+        Integer maxPos = dataPersistentBuilderService.findFirstByComponentVersionOrderByPositionDesc(version.getId()).getPosition();
         if (maxPos == null) maxPos = 0;
         builder.setPosition(maxPos+1);
-        builderRepository.save(builder);
+        dataPersistentBuilderService.save(builder);
+
+        ArrayList<ParamModel> lstParamModel = versionService.getLstParamModel(version.getId());
+        for (ParamModel paramModel : lstParamModel) {
+            new ParamBuilder();
+        }
+
+
         return builder;
     }
 
     public void delete(String builderId, Account account) {
-        Builder builder = getById(builderId, account);
-        builderRepository.delete(builder);
+        Builder builder = dataPersistentBuilderService.getById(builderId, account);
+        dataPersistentBuilderService.delete(builder);
     }
+
 
     public void setPosition(ReqPositionBuilder dto, String builderId,Account account) {
         if (dto.getPosition() < 1) throw new BasicException(WebsiteExceptionMessages.INVALID_BUILDER_POSITION);
-        Builder builder = getById(builderId, account);
-        Integer maxPos = builderRepository.findFirstByComponentVersionOrderByPositionDesc(builder.getComponentVersion().getId()).getPosition();
+        Builder builder = dataPersistentBuilderService.getById(builderId, account);
+        Integer maxPos = dataPersistentBuilderService.findFirstByComponentVersionOrderByPositionDesc(builder.getComponentVersion().getId()).getPosition();
 
         if (dto.getPosition() > maxPos) throw new BasicException(WebsiteExceptionMessages.INVALID_BUILDER_POSITION);
-        List<Builder> builderList = builderRepository.findAllByComponentVersionIdOrderByPositionAsc(builder.getComponentVersion().getId());
+        List<Builder> builderList = dataPersistentBuilderService.findAllByComponentVersionIdOrderByPositionAsc(builder.getComponentVersion().getId());
         List<Builder> toUpdate = new ArrayList<>();
         int i, min, max;
         if ( builder.getPosition() > dto.getPosition() ) {
@@ -92,20 +102,7 @@ public class BuilderService {
         builder.setPosition(dto.getPosition());
         toUpdate.add(builder);
 
-        builderRepository.saveAll(toUpdate);
+        dataPersistentBuilderService.saveAll(toUpdate);
     }
 
-
-    public Builder getById(String builderId, Account account) {
-        Builder builder = builderRepository.findById(builderId).orElse(null);
-        if (builder == null) throw new BasicException(WebsiteExceptionMessages.INVALID_PARAM_MODEL_ID);
-        authorizeAccount(builderId, account);
-        return builder;
-    }
-
-    private void authorizeAccount(String builderId, Account account) {
-        Builder builder = builderRepository.findById(builderId).orElse(null);
-        if (builder == null || !builder.getComponentVersion().getComponent().getProject().getOwner().equals(account) )
-            throw new BasicException(BasicException.AUTH_ERROR, HttpStatus.FORBIDDEN);
-    }
 }

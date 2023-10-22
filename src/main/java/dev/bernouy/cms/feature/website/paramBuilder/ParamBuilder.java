@@ -2,6 +2,7 @@ package dev.bernouy.cms.feature.website.paramBuilder;
 
 import dev.bernouy.cms.common.AbstractDocument;
 import dev.bernouy.cms.feature.website.builder.Builder;
+import dev.bernouy.cms.feature.website.paramModel.model.ParamModel;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -15,18 +16,17 @@ import java.util.Objects;
 public class ParamBuilder extends AbstractDocument {
 
     @DBRef
-    private ParamBuilder parent;
-    @DBRef
     private Builder componentBuilder;
-    private String key;
+    @DBRef
+    private ParamModel paramModel;
     private Object value;
 
-    public ParamBuilder getParent() {
-        return parent;
+    public ParamModel getParamModel() {
+        return paramModel;
     }
 
-    public void setParent(ParamBuilder parent) {
-        this.parent = parent;
+    public void setParamModel(ParamModel paramModel) {
+        this.paramModel = paramModel;
     }
 
     public Builder getComponentBuilder() {
@@ -35,14 +35,6 @@ public class ParamBuilder extends AbstractDocument {
 
     public void setComponentBuilder(Builder componentBuilder) {
         this.componentBuilder = componentBuilder;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
     }
 
     public Object getValue() {
@@ -58,20 +50,19 @@ public class ParamBuilder extends AbstractDocument {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ParamBuilder that = (ParamBuilder) o;
-        return Objects.equals(parent, that.parent) && Objects.equals(componentBuilder, that.componentBuilder) && Objects.equals(key, that.key) && Objects.equals(value, that.value);
+        return  Objects.equals(paramModel, that.paramModel) && Objects.equals(componentBuilder, that.componentBuilder) && Objects.equals(value, that.value);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(parent, componentBuilder, key, value);
+        return Objects.hash(componentBuilder, paramModel, value);
     }
 
     @Override
     public String toString() {
         return "ParamBuilder{" +
-                "parent=" + parent +
                 ", componentBuilder=" + componentBuilder +
-                ", key='" + key + '\'' +
+                ", paramModel=" + paramModel +
                 ", value=" + value +
                 '}';
     }

@@ -19,4 +19,6 @@ public class WebsiteExceptionMessages extends RuntimeException{
     public final static String INVALID_BUILDER_PAGEORLAYOUT = "Invalid Builder Page or Layout";
     public final static String INVALID_BUILDER_POSITION = "Invalid Builder position";
 
+    public final static String INVALID_VALUE = "The value doesn't check the conditions";
+
 }

@@ -3,9 +3,7 @@ package dev.bernouy.cms.feature.website.builder;
 import dev.bernouy.cms.feature.account.Account;
 import dev.bernouy.cms.feature.website.builder.dto.ReqCreateBuilder;
 import dev.bernouy.cms.feature.website.builder.dto.ReqPositionBuilder;
-import dev.bernouy.cms.feature.website.page.Page;
-import dev.bernouy.cms.feature.website.page.PageService;
-import dev.bernouy.cms.feature.website.page.dto.ReqCreatePage;
+import dev.bernouy.cms.feature.website.builder.service.BusinessLogicBuilderService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
@@ -16,11 +14,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/builder")
 public class BuilderController {
 
-    private BuilderService service;
+    private BusinessLogicBuilderService service;
     private HttpServletResponse response;
     private HttpServletRequest request;
 
-    public BuilderController(BuilderService service, HttpServletResponse response, HttpServletRequest request) {
+    public BuilderController(BusinessLogicBuilderService service, HttpServletResponse response, HttpServletRequest request) {
         this.service = service;
         this.response = response;
         this.request = request;
