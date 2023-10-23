@@ -1,4 +1,4 @@
-package dev.bernouy.cms.feature.website.project.dto.request;
+package dev.bernouy.cms.feature.website.project.formatting.request;
 
 public class PatchDomainWebsite {
 

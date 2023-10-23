@@ -1,8 +1,10 @@
 package dev.bernouy.cms.feature.website.project;
 
 import dev.bernouy.cms.feature.account.Account;
-import dev.bernouy.cms.feature.website.project.dto.request.ReqCreateWebsiteDTO;
-import dev.bernouy.cms.feature.website.project.dto.request.PatchDomainWebsite;
+import dev.bernouy.cms.feature.website.project.formatting.request.ReqCreateWebsiteDTO;
+import dev.bernouy.cms.feature.website.project.formatting.request.PatchDomainWebsite;
+import dev.bernouy.cms.feature.website.project.formatting.response.ProjectFormatting;
+import dev.bernouy.cms.feature.website.project.service.ProjectService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +18,13 @@ import java.util.List;
 @RequestMapping("/api/v1/project")
 public class ProjectController {
 
-    private ProjectService websiteService;
+    private ProjectService projectService;
     private HttpServletResponse response;
     private HttpServletRequest  request;
 
     @Autowired
     public ProjectController(ProjectService websiteService, HttpServletResponse response, HttpServletRequest request){
-        this.websiteService = websiteService;
+        this.projectService = websiteService;
         this.response = response;
         this.request = request;
     }
@@ -30,22 +32,27 @@ public class ProjectController {
     @PostMapping("create")
     public ResponseEntity<String> create( @RequestBody ReqCreateWebsiteDTO dto ){
         Account account = (Account) request.getAttribute("account");
-        Project website = websiteService.create(dto.getName(), account);
+        Project website = projectService.create(dto.getName(), account);
         return new ResponseEntity<>(website.getId(), HttpStatus.CREATED);
     }
 
     @PostMapping("editDomain")
     public ResponseEntity<String> editDomain( @RequestBody PatchDomainWebsite dto ){
         Account account = (Account) request.getAttribute("account");
-        websiteService.editDomain(dto.getDomain(), dto.getWebsiteID(), account);
+        projectService.editDomain(dto.getDomain(), dto.getWebsiteID(), account);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
     @GetMapping("list")
-    public List<Project> getList(){
+    public List<ProjectFormatting> getList(){
         Account account = (Account) request.getAttribute("account");
-        return websiteService.getListWebsite(account);
+        return projectService.getListWebsite(account);
     }
 
-
+    @GetMapping("getDetail/{projectId}")
+    public Project isAuth(@PathVariable String projectId){
+        Account account = (Account) request.getAttribute("account");
+        return projectService.getWebsite(projectId, account);
+    }
+    
 }

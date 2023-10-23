@@ -12,7 +12,7 @@ import dev.bernouy.cms.feature.website.library.dto.ReqCreateLibrary;
 import dev.bernouy.cms.feature.website.library.dto.ReqNameLibrary;
 import dev.bernouy.cms.feature.website.library.response.LibraryDTO;
 import dev.bernouy.cms.feature.website.project.Project;
-import dev.bernouy.cms.feature.website.project.ProjectService;
+import dev.bernouy.cms.feature.website.project.service.ProjectService;
 import dev.bernouy.cms.feature.website.version.Version;
 import dev.bernouy.cms.feature.website.version.service.BusinessLogicVersionService;
 import dev.bernouy.cms.feature.website.version.service.DataPersistentVersionService;

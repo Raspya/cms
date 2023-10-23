@@ -2,6 +2,7 @@ package dev.bernouy.cms.feature.website.paramBuilder;
 
 import dev.bernouy.cms.feature.account.Account;
 import dev.bernouy.cms.feature.website.paramBuilder.dto.ReqCreateParamBuilder;
+import dev.bernouy.cms.feature.website.paramBuilder.dto.ReqSetValueParamBuilder;
 import dev.bernouy.cms.feature.website.paramBuilder.service.BusinessLogicParamBuilderService;
 import dev.bernouy.cms.feature.website.paramModel.dto.ReqCreateParamModel;
 import dev.bernouy.cms.feature.website.paramModel.model.ParamModel;
@@ -35,7 +36,7 @@ public class ParamBuilderController {
     }
 
     @PostMapping("/{paramBuilderId}/setValue")
-    public ResponseEntity<String> setValue(@PathVariable String paramBuilderId, @RequestBody ReqCreateParamBuilder dto) {
+    public ResponseEntity<String> setValue(@PathVariable String paramBuilderId, @RequestBody ReqSetValueParamBuilder dto) {
         Account account = (Account) request.getAttribute("account");
         service.setValue(paramBuilderId, dto, account);
         return new ResponseEntity<>("", HttpStatus.CREATED);

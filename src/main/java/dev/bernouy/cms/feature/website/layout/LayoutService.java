@@ -8,7 +8,7 @@ import dev.bernouy.cms.feature.website.layout.dto.ReqCreateLayout;
 import dev.bernouy.cms.feature.website.layout.dto.ReqSetDefaultLayout;
 import dev.bernouy.cms.feature.website.layout.dto.ReqSetNameLayout;
 import dev.bernouy.cms.feature.website.project.Project;
-import dev.bernouy.cms.feature.website.project.ProjectService;
+import dev.bernouy.cms.feature.website.project.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

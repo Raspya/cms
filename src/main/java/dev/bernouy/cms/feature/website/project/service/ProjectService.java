@@ -1,9 +1,11 @@
-package dev.bernouy.cms.feature.website.project;
+package dev.bernouy.cms.feature.website.project.service;
 
 import dev.bernouy.cms.common.BasicException;
 import dev.bernouy.cms.common.RegexComponent;
 import dev.bernouy.cms.feature.account.Account;
-import dev.bernouy.cms.feature.website.version.Version;
+import dev.bernouy.cms.feature.website.project.Project;
+import dev.bernouy.cms.feature.website.project.ProjectRepository;
+import dev.bernouy.cms.feature.website.project.formatting.response.ProjectFormatting;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -14,12 +16,14 @@ import java.util.List;
 public class ProjectService {
 
     private ProjectRepository websiteRepository;
+    private DataFormattingProjectService dataFormattingProjectService;
     private RegexComponent regexComponent;
 
     @Autowired
-    public ProjectService(ProjectRepository websiteRepository, RegexComponent regexVerification){
+    public ProjectService(ProjectRepository websiteRepository, RegexComponent regexVerification, DataFormattingProjectService dataFormattingProjectService){
         this.websiteRepository = websiteRepository;
         this.regexComponent = regexVerification;
+        this.dataFormattingProjectService = dataFormattingProjectService;
     }
 
     public Project create(String name, Account account ){
@@ -43,8 +47,13 @@ public class ProjectService {
         return websiteRepository.findById(websiteID).orElseThrow();
     }
 
-    public List<Project> getListWebsite(Account account ){
-        return websiteRepository.getProjectsByOwner(account);
+    public Project getWebsite(String websiteId, Account account){
+        isOwner(websiteId, account);
+        return getWebsite(websiteId);
+    }
+
+    public List<ProjectFormatting> getListWebsite(Account account ){
+        return dataFormattingProjectService.formatProject(websiteRepository.getProjectsByOwner(account));
     }
 
     public ProjectService isOwner(String websiteID, Account account ){
