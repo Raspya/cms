@@ -66,7 +66,6 @@ public class BusinessLogicBuilderService {
             new ParamBuilder();
         }
 
-
         return builder;
     }
 
