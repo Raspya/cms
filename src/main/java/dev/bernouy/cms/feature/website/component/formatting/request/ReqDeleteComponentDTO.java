@@ -1,4 +1,4 @@
-package dev.bernouy.cms.feature.website.component.dto;
+package dev.bernouy.cms.feature.website.component.formatting.request;
 
 public class ReqDeleteComponentDTO {
 

@@ -8,5 +8,6 @@ import java.util.List;
 public interface ProjectRepository extends CrudRepository<Project, String> {
 
     List<Project> getProjectsByOwner(Account owner );
+    boolean existsByDomain(String domain);
 
 }

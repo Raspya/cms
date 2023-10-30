@@ -1,9 +1,11 @@
 package dev.bernouy.cms.feature.website.component;
 
 import dev.bernouy.cms.feature.account.Account;
-import dev.bernouy.cms.feature.website.component.dto.*;
-import dev.bernouy.cms.feature.website.component.ComponentService;
-import dev.bernouy.cms.feature.website.component.Component;
+import dev.bernouy.cms.feature.website.component.formatting.request.ReqCreateComponentDTO;
+import dev.bernouy.cms.feature.website.component.formatting.request.ReqDeleteComponentDTO;
+import dev.bernouy.cms.feature.website.component.formatting.request.ReqEditNameComponentDTO;
+import dev.bernouy.cms.feature.website.component.formatting.response.InternalComponentFormat;
+import dev.bernouy.cms.feature.website.component.service.BusinessLogicComponentService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +19,12 @@ import java.util.List;
 @RequestMapping("/api/v1/component")
 public class ComponentController {
 
-    private ComponentService componentService;
+    private BusinessLogicComponentService componentService;
     private HttpServletResponse response;
     private HttpServletRequest request;
 
     @Autowired
-    public ComponentController(ComponentService componentService, HttpServletResponse response, HttpServletRequest request) {
+    public ComponentController(BusinessLogicComponentService componentService, HttpServletResponse response, HttpServletRequest request) {
         this.componentService = componentService;
         this.response = response;
         this.request = request;
@@ -57,13 +59,11 @@ public class ComponentController {
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
-    @GetMapping("/list/{websiteId}")
-    public List<Component> list( @PathVariable String websiteId ) {
+    @GetMapping("/list")
+    public List<InternalComponentFormat> list(@RequestParam String websiteId) {
         Account account = (Account) request.getAttribute("account");
         return componentService.list(
                 websiteId,
                 account );
     }
-
-
 }

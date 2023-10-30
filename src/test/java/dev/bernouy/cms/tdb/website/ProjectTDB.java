@@ -27,7 +27,7 @@ public class ProjectTDB extends TDBMother {
             count++;
         }
         if ( account == null ) account = new AccountTDB().build();
-        ReqCreateWebsiteDTO dto = new ReqCreateWebsiteDTO(name);
+        ReqCreateWebsiteDTO dto = new ReqCreateWebsiteDTO(name, domain);
         ResponseEntity<String> res = reqTDB.withAuth(account.getCookie()).withDto(dto).send("project/create");
         if ( res.getStatusCode() != HttpStatus.CREATED) return this;
         this.id = res.getBody();

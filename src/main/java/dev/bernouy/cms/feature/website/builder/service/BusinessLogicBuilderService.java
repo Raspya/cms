@@ -26,20 +26,16 @@ import java.util.List;
 public class BusinessLogicBuilderService {
 
     private DataPersistentBuilderService dataPersistentBuilderService;
-    private RegexComponent regexComponent;
     private BusinessLogicVersionService versionService;
     private PageService pageService;
     private LayoutService layoutService;
-    private AuthWebsiteService authWebsiteService;
 
     @Autowired
-    public BusinessLogicBuilderService(DataPersistentBuilderService dataPersistentBuilderService, RegexComponent regexComponent, BusinessLogicVersionService versionService, PageService pageService, LayoutService layoutService, AuthWebsiteService authWebsiteService) {
+    public BusinessLogicBuilderService(DataPersistentBuilderService dataPersistentBuilderService, BusinessLogicVersionService versionService, PageService pageService, LayoutService layoutService) {
         this.dataPersistentBuilderService = dataPersistentBuilderService;
-        this.regexComponent = regexComponent;
         this.versionService = versionService;
         this.pageService = pageService;
         this.layoutService = layoutService;
-        this.authWebsiteService = authWebsiteService;
     }
 
     public Builder create(ReqCreateBuilder dto, Account account) {

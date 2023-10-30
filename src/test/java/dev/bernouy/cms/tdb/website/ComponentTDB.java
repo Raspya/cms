@@ -1,7 +1,7 @@
 package dev.bernouy.cms.tdb.website;
 
 import dev.bernouy.cms.conf.TDBMother;
-import dev.bernouy.cms.feature.website.component.dto.ReqCreateComponentDTO;
+import dev.bernouy.cms.feature.website.component.formatting.request.ReqCreateComponentDTO;
 import dev.bernouy.cms.tdb.account.AccountTDB;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

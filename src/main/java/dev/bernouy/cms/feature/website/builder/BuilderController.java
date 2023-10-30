@@ -45,10 +45,4 @@ public class BuilderController {
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
-    @GetMapping("/{builderId}/get")
-    public Builder get(@PathVariable String builderId) {
-        Account account = (Account) request.getAttribute("account");
-        return service.getById(builderId, account);
-    }
-
 }

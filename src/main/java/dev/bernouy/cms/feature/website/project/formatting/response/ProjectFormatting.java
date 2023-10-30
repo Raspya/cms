@@ -4,12 +4,12 @@ public class ProjectFormatting {
 
     private String id;
     private String name;
-    private String url;
+    private String domain;
 
-    public ProjectFormatting(String id, String name, String url){
+    public ProjectFormatting(String id, String name, String domain){
         this.id = id;
         this.name = name;
-        this.url = url;
+        this.domain = domain;
     }
 
     public ProjectFormatting() {
@@ -31,11 +31,11 @@ public class ProjectFormatting {
         this.name = name;
     }
 
-    public String getUrl() {
-        return url;
+    public String getDomain() {
+        return domain;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setDomain(String domain) {
+        this.domain = domain;
     }
 }

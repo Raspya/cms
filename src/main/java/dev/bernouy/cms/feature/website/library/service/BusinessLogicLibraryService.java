@@ -12,7 +12,7 @@ import dev.bernouy.cms.feature.website.library.dto.ReqCreateLibrary;
 import dev.bernouy.cms.feature.website.library.dto.ReqNameLibrary;
 import dev.bernouy.cms.feature.website.library.response.LibraryDTO;
 import dev.bernouy.cms.feature.website.project.Project;
-import dev.bernouy.cms.feature.website.project.service.ProjectService;
+import dev.bernouy.cms.feature.website.project.service.BusinessLogicProjectService;
 import dev.bernouy.cms.feature.website.version.Version;
 import dev.bernouy.cms.feature.website.version.service.BusinessLogicVersionService;
 import dev.bernouy.cms.feature.website.version.service.DataPersistentVersionService;
@@ -29,13 +29,13 @@ public class BusinessLogicLibraryService {
     private LibraryRepository libraryRepository;
     private RegexComponent regexComponent;
     private BusinessLogicVersionService versionService;
-    private ProjectService projectService;
+    private BusinessLogicProjectService projectService;
     private AuthWebsiteService authWebsiteService;
     private DataPersistentVersionService dataPersistentVersionService;
 
 
     @Autowired
-    public BusinessLogicLibraryService(LibraryRepository repository, RegexComponent regexComponent, BusinessLogicVersionService versionService, ProjectService projectService, AuthWebsiteService authWebsiteService, DataPersistentVersionService dataPersistentVersionService){
+    public BusinessLogicLibraryService(LibraryRepository repository, RegexComponent regexComponent, BusinessLogicVersionService versionService, BusinessLogicProjectService projectService, AuthWebsiteService authWebsiteService, DataPersistentVersionService dataPersistentVersionService){
         this.libraryRepository = repository;
         this.regexComponent = regexComponent;
         this.versionService = versionService;

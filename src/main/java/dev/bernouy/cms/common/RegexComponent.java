@@ -10,7 +10,7 @@ public class RegexComponent {
 
     private Pattern emailPattern = Pattern.compile("^.+@.+\\..+$");
     private Pattern passwordPattern = Pattern.compile("^.{4,30}$");
-    private Pattern domainPattern = Pattern.compile("^([a-z0-9-]+\\.)+[a-z]{1,10}$");
+    private Pattern domainPattern = Pattern.compile("^(?!.*[-.]{2,}.*)[a-zA-Z0-9-.]+\\.[a-z]{1,8}$");
     private Pattern namePattern = Pattern.compile("^[a-zA-Z -_]{5,40}$");
     private Pattern keyPattern = Pattern.compile("^[a-z_]{3,40}$");
 

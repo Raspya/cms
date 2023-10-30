@@ -1,10 +1,13 @@
-package dev.bernouy.cms.feature.website.component;
+package dev.bernouy.cms.feature.website.component.service;
 
 import dev.bernouy.cms.common.BasicException;
 import dev.bernouy.cms.common.RegexComponent;
 import dev.bernouy.cms.feature.account.Account;
+import dev.bernouy.cms.feature.website.component.Component;
+import dev.bernouy.cms.feature.website.component.ComponentRepository;
+import dev.bernouy.cms.feature.website.component.formatting.response.InternalComponentFormat;
 import dev.bernouy.cms.feature.website.project.Project;
-import dev.bernouy.cms.feature.website.project.service.ProjectService;
+import dev.bernouy.cms.feature.website.project.service.BusinessLogicProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -12,17 +15,19 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ComponentService {
+public class BusinessLogicComponentService {
 
     private ComponentRepository componentRepository;
     private RegexComponent regexVerification;
-    private ProjectService websiteService;
+    private BusinessLogicProjectService websiteService;
+    private DataFormattingComponentService dataFormattingComponentService;
 
     @Autowired
-    public ComponentService(ComponentRepository componentRepository, RegexComponent regexVerification, ProjectService websiteService ){
+    public BusinessLogicComponentService(ComponentRepository componentRepository, RegexComponent regexVerification, BusinessLogicProjectService websiteService, DataFormattingComponentService dataFormattingComponentService ){
         this.componentRepository = componentRepository;
         this.regexVerification = regexVerification;
         this.websiteService = websiteService;
+        this.dataFormattingComponentService = dataFormattingComponentService;
     }
 
     public void isUserAuthorized( String componentId, Account account ){
@@ -65,9 +70,9 @@ public class ComponentService {
         return componentRepository.findById( componentId ).orElseThrow();
     }
 
-    public List<Component> list(String projectId, Account account ){
+    public List<InternalComponentFormat> list(String projectId, Account account ){
         websiteService.isOwner( projectId, account );
-        return componentRepository.getComponentsByProjectId( projectId );
+        return dataFormattingComponentService.formatSimple(componentRepository.getComponentsByProjectId(projectId));
     }
 
 }

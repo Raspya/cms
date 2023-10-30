@@ -3,6 +3,7 @@ package dev.bernouy.cms.feature.website.library;
 import dev.bernouy.cms.common.AbstractDocument;
 import dev.bernouy.cms.feature.website.project.Project;
 import dev.bernouy.cms.feature.website.version.Version;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 import java.util.ArrayList;
 import java.util.Set;

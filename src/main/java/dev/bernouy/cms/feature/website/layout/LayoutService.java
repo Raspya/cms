@@ -8,7 +8,7 @@ import dev.bernouy.cms.feature.website.layout.dto.ReqCreateLayout;
 import dev.bernouy.cms.feature.website.layout.dto.ReqSetDefaultLayout;
 import dev.bernouy.cms.feature.website.layout.dto.ReqSetNameLayout;
 import dev.bernouy.cms.feature.website.project.Project;
-import dev.bernouy.cms.feature.website.project.service.ProjectService;
+import dev.bernouy.cms.feature.website.project.service.BusinessLogicProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -20,11 +20,11 @@ public class LayoutService {
 
     private LayoutRepository layoutRepository;
     private RegexComponent regexComponent;
-    private ProjectService projectService;
+    private BusinessLogicProjectService projectService;
 
 
     @Autowired
-    public LayoutService(LayoutRepository repository, RegexComponent regexComponent, ProjectService projectService){
+    public LayoutService(LayoutRepository repository, RegexComponent regexComponent, BusinessLogicProjectService projectService){
         this.layoutRepository = repository;
         this.regexComponent = regexComponent;
         this.projectService = projectService;

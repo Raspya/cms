@@ -6,6 +6,7 @@ import dev.bernouy.cms.feature.website.layout.Layout;
 import dev.bernouy.cms.feature.website.page.Page;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.util.Objects;
@@ -17,6 +18,7 @@ import java.util.Objects;
 public class Builder extends AbstractDocument {
 
     @DBRef
+    @Indexed
     private Version componentVersion;
     @DBRef
     private Layout layout;

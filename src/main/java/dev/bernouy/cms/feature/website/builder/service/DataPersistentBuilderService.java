@@ -7,9 +7,11 @@ import dev.bernouy.cms.feature.website.builder.Builder;
 import dev.bernouy.cms.feature.website.builder.BuilderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class DataPersistentBuilderService {
 
     @Autowired

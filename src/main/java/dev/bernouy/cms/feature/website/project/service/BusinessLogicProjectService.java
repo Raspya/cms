@@ -5,6 +5,7 @@ import dev.bernouy.cms.common.RegexComponent;
 import dev.bernouy.cms.feature.account.Account;
 import dev.bernouy.cms.feature.website.project.Project;
 import dev.bernouy.cms.feature.website.project.ProjectRepository;
+import dev.bernouy.cms.feature.website.project.formatting.request.ReqCreateWebsiteDTO;
 import dev.bernouy.cms.feature.website.project.formatting.response.ProjectFormatting;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,24 +14,30 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ProjectService {
+public class BusinessLogicProjectService {
 
     private ProjectRepository websiteRepository;
     private DataFormattingProjectService dataFormattingProjectService;
     private RegexComponent regexComponent;
+    private DataPersistentProjectService dataPersistentProjectService;
 
     @Autowired
-    public ProjectService(ProjectRepository websiteRepository, RegexComponent regexVerification, DataFormattingProjectService dataFormattingProjectService){
+    public BusinessLogicProjectService(ProjectRepository websiteRepository, RegexComponent regexVerification, DataFormattingProjectService dataFormattingProjectService, DataPersistentProjectService dataPersistentProjectService){
         this.websiteRepository = websiteRepository;
         this.regexComponent = regexVerification;
         this.dataFormattingProjectService = dataFormattingProjectService;
+        this.dataPersistentProjectService = dataPersistentProjectService;
     }
 
-    public Project create(String name, Account account ){
-        regexComponent.isNameValid(name);
+    public Project create(ReqCreateWebsiteDTO dto, Account account ){
+        regexComponent.isNameValid(dto.getName());
+        regexComponent.isDomainValid(dto.getDomain());
+        if ( dataPersistentProjectService.isDomainAlreadyExist(dto.getDomain()) )
+            throw new BasicException("Domain already exist", HttpStatus.BAD_REQUEST);
         Project website = new Project();
-        website.setName(name);
+        website.setName(dto.getName());
         website.setOwner(account);
+        website.setDomain(dto.getDomain());
         websiteRepository.save(website);
         return website;
     }
@@ -56,7 +63,7 @@ public class ProjectService {
         return dataFormattingProjectService.formatProject(websiteRepository.getProjectsByOwner(account));
     }
 
-    public ProjectService isOwner(String websiteID, Account account ){
+    public BusinessLogicProjectService isOwner(String websiteID, Account account ){
         Project website;
         try{
             website = websiteRepository.findById(websiteID).orElseThrow();

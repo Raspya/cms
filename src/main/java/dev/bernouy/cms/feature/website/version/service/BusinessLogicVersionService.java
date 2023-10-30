@@ -16,8 +16,7 @@ import dev.bernouy.cms.feature.website.version.VersionRepository;
 import dev.bernouy.cms.feature.website.version.formatting.request.ReqCreateVersion;
 import dev.bernouy.cms.feature.website.version.formatting.request.ReqUploadFile;
 import dev.bernouy.cms.feature.website.component.Component;
-import dev.bernouy.cms.feature.website.component.ComponentService;
-import dev.bernouy.cms.feature.website.version.formatting.response.FormattingVersion;
+import dev.bernouy.cms.feature.website.component.service.BusinessLogicComponentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -33,12 +32,12 @@ public class BusinessLogicVersionService {
     private VersionRepository versionRepository;
     private ParamModelRepository paramModelRepository;
     private RegexComponent regexComponent;
-    private ComponentService componentService;
+    private BusinessLogicComponentService componentService;
     private DataFormattingVersionService dataFormattingVersionService;
     private AuthWebsiteService authWebsiteService;
 
     @Autowired
-    public BusinessLogicVersionService(VersionRepository versionRepository, ParamModelRepository paramModelRepository, RegexComponent regexComponent, ComponentService componentService, DataFormattingVersionService dataFormattingVersionService, AuthWebsiteService authWebsiteService){
+    public BusinessLogicVersionService(VersionRepository versionRepository, ParamModelRepository paramModelRepository, RegexComponent regexComponent, BusinessLogicComponentService componentService, DataFormattingVersionService dataFormattingVersionService, AuthWebsiteService authWebsiteService){
         this.regexComponent = regexComponent;
         this.versionRepository = versionRepository;
         this.paramModelRepository = paramModelRepository;

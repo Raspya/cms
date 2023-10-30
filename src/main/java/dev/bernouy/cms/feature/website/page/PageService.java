@@ -7,7 +7,7 @@ import dev.bernouy.cms.feature.website.WebsiteExceptionMessages;
 import dev.bernouy.cms.feature.website.layout.LayoutService;
 import dev.bernouy.cms.feature.website.page.dto.*;
 import dev.bernouy.cms.feature.website.project.Project;
-import dev.bernouy.cms.feature.website.project.service.ProjectService;
+import dev.bernouy.cms.feature.website.project.service.BusinessLogicProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -18,11 +18,11 @@ public class PageService {
     private PageRepository pageRepository;
     private RegexComponent regexComponent;
     private LayoutService layoutService;
-    private ProjectService projectService;
+    private BusinessLogicProjectService projectService;
 
 
     @Autowired
-    public PageService(PageRepository repository, RegexComponent regexComponent, LayoutService layoutService, ProjectService projectService){
+    public PageService(PageRepository repository, RegexComponent regexComponent, LayoutService layoutService, BusinessLogicProjectService projectService){
         this.pageRepository = repository;
         this.regexComponent = regexComponent;
         this.layoutService = layoutService;
