@@ -1,4 +1,4 @@
-package dev.bernouy.cms.feature.website.paramModel.dto;
+package dev.bernouy.cms.feature.website.paramModel.formatting.request;
 
 public class ReqValueParamModel {
 

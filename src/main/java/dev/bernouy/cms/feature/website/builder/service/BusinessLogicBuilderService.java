@@ -13,6 +13,7 @@ import dev.bernouy.cms.feature.website.layout.LayoutService;
 import dev.bernouy.cms.feature.website.page.Page;
 import dev.bernouy.cms.feature.website.page.PageService;
 import dev.bernouy.cms.feature.website.paramBuilder.ParamBuilder;
+import dev.bernouy.cms.feature.website.paramBuilder.service.BusinessLogicParamBuilderService;
 import dev.bernouy.cms.feature.website.paramModel.model.ParamModel;
 import dev.bernouy.cms.feature.website.version.Version;
 import dev.bernouy.cms.feature.website.version.service.BusinessLogicVersionService;
@@ -26,16 +27,22 @@ import java.util.List;
 public class BusinessLogicBuilderService {
 
     private DataPersistentBuilderService dataPersistentBuilderService;
+    private RegexComponent regexComponent;
     private BusinessLogicVersionService versionService;
     private PageService pageService;
     private LayoutService layoutService;
+    private AuthWebsiteService authWebsiteService;
+    private BusinessLogicParamBuilderService businessLogicParamBuilderService;
 
     @Autowired
-    public BusinessLogicBuilderService(DataPersistentBuilderService dataPersistentBuilderService, BusinessLogicVersionService versionService, PageService pageService, LayoutService layoutService) {
+    public BusinessLogicBuilderService(DataPersistentBuilderService dataPersistentBuilderService, RegexComponent regexComponent, BusinessLogicVersionService versionService, PageService pageService, LayoutService layoutService, AuthWebsiteService authWebsiteService, BusinessLogicParamBuilderService businessLogicParamBuilderService) {
         this.dataPersistentBuilderService = dataPersistentBuilderService;
+        this.regexComponent = regexComponent;
         this.versionService = versionService;
         this.pageService = pageService;
         this.layoutService = layoutService;
+        this.authWebsiteService = authWebsiteService;
+        this.businessLogicParamBuilderService = businessLogicParamBuilderService;
     }
 
     public Builder create(ReqCreateBuilder dto, Account account) {
@@ -59,7 +66,7 @@ public class BusinessLogicBuilderService {
 
         ArrayList<ParamModel> lstParamModel = versionService.getLstParamModel(version.getId());
         for (ParamModel paramModel : lstParamModel) {
-            new ParamBuilder();
+            businessLogicParamBuilderService.create(paramModel.getId(), builder.getId(), account);
         }
 
         return builder;
