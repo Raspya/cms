@@ -1,9 +1,9 @@
 package dev.bernouy.cms.feature.website.paramModel;
 
 import dev.bernouy.cms.feature.account.Account;
-import dev.bernouy.cms.feature.website.paramModel.dto.*;
+import dev.bernouy.cms.feature.website.paramModel.formatting.request.*;
 import dev.bernouy.cms.feature.website.paramModel.model.ParamModel;
-import dev.bernouy.cms.feature.website.paramModel.model.ParamModelString;
+import dev.bernouy.cms.feature.website.paramModel.service.ParamModelService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
