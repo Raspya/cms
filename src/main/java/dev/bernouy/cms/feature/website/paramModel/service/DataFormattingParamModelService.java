@@ -21,7 +21,7 @@ public class DataFormattingParamModelService {
                                 paramModel.getKey(),
                                 paramModel.getType(),
                                 paramModel.getPosition(),
-                                paramModel.getValue())
+                                paramModel.getValue()))
                 .collect(Collectors.toList());
     }
 }
