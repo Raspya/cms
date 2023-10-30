@@ -4,9 +4,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.bernouy.cms.conf.MethodEnum;
 import dev.bernouy.cms.conf.TDBMother;
-import dev.bernouy.cms.feature.website.library.dto.ReqAddRemoveVersionLibrary;
-import dev.bernouy.cms.feature.website.library.dto.ReqCreateLibrary;
-import dev.bernouy.cms.feature.website.library.dto.ReqNameLibrary;
+import dev.bernouy.cms.feature.website.library.formatting.request.ReqAddRemoveVersionLibrary;
+import dev.bernouy.cms.feature.website.library.formatting.request.ReqCreateLibrary;
+import dev.bernouy.cms.feature.website.library.formatting.request.ReqNameLibrary;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 

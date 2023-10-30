@@ -1,4 +1,4 @@
-package dev.bernouy.cms.feature.website.library.dto;
+package dev.bernouy.cms.feature.website.library.formatting.request;
 
 public class ReqAddRemoveVersionLibrary {
     private String versionId;

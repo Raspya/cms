@@ -1,5 +1,7 @@
 package dev.bernouy.cms.feature.website.paramModel.model;
 
+import java.util.HashMap;
+
 public class ParamModelFloat extends ParamModel  {
 
     private Integer min;
@@ -14,6 +16,13 @@ public class ParamModelFloat extends ParamModel  {
     public ParamModelFloat() {
         this.min = null;
         this.max = null;
+    }
+
+    public HashMap<String, Object> optionsToMap() {
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("min", this.min);
+        hashMap.put("min", this.max);
+        return hashMap;
     }
     @Override
     public void updateOption( String key, String value ){

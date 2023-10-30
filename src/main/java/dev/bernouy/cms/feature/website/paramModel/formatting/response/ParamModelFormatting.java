@@ -1,5 +1,7 @@
 package dev.bernouy.cms.feature.website.paramModel.formatting.response;
 
+import java.util.HashMap;
+
 public class ParamModelFormatting {
 
     private String id;
@@ -8,14 +10,16 @@ public class ParamModelFormatting {
     private String type;
     private int position;
     private String value;
+    private HashMap<String, Object> hashMap;
 
-    public ParamModelFormatting(String id, String name, String key, String type, int position, String value) {
+    public ParamModelFormatting(String id, String name, String key, String type, int position, String value, HashMap<String, Object> hashMap) {
         this.id = id;
         this.name = name;
         this.key = key;
         this.type = type;
         this.position = position;
         this.value = value;
+        this.hashMap = hashMap;
     }
 
     public String getId() {

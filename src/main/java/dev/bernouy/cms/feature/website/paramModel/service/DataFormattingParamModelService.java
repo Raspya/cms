@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @Service
 public class DataFormattingParamModelService {
 
-    public List<ParamModelFormatting> formatProject(List<ParamModel> paramModels){
+    public List<ParamModelFormatting> formatParamModels(List<ParamModel> paramModels){
         return paramModels.stream().map(paramModel ->
                         new ParamModelFormatting(
                                 paramModel.getId(),
@@ -21,7 +21,8 @@ public class DataFormattingParamModelService {
                                 paramModel.getKey(),
                                 paramModel.getType(),
                                 paramModel.getPosition(),
-                                paramModel.getValue()))
+                                paramModel.getValue(),
+                                paramModel.optionsToMap()))
                 .collect(Collectors.toList());
     }
 }

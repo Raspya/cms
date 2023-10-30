@@ -1,21 +1,21 @@
-package dev.bernouy.cms.feature.website.library.response;
+package dev.bernouy.cms.feature.website.library.formatting.response;
 
 import dev.bernouy.cms.feature.website.library.Library;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class LibraryDTO {
+public class LibraryFormatting {
 
     private String id;
     private String name;
 
-    public LibraryDTO(String id, String name){
+    public LibraryFormatting(String id, String name){
         this.id = id;
         this.name = name;
     }
 
-    public LibraryDTO() {
+    public LibraryFormatting() {
     }
 
     public String getId() {
@@ -34,9 +34,9 @@ public class LibraryDTO {
         this.name = name;
     }
 
-    public static List<LibraryDTO> from(List<Library> libraries){
+    public static List<LibraryFormatting> from(List<Library> libraries){
         System.out.println(libraries);
-        return libraries.stream().map(library -> new LibraryDTO(library.getId(), library.getName())).collect(Collectors.toList());
+        return libraries.stream().map(library -> new LibraryFormatting(library.getId(), library.getName())).collect(Collectors.toList());
     }
 
 }

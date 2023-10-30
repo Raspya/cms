@@ -1,21 +1,15 @@
 package dev.bernouy.cms.feature.website.layout;
 
 import dev.bernouy.cms.feature.account.Account;
-import dev.bernouy.cms.feature.account.AccountService;
 import dev.bernouy.cms.feature.website.layout.dto.ReqCreateLayout;
 import dev.bernouy.cms.feature.website.layout.dto.ReqSetDefaultLayout;
 import dev.bernouy.cms.feature.website.layout.dto.ReqSetNameLayout;
-import dev.bernouy.cms.feature.website.library.Library;
-import dev.bernouy.cms.feature.website.library.dto.ReqCreateLibrary;
-import dev.bernouy.cms.feature.website.version.Version;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/api/v1/layout")

@@ -1,6 +1,5 @@
 package dev.bernouy.cms.feature.website.version.service;
 
-import dev.bernouy.cms.feature.website.library.response.LibraryDTO;
 import dev.bernouy.cms.feature.website.version.Version;
 import dev.bernouy.cms.feature.website.version.formatting.response.FormattingVersion;
 import org.springframework.stereotype.Service;
