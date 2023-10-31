@@ -1,13 +1,14 @@
-package dev.bernouy.cms.feature.website.page.dto;
+package dev.bernouy.cms.feature.website.layout.formatting.request;
 
-public class ReqSetNamePage {
+public class ReqSetNameLayout {
 
     private String name;
 
-    public ReqSetNamePage() {}
-    public ReqSetNamePage(String name) {
+    public ReqSetNameLayout() {}
+    public ReqSetNameLayout(String name) {
         this.name = name;
     }
+
     public String getName() {
         return name;
     }

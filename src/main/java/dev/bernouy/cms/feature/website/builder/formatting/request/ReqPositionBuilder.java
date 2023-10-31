@@ -1,4 +1,4 @@
-package dev.bernouy.cms.feature.website.builder.dto;
+package dev.bernouy.cms.feature.website.builder.formatting.request;
 
 public class ReqPositionBuilder {
 

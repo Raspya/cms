@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.bernouy.cms.conf.MethodEnum;
 import dev.bernouy.cms.conf.TDBMother;
-import dev.bernouy.cms.feature.website.page.dto.*;
+import dev.bernouy.cms.feature.website.page.dto.request.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 

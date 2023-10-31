@@ -6,13 +6,13 @@ import dev.bernouy.cms.feature.account.Account;
 import dev.bernouy.cms.feature.website.AuthWebsiteService;
 import dev.bernouy.cms.feature.website.WebsiteExceptionMessages;
 import dev.bernouy.cms.feature.website.builder.Builder;
-import dev.bernouy.cms.feature.website.builder.dto.ReqCreateBuilder;
-import dev.bernouy.cms.feature.website.builder.dto.ReqPositionBuilder;
+import dev.bernouy.cms.feature.website.builder.formatting.request.ReqCreateBuilder;
+import dev.bernouy.cms.feature.website.builder.formatting.request.ReqPositionBuilder;
+import dev.bernouy.cms.feature.website.builder.formatting.response.BuilderFormatting;
 import dev.bernouy.cms.feature.website.layout.Layout;
-import dev.bernouy.cms.feature.website.layout.LayoutService;
+import dev.bernouy.cms.feature.website.layout.service.BusinessLogicLayoutService;
 import dev.bernouy.cms.feature.website.page.Page;
-import dev.bernouy.cms.feature.website.page.PageService;
-import dev.bernouy.cms.feature.website.paramBuilder.ParamBuilder;
+import dev.bernouy.cms.feature.website.page.service.BusinessLogicPageService;
 import dev.bernouy.cms.feature.website.paramBuilder.service.BusinessLogicParamBuilderService;
 import dev.bernouy.cms.feature.website.paramModel.model.ParamModel;
 import dev.bernouy.cms.feature.website.version.Version;
@@ -29,20 +29,22 @@ public class BusinessLogicBuilderService {
     private DataPersistentBuilderService dataPersistentBuilderService;
     private RegexComponent regexComponent;
     private BusinessLogicVersionService versionService;
-    private PageService pageService;
-    private LayoutService layoutService;
+    private BusinessLogicPageService businessLogicPageService;
+    private BusinessLogicLayoutService businessLogicLayoutService;
     private AuthWebsiteService authWebsiteService;
     private BusinessLogicParamBuilderService businessLogicParamBuilderService;
+    private DataFormattingBuilderService dataFormattingBuilderService;
 
     @Autowired
-    public BusinessLogicBuilderService(DataPersistentBuilderService dataPersistentBuilderService, RegexComponent regexComponent, BusinessLogicVersionService versionService, PageService pageService, LayoutService layoutService, AuthWebsiteService authWebsiteService, BusinessLogicParamBuilderService businessLogicParamBuilderService) {
+    public BusinessLogicBuilderService(DataFormattingBuilderService dataFormattingBuilderService, DataPersistentBuilderService dataPersistentBuilderService, RegexComponent regexComponent, BusinessLogicVersionService versionService, BusinessLogicPageService businessLogicPageService, BusinessLogicLayoutService businessLogicLayoutService, AuthWebsiteService authWebsiteService, BusinessLogicParamBuilderService businessLogicParamBuilderService) {
         this.dataPersistentBuilderService = dataPersistentBuilderService;
         this.regexComponent = regexComponent;
         this.versionService = versionService;
-        this.pageService = pageService;
-        this.layoutService = layoutService;
+        this.businessLogicPageService = businessLogicPageService;
+        this.businessLogicLayoutService = businessLogicLayoutService;
         this.authWebsiteService = authWebsiteService;
         this.businessLogicParamBuilderService = businessLogicParamBuilderService;
+        this.dataFormattingBuilderService = dataFormattingBuilderService;
     }
 
     public Builder create(ReqCreateBuilder dto, Account account) {
@@ -51,8 +53,8 @@ public class BusinessLogicBuilderService {
             throw new BasicException(WebsiteExceptionMessages.INVALID_BUILDER_PAGEORLAYOUT);
 
         Version version = versionService.getById(dto.getVersionId());
-        Page page = pageService.getById(dto.getPageId(), account);
-        Layout layout = layoutService.getById(dto.getLayoutId(), account);
+        Page page = businessLogicPageService.getById(dto.getPageId(), account);
+        Layout layout = businessLogicLayoutService.getById(dto.getLayoutId(), account);
 
         Builder builder = new Builder();
         builder.setPage(page);
@@ -107,4 +109,10 @@ public class BusinessLogicBuilderService {
         dataPersistentBuilderService.saveAll(toUpdate);
     }
 
+    public List<BuilderFormatting> listAllBuilder(String layoutId, String pageId, Account account) {
+        if (layoutId != null && pageId != null) throw new BasicException("LayoutId and PageId can't be together");
+        if (layoutId == null && pageId == null) throw new BasicException("LayoutId or PageId is needed");
+        if (layoutId != null) return dataFormattingBuilderService.formatBuilders(dataPersistentBuilderService.listAllBuilderByLayoutId(layoutId));
+        return dataFormattingBuilderService.formatBuilders(dataPersistentBuilderService.listAllBuilderByPageId(pageId));
+    }
 }

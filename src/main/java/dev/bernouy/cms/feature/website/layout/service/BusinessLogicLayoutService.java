@@ -1,12 +1,16 @@
-package dev.bernouy.cms.feature.website.layout;
+package dev.bernouy.cms.feature.website.layout.service;
 
 import dev.bernouy.cms.common.BasicException;
 import dev.bernouy.cms.common.RegexComponent;
 import dev.bernouy.cms.feature.account.Account;
 import dev.bernouy.cms.feature.website.WebsiteExceptionMessages;
-import dev.bernouy.cms.feature.website.layout.dto.ReqCreateLayout;
-import dev.bernouy.cms.feature.website.layout.dto.ReqSetDefaultLayout;
-import dev.bernouy.cms.feature.website.layout.dto.ReqSetNameLayout;
+import dev.bernouy.cms.feature.website.builder.service.DataFormattingBuilderService;
+import dev.bernouy.cms.feature.website.layout.Layout;
+import dev.bernouy.cms.feature.website.layout.LayoutRepository;
+import dev.bernouy.cms.feature.website.layout.formatting.request.ReqCreateLayout;
+import dev.bernouy.cms.feature.website.layout.formatting.request.ReqSetDefaultLayout;
+import dev.bernouy.cms.feature.website.layout.formatting.request.ReqSetNameLayout;
+import dev.bernouy.cms.feature.website.layout.formatting.response.LayoutFormatting;
 import dev.bernouy.cms.feature.website.project.Project;
 import dev.bernouy.cms.feature.website.project.service.BusinessLogicProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,18 +20,21 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class LayoutService {
+public class BusinessLogicLayoutService {
 
     private LayoutRepository layoutRepository;
     private RegexComponent regexComponent;
     private BusinessLogicProjectService projectService;
 
+    private DataFormattingLayoutService dataFormattingLayoutService;
+
 
     @Autowired
-    public LayoutService(LayoutRepository repository, RegexComponent regexComponent, BusinessLogicProjectService projectService){
+    public BusinessLogicLayoutService(DataFormattingLayoutService dataFormattingLayoutService,LayoutRepository repository, RegexComponent regexComponent, BusinessLogicProjectService projectService){
         this.layoutRepository = repository;
         this.regexComponent = regexComponent;
         this.projectService = projectService;
+        this.dataFormattingLayoutService = dataFormattingLayoutService;
     }
 
     public Layout create(ReqCreateLayout dto, Account account) {
@@ -85,5 +92,9 @@ public class LayoutService {
             }
         }
         return null;
+    }
+
+    public List<LayoutFormatting> list(String websiteId, Account account) {
+        return dataFormattingLayoutService.formatLayouts(layoutRepository.findAllByProjectId(websiteId));
     }
 }

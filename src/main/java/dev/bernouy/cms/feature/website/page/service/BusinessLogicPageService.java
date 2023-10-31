@@ -1,32 +1,39 @@
-package dev.bernouy.cms.feature.website.page;
+package dev.bernouy.cms.feature.website.page.service;
 
 import dev.bernouy.cms.common.BasicException;
 import dev.bernouy.cms.common.RegexComponent;
 import dev.bernouy.cms.feature.account.Account;
 import dev.bernouy.cms.feature.website.WebsiteExceptionMessages;
-import dev.bernouy.cms.feature.website.layout.LayoutService;
-import dev.bernouy.cms.feature.website.page.dto.*;
+import dev.bernouy.cms.feature.website.layout.service.BusinessLogicLayoutService;
+import dev.bernouy.cms.feature.website.page.Page;
+import dev.bernouy.cms.feature.website.page.PageRepository;
+import dev.bernouy.cms.feature.website.page.dto.request.*;
+import dev.bernouy.cms.feature.website.page.dto.response.PageFormatting;
 import dev.bernouy.cms.feature.website.project.Project;
 import dev.bernouy.cms.feature.website.project.service.BusinessLogicProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
-public class PageService {
+public class BusinessLogicPageService {
 
     private PageRepository pageRepository;
     private RegexComponent regexComponent;
-    private LayoutService layoutService;
+    private BusinessLogicLayoutService businessLogicLayoutService;
     private BusinessLogicProjectService projectService;
+    private DataFormattingPageService dataFormattingPageService;
 
 
     @Autowired
-    public PageService(PageRepository repository, RegexComponent regexComponent, LayoutService layoutService, BusinessLogicProjectService projectService){
+    public BusinessLogicPageService(DataFormattingPageService dataFormattingPageService,PageRepository repository, RegexComponent regexComponent, BusinessLogicLayoutService businessLogicLayoutService, BusinessLogicProjectService projectService){
         this.pageRepository = repository;
         this.regexComponent = regexComponent;
-        this.layoutService = layoutService;
+        this.businessLogicLayoutService = businessLogicLayoutService;
         this.projectService = projectService;
+        this.dataFormattingPageService = dataFormattingPageService;
     }
 
     public Page create(ReqCreatePage dto, Account account) {
@@ -38,7 +45,7 @@ public class PageService {
         if (pageRepository.findByUrl(dto.getUrl()) != null) throw new BasicException(WebsiteExceptionMessages.INVALID_PAGE_URL);
         page.setUrl(dto.getUrl());
         page.setPublished(false);
-        page.setLayout(layoutService.getLayoutDefault(account, project));
+        page.setLayout(businessLogicLayoutService.getLayoutDefault(account, project));
         pageRepository.save(page);
         return page;
     }
@@ -48,7 +55,7 @@ public class PageService {
         pageRepository.delete(page);
     }
 
-    public void setName( String pageId, ReqSetNamePage dto, Account account) {
+    public void setName(String pageId, ReqSetNamePage dto, Account account) {
         regexComponent.isNameValid(dto.getName());
         Page page = getById(pageId, account);
         page.setName(dto.getName());
@@ -83,7 +90,7 @@ public class PageService {
 
     public void setLayout(String pageId, ReqSetLayoutPage dto, Account account) {
         Page page = getById(pageId, account);
-        page.setLayout(layoutService.getById(dto.getLayoutId(), account));
+        page.setLayout(businessLogicLayoutService.getById(dto.getLayoutId(), account));
         pageRepository.save(page);
     }
 
@@ -101,4 +108,7 @@ public class PageService {
     }
 
 
+    public List<PageFormatting> list(String websiteId, Account account) {
+        return dataFormattingPageService.formatPages(pageRepository.findAllByProjectId(websiteId));
+    }
 }

@@ -1,4 +1,4 @@
-package dev.bernouy.cms.feature.website.layout.dto;
+package dev.bernouy.cms.feature.website.layout.formatting.request;
 
 public class ReqSetDefaultLayout {
 

@@ -1,4 +1,4 @@
-package dev.bernouy.cms.feature.website.paramBuilder.dto;
+package dev.bernouy.cms.feature.website.paramBuilder.dto.request;
 
 public class ReqCreateParamBuilder {
 

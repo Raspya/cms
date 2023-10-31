@@ -1,4 +1,4 @@
-package dev.bernouy.cms.feature.website.page.dto;
+package dev.bernouy.cms.feature.website.page.dto.request;
 
 import dev.bernouy.cms.feature.website.layout.Layout;
 

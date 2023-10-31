@@ -1,14 +1,17 @@
 package dev.bernouy.cms.feature.website.builder;
 
 import dev.bernouy.cms.feature.account.Account;
-import dev.bernouy.cms.feature.website.builder.dto.ReqCreateBuilder;
-import dev.bernouy.cms.feature.website.builder.dto.ReqPositionBuilder;
+import dev.bernouy.cms.feature.website.builder.formatting.request.ReqCreateBuilder;
+import dev.bernouy.cms.feature.website.builder.formatting.request.ReqPositionBuilder;
+import dev.bernouy.cms.feature.website.builder.formatting.response.BuilderFormatting;
 import dev.bernouy.cms.feature.website.builder.service.BusinessLogicBuilderService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/builder")
@@ -43,6 +46,12 @@ public class BuilderController {
         Account account = (Account) request.getAttribute("account");
         service.setPosition(dto, builderId, account);
         return new ResponseEntity<>("", HttpStatus.CREATED);
+    }
+
+    @GetMapping("/list")
+    public List<BuilderFormatting> list(@RequestParam(required = false) String layoutId, @RequestParam(required = false) String pageId) {
+        Account account = (Account) request.getAttribute("account");
+        return service.listAllBuilder(layoutId, pageId, account);
     }
 
 }
