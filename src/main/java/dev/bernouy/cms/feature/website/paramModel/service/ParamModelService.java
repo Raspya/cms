@@ -6,6 +6,7 @@ import dev.bernouy.cms.feature.account.Account;
 import dev.bernouy.cms.feature.website.WebsiteExceptionMessages;
 import dev.bernouy.cms.feature.website.paramModel.ParamModelRepository;
 import dev.bernouy.cms.feature.website.paramModel.formatting.request.*;
+import dev.bernouy.cms.feature.website.paramModel.formatting.response.ParamModelFormatting;
 import dev.bernouy.cms.feature.website.version.Version;
 import dev.bernouy.cms.feature.website.paramModel.model.ParamModel;
 import dev.bernouy.cms.feature.website.paramModel.model.ParamModelFloat;
@@ -25,12 +26,14 @@ public class ParamModelService {
     private ParamModelRepository paramModelRepository;
     private RegexComponent regexComponent;
     private BusinessLogicVersionService versionService;
+    private DataFormattingParamModelService dataFormattingParamModelService;
 
     @Autowired
-    public ParamModelService(ParamModelRepository paramModelRepository, RegexComponent regexComponent, BusinessLogicVersionService versionService){
+    public ParamModelService(ParamModelRepository paramModelRepository, RegexComponent regexComponent, BusinessLogicVersionService versionService, DataFormattingParamModelService dataFormattingParamModelService){
         this.regexComponent = regexComponent;
         this.paramModelRepository = paramModelRepository;
         this.versionService = versionService;
+        this.dataFormattingParamModelService = dataFormattingParamModelService;
     }
 
     public ParamModel create(ReqCreateParamModel dto, Account account){
@@ -153,6 +156,11 @@ public class ParamModelService {
         ParamModel paramModel = paramModelRepository.findById(paramModelId).orElse(null);
         if (paramModel == null || !paramModel.getComponentVersion().getComponent().getProject().getOwner().equals(account) )
             throw new BasicException(BasicException.AUTH_ERROR, HttpStatus.FORBIDDEN);
+    }
+
+    public List<ParamModelFormatting> listParamModel(String paramModelId, String versionId, Account account) {
+        if (paramModelId == null) return dataFormattingParamModelService.formatParamModels(paramModelRepository.findAllByComponentVersion(versionId));
+        return dataFormattingParamModelService.formatParamModels(paramModelRepository.findAllByComponentVersionAndParentId(versionId, paramModelId));
     }
 
 }

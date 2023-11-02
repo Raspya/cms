@@ -62,8 +62,6 @@ public class ComponentController {
     @GetMapping("/list")
     public List<InternalComponentFormat> list(@RequestParam String websiteId) {
         Account account = (Account) request.getAttribute("account");
-        return componentService.list(
-                websiteId,
-                account );
+        return componentService.list(websiteId, account );
     }
 }

@@ -6,6 +6,8 @@ import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
+import java.util.HashMap;
+
 @CompoundIndexes({
         @CompoundIndex(name = "keyIndex", def = "{'parent' : 1, 'key': 1}"),
         @CompoundIndex(name = "searchIndex", def = "{ 'parent': 1, 'componentVersion': 1 }")
@@ -70,6 +72,8 @@ public abstract class ParamModel extends AbstractDocument implements ParamInterf
     public String getValue() {
         return value;
     }
+
+    public abstract HashMap<String, Object> optionsToMap();
 
     public boolean childAvailable() {
         return false;

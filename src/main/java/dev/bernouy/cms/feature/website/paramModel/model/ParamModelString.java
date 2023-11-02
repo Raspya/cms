@@ -1,5 +1,7 @@
 package dev.bernouy.cms.feature.website.paramModel.model;
 
+import java.util.HashMap;
+
 public class ParamModelString extends ParamModel {
 
     private Integer min;
@@ -27,6 +29,13 @@ public class ParamModelString extends ParamModel {
                     this.max = i;
             }
         }
+    }
+
+    public HashMap<String, Object> optionsToMap() {
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("min", this.min);
+        hashMap.put("min", this.max);
+        return hashMap;
     }
 
     @Override

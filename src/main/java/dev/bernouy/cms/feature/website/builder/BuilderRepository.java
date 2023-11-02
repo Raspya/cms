@@ -11,5 +11,9 @@ public interface BuilderRepository extends CrudRepository<Builder, String> {
 
     List<Builder>  findAllByComponentVersionIdOrderByPositionAsc(String id);
 
+    List<Builder> findAllByPageId(String pageId);
+
+    List<Builder> findAllByLayoutId(String layoutId);
+
 
 }

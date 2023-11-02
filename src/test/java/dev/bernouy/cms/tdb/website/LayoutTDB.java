@@ -4,11 +4,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.bernouy.cms.conf.MethodEnum;
 import dev.bernouy.cms.conf.TDBMother;
-import dev.bernouy.cms.feature.website.layout.Layout;
-import dev.bernouy.cms.feature.website.layout.dto.ReqCreateLayout;
-import dev.bernouy.cms.feature.website.layout.dto.ReqSetDefaultLayout;
-import dev.bernouy.cms.feature.website.page.dto.ReqSetNamePage;
-import dev.bernouy.cms.tdb.ParamModelTDB;
+import dev.bernouy.cms.feature.website.layout.formatting.request.ReqCreateLayout;
+import dev.bernouy.cms.feature.website.layout.formatting.request.ReqSetDefaultLayout;
+import dev.bernouy.cms.feature.website.page.dto.request.ReqSetNamePage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 

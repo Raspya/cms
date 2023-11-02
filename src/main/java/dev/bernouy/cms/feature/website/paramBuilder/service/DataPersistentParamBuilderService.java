@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.tags.Param;
 
+import java.util.List;
+
 @Service
 public class DataPersistentParamBuilderService {
 
@@ -33,5 +35,13 @@ public class DataPersistentParamBuilderService {
 
     public void save(ParamBuilder paramBuilder) {
         paramBuilderRepository.save(paramBuilder);
+    }
+
+    public List<ParamBuilder> listAllParamBuilderByParamModelId(String paramModelId) {
+        return paramBuilderRepository.findAllByParamModelId(paramModelId);
+    }
+
+    public List<ParamBuilder> listAllParamBuilderByBuilderId(String builderId) {
+        return paramBuilderRepository.findAllByComponentBuilderId(builderId);
     }
 }

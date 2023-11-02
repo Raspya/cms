@@ -7,10 +7,10 @@ import dev.bernouy.cms.feature.website.AuthWebsiteService;
 import dev.bernouy.cms.feature.website.WebsiteExceptionMessages;
 import dev.bernouy.cms.feature.website.library.Library;
 import dev.bernouy.cms.feature.website.library.LibraryRepository;
-import dev.bernouy.cms.feature.website.library.dto.ReqAddRemoveVersionLibrary;
-import dev.bernouy.cms.feature.website.library.dto.ReqCreateLibrary;
-import dev.bernouy.cms.feature.website.library.dto.ReqNameLibrary;
-import dev.bernouy.cms.feature.website.library.response.LibraryDTO;
+import dev.bernouy.cms.feature.website.library.formatting.request.ReqAddRemoveVersionLibrary;
+import dev.bernouy.cms.feature.website.library.formatting.request.ReqCreateLibrary;
+import dev.bernouy.cms.feature.website.library.formatting.request.ReqNameLibrary;
+import dev.bernouy.cms.feature.website.library.formatting.response.LibraryFormatting;
 import dev.bernouy.cms.feature.website.project.Project;
 import dev.bernouy.cms.feature.website.project.service.BusinessLogicProjectService;
 import dev.bernouy.cms.feature.website.version.Version;
@@ -32,16 +32,18 @@ public class BusinessLogicLibraryService {
     private BusinessLogicProjectService projectService;
     private AuthWebsiteService authWebsiteService;
     private DataPersistentVersionService dataPersistentVersionService;
+    private DataFormatingLibraryService dataFormatingLibraryService;
 
 
     @Autowired
-    public BusinessLogicLibraryService(LibraryRepository repository, RegexComponent regexComponent, BusinessLogicVersionService versionService, BusinessLogicProjectService projectService, AuthWebsiteService authWebsiteService, DataPersistentVersionService dataPersistentVersionService){
+    public BusinessLogicLibraryService(LibraryRepository repository, RegexComponent regexComponent, BusinessLogicVersionService versionService, BusinessLogicProjectService projectService, AuthWebsiteService authWebsiteService, DataPersistentVersionService dataPersistentVersionService, DataFormatingLibraryService dataFormatingLibraryService){
         this.libraryRepository = repository;
         this.regexComponent = regexComponent;
         this.versionService = versionService;
         this.projectService = projectService;
         this.authWebsiteService = authWebsiteService;
         this.dataPersistentVersionService = dataPersistentVersionService;
+        this.dataFormatingLibraryService = dataFormatingLibraryService;
     }
 
 
@@ -95,9 +97,9 @@ public class BusinessLogicLibraryService {
         return library;
     }
 
-    public List<LibraryDTO> listLibrary(Account account, String projectId){
+    public List<LibraryFormatting> listLibrary(Account account, String projectId){
         projectService.isOwner(projectId, account);
-        return LibraryDTO.from(libraryRepository.getLibrariesByProjectId(projectId));
+        return LibraryFormatting.from(libraryRepository.getLibrariesByProjectId(projectId));
     }
 
     public ArrayList<Version> getVersionList(String libraryId, Account account) {
@@ -113,4 +115,7 @@ public class BusinessLogicLibraryService {
             throw new BasicException(BasicException.AUTH_ERROR, HttpStatus.FORBIDDEN);
     }
 
+    public List<LibraryFormatting> getLibraryList(String websiteId, Account account) {
+        return dataFormatingLibraryService.formatParamModels(libraryRepository.getLibrariesByProjectId(websiteId));
+    }
 }

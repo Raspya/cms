@@ -2,6 +2,7 @@ package dev.bernouy.cms.feature.website.paramModel;
 
 import dev.bernouy.cms.feature.account.Account;
 import dev.bernouy.cms.feature.website.paramModel.formatting.request.*;
+import dev.bernouy.cms.feature.website.paramModel.formatting.response.ParamModelFormatting;
 import dev.bernouy.cms.feature.website.paramModel.model.ParamModel;
 import dev.bernouy.cms.feature.website.paramModel.service.ParamModelService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/component/param")
@@ -93,6 +96,12 @@ public class ParamModelController {
     public ParamModel get(@PathVariable String paramModelId) {
         Account account = (Account) request.getAttribute("account");
         return paramModelService.getById(paramModelId, account);
+    }
+
+    @GetMapping("/list")
+    public List<ParamModelFormatting> list(@RequestParam(required = false) String paramModelId, @RequestParam String versionId) {
+        Account account = (Account) request.getAttribute("account");
+        return paramModelService.listParamModel(paramModelId, versionId, account);
     }
 
 

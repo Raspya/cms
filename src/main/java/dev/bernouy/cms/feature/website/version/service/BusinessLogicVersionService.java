@@ -17,6 +17,7 @@ import dev.bernouy.cms.feature.website.version.formatting.request.ReqCreateVersi
 import dev.bernouy.cms.feature.website.version.formatting.request.ReqUploadFile;
 import dev.bernouy.cms.feature.website.component.Component;
 import dev.bernouy.cms.feature.website.component.service.BusinessLogicComponentService;
+import dev.bernouy.cms.feature.website.version.formatting.response.FormattingVersion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -179,4 +180,7 @@ public class BusinessLogicVersionService {
         return paramModel;
     }
 
+    public List<FormattingVersion> getListVersion(Account account, String componentId) {
+        return dataFormattingVersionService.formatVersions(versionRepository.getVersionByComponentId(componentId));
+    }
 }

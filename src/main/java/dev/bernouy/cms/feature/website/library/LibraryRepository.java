@@ -8,5 +8,6 @@ import java.util.Set;
 public interface LibraryRepository extends CrudRepository<Library, String> {
 
     List<Library> getLibrariesByProjectId(String id);
+    List<Library> getLibrariesBy(String id);
 
 }

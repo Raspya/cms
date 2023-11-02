@@ -1,22 +1,27 @@
 package dev.bernouy.cms.feature.website.page;
 
 import dev.bernouy.cms.feature.account.Account;
-import dev.bernouy.cms.feature.website.page.dto.*;
+import dev.bernouy.cms.feature.website.layout.formatting.response.LayoutFormatting;
+import dev.bernouy.cms.feature.website.page.dto.request.*;
+import dev.bernouy.cms.feature.website.page.dto.response.PageFormatting;
+import dev.bernouy.cms.feature.website.page.service.BusinessLogicPageService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/page")
 public class PageController {
 
-    private PageService service;
+    private BusinessLogicPageService service;
     private HttpServletResponse response;
     private HttpServletRequest request;
 
-    public PageController(PageService service, HttpServletResponse response, HttpServletRequest request) {
+    public PageController(BusinessLogicPageService service, HttpServletResponse response, HttpServletRequest request) {
         this.service = service;
         this.response = response;
         this.request = request;
@@ -81,6 +86,12 @@ public class PageController {
     public Page get(@PathVariable String pageId) {
         Account account = (Account) request.getAttribute("account");
         return service.getById(pageId, account);
+    }
+
+    @GetMapping("/list")
+    public List<PageFormatting> list(@RequestParam String websiteId) {
+        Account account = (Account) request.getAttribute("account");
+        return service.list(websiteId, account );
     }
 
 

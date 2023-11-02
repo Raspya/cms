@@ -30,27 +30,27 @@ public class ProjectController {
         this.request = request;
     }
 
-    @PostMapping("create")
+    @PostMapping("/create")
     public ResponseEntity<String> create( @RequestBody ReqCreateWebsiteDTO dto ){
         Account account = (Account) request.getAttribute("account");
         Project website = projectService.create(dto, account);
         return new ResponseEntity<>(website.getId(), HttpStatus.CREATED);
     }
 
-    @PostMapping("editDomain")
+    @PostMapping("/editDomain")
     public ResponseEntity<String> editDomain( @RequestBody PatchDomainWebsite dto ){
         Account account = (Account) request.getAttribute("account");
         projectService.editDomain(dto.getDomain(), dto.getWebsiteID(), account);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
-    @GetMapping("list")
+    @GetMapping("/list")
     public List<ProjectFormatting> getList(){
         Account account = (Account) request.getAttribute("account");
         return projectService.getListWebsite(account);
     }
 
-    @GetMapping("getDetail/{projectId}")
+    @GetMapping("/getDetail/{projectId}")
     public Project isAuth(@PathVariable String projectId){
         Account account = (Account) request.getAttribute("account");
         return projectService.getWebsite(projectId, account);

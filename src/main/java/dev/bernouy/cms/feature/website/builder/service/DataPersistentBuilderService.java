@@ -50,4 +50,12 @@ public class DataPersistentBuilderService {
     public void saveAll(List<Builder> toUpdate) {
         builderRepository.saveAll(toUpdate);
     }
+
+    public List<Builder> listAllBuilderByLayoutId(String layoutId) {
+        return builderRepository.findAllByLayoutId(layoutId);
+    }
+
+    public List<Builder> listAllBuilderByPageId(String pageId) {
+        return builderRepository.findAllByPageId(pageId);
+    }
 }

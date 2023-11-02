@@ -6,14 +6,18 @@ import dev.bernouy.cms.feature.account.Account;
 import dev.bernouy.cms.feature.website.AuthWebsiteService;
 import dev.bernouy.cms.feature.website.WebsiteExceptionMessages;
 import dev.bernouy.cms.feature.website.builder.Builder;
+import dev.bernouy.cms.feature.website.builder.formatting.response.BuilderFormatting;
 import dev.bernouy.cms.feature.website.builder.service.DataPersistentBuilderService;
 import dev.bernouy.cms.feature.website.paramBuilder.ParamBuilder;
-import dev.bernouy.cms.feature.website.paramBuilder.dto.ReqCreateParamBuilder;
-import dev.bernouy.cms.feature.website.paramBuilder.dto.ReqSetValueParamBuilder;
+import dev.bernouy.cms.feature.website.paramBuilder.dto.request.ReqCreateParamBuilder;
+import dev.bernouy.cms.feature.website.paramBuilder.dto.request.ReqSetValueParamBuilder;
+import dev.bernouy.cms.feature.website.paramBuilder.dto.response.ParamBuilderFormatting;
 import dev.bernouy.cms.feature.website.paramModel.service.ParamModelService;
 import dev.bernouy.cms.feature.website.paramModel.model.ParamModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class BusinessLogicParamBuilderService {
@@ -24,14 +28,16 @@ public class BusinessLogicParamBuilderService {
     private DataPersistentBuilderService dataPersistentBuilderService;
     private DataPersistentParamBuilderService dataPersistentParamBuilderService;
 
+    private DataFormattingParamBuilderService dataFormattingParamBuilderService;
 
     @Autowired
-    public BusinessLogicParamBuilderService(DataPersistentParamBuilderService dataPersistentParamBuilderService, RegexComponent regexComponent, AuthWebsiteService authWebsiteService, ParamModelService paramModelService, DataPersistentBuilderService dataPersistentBuilderService) {
+    public BusinessLogicParamBuilderService(DataFormattingParamBuilderService dataFormattingParamBuilderService,DataPersistentParamBuilderService dataPersistentParamBuilderService, RegexComponent regexComponent, AuthWebsiteService authWebsiteService, ParamModelService paramModelService, DataPersistentBuilderService dataPersistentBuilderService) {
         this.dataPersistentParamBuilderService = dataPersistentParamBuilderService;
         this.regexComponent = regexComponent;
         this.authWebsiteService = authWebsiteService;
         this.paramModelService = paramModelService;
         this.dataPersistentBuilderService = dataPersistentBuilderService;
+        this.dataFormattingParamBuilderService = dataFormattingParamBuilderService;
     }
 
     public ParamBuilder create(ReqCreateParamBuilder dto, Account account) {
@@ -63,4 +69,16 @@ public class BusinessLogicParamBuilderService {
         paramBuilder.setValue(dto.getValue());
         dataPersistentParamBuilderService.save(paramBuilder);
     }
+
+    public List<ParamBuilderFormatting> listAllParamBuilder(String builderId, String paramBuilderId, Account account) {
+        if (paramBuilderId != null && builderId != null) throw new BasicException("builderId and paramBuilderId can't be together");
+        if (paramBuilderId == null && builderId == null) throw new BasicException("builderId or paramBuilderId is needed");
+        if (builderId != null)
+            return dataFormattingParamBuilderService.formatParamBuilders(dataPersistentParamBuilderService.listAllParamBuilderByBuilderId(builderId));
+        ParamBuilder paramBuilder = dataPersistentParamBuilderService.getById(paramBuilderId, account);
+        ParamModel paramModel = paramModelService.getById(paramBuilder.getParamModel().getId(), account);
+        return dataFormattingParamBuilderService.formatParamBuilders(dataPersistentParamBuilderService.listAllParamBuilderByParamModelId(paramModel.getId()));
+
+    }
+
 }
