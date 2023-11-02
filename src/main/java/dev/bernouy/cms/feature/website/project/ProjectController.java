@@ -5,6 +5,7 @@ import dev.bernouy.cms.feature.website.project.formatting.request.ReqCreateWebsi
 import dev.bernouy.cms.feature.website.project.formatting.request.PatchDomainWebsite;
 import dev.bernouy.cms.feature.website.project.formatting.response.ProjectFormatting;
 import dev.bernouy.cms.feature.website.project.service.BusinessLogicProjectService;
+import dev.bernouy.cms.security.Public;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,5 +55,5 @@ public class ProjectController {
         Account account = (Account) request.getAttribute("account");
         return projectService.getWebsite(projectId, account);
     }
-    
+
 }
