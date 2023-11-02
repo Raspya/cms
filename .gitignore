@@ -34,3 +34,6 @@ build/
 
 ### MacOS ###
 .DS_Store
+
+### Dont download all of modules ###
+/src/main/resources/structure/node_modules/
