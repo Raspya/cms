@@ -15,6 +15,15 @@ public class Project extends AbstractDocument {
     private String  domain;
     @DBRef
     private Account owner;
+    private String distributionId;
+
+    public String getDistributionId() {
+        return distributionId;
+    }
+
+    public void setDistributionId(String distributionId) {
+        this.distributionId = distributionId;
+    }
 
     public String getName() {
         return name;
@@ -42,23 +51,23 @@ public class Project extends AbstractDocument {
 
     @Override
     public String toString() {
-        return "Website{" +
+        return "Project{" +
                 "name='" + name + '\'' +
                 ", domain='" + domain + '\'' +
                 ", owner=" + owner +
-                '}';
+                ", distributionId='" + distributionId + '\'' +
+                "} " + super.toString();
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Project website = (Project) o;
-        return Objects.equals(name, website.name) && Objects.equals(domain, website.domain) && Objects.equals(owner, website.owner);
+        if (!(o instanceof Project project)) return false;
+        return Objects.equals(name, project.name) && Objects.equals(domain, project.domain) && Objects.equals(owner, project.owner) && Objects.equals(distributionId, project.distributionId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, domain, owner);
+        return Objects.hash(name, domain, owner, distributionId);
     }
 }

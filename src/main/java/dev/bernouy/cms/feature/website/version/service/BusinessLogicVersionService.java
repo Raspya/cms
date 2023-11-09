@@ -1,7 +1,7 @@
 package dev.bernouy.cms.feature.website.version.service;
 
 import dev.bernouy.cms.common.BasicException;
-import dev.bernouy.cms.common.FileSystem;
+import dev.bernouy.cms.common.FileService;
 import dev.bernouy.cms.common.RegexComponent;
 import dev.bernouy.cms.feature.account.Account;
 import dev.bernouy.cms.feature.website.AuthWebsiteService;
@@ -36,20 +36,22 @@ public class BusinessLogicVersionService {
     private BusinessLogicComponentService componentService;
     private DataFormattingVersionService dataFormattingVersionService;
     private AuthWebsiteService authWebsiteService;
+    private DeploymentVersionService deploymentVersionService;
 
     @Autowired
-    public BusinessLogicVersionService(VersionRepository versionRepository, ParamModelRepository paramModelRepository, RegexComponent regexComponent, BusinessLogicComponentService componentService, DataFormattingVersionService dataFormattingVersionService, AuthWebsiteService authWebsiteService){
+    public BusinessLogicVersionService(VersionRepository versionRepository, ParamModelRepository paramModelRepository, RegexComponent regexComponent, BusinessLogicComponentService componentService, DataFormattingVersionService dataFormattingVersionService, AuthWebsiteService authWebsiteService, DeploymentVersionService deploymentVersionService){
         this.regexComponent = regexComponent;
         this.versionRepository = versionRepository;
         this.paramModelRepository = paramModelRepository;
         this.componentService = componentService;
         this.dataFormattingVersionService = dataFormattingVersionService;
         this.authWebsiteService = authWebsiteService;
+        this.deploymentVersionService = deploymentVersionService;
     }
 
 
     public Version create(ReqCreateVersion dto, Account account){
-        Component comp = componentService.getById(dto.getComponentID());
+        Component comp = componentService.getById(dto.getComponentId());
         authorizeAccount(comp, account);
 
         int majorVersion = 1;
@@ -61,7 +63,7 @@ public class BusinessLogicVersionService {
         if (!typeVersion.equals("major") && !typeVersion.equals("minor") && !typeVersion.equals("patch") && !typeVersion.equals(""))
             throw new BasicException(WebsiteExceptionMessages.INVALID_VERSION_TYPE);
 
-        Version oldVersion = versionRepository.getFirstByComponent_IdOrderByMajorVersionDescMinorVersionDescPatchVersionDesc(dto.getComponentID());
+        Version oldVersion = versionRepository.getFirstByComponent_IdOrderByMajorVersionDescMinorVersionDescPatchVersionDesc(dto.getComponentId());
         if (oldVersion != null) {
             majorVersion = oldVersion.getMajorVersion();
             minorVersion = oldVersion.getMinorVersion();
@@ -96,40 +98,24 @@ public class BusinessLogicVersionService {
 
     public void uploadJS(ReqUploadFile dto, Account account, String versionId){
         Version version = authWebsiteService.isAuthByVersionAndGetIt(versionId, account);
-
         if (version.isDeploy()) throw new BasicException(WebsiteExceptionMessages.VERSION_ALREADY_DEPLOY);
-        String url = FileSystem.COMPONENT_PATH + File.separator + "js" + File.separator + "C" + version.getId() + ".js";
-        try {
-            FileWriter fw = new FileWriter(url);
-            fw.write(dto.getFile());
-            fw.close();
-        } catch (Exception e) {e.printStackTrace();}
+        deploymentVersionService.uploadJS(dto.getFile(), version.getId());
     }
 
     public void uploadCSS(ReqUploadFile dto, Account account, String versionId){
         Version version = authWebsiteService.isAuthByVersionAndGetIt(versionId, account);
-
         if (version.isDeploy()) throw new BasicException(WebsiteExceptionMessages.VERSION_ALREADY_DEPLOY);
-        String url = FileSystem.COMPONENT_PATH + File.separator + "css" + File.separator + "C" + version.getId() + ".css";
-        try {
-            FileWriter fw = new FileWriter(url);
-            fw.write(dto.getFile());
-            fw.close();
-        } catch (Exception e) {e.printStackTrace();}
+        deploymentVersionService.uploadCSS(dto.getFile(), version.getId());
     }
 
     public void deploy(Account account, String versionId){
         Version version = authWebsiteService.isAuthByVersionAndGetIt(versionId, account);
-
-        String urlJS = FileSystem.COMPONENT_PATH + File.separator + "js" + File.separator + "C" + version.getId() + ".js";
-        String urlCSS = FileSystem.COMPONENT_PATH + File.separator + "css" + File.separator + "C" + version.getId() + ".css";
+        String urlJS = FileService.COMPONENT_PATH + File.separator + "js" + File.separator + "C" + version.getId() + ".js";
+        String urlCSS = FileService.COMPONENT_PATH + File.separator + "css" + File.separator + "C" + version.getId() + ".css";
         File fileJS = new File(urlJS);
         File fileCSS = new File(urlCSS);
-
         if (!fileJS.exists() || !fileCSS.exists()) throw new BasicException(WebsiteExceptionMessages.FILE_DOES_NOT_EXIST);
-
         version.setDeploy(true);
-
     }
 
     public Version getById(String versionId ){

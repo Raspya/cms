@@ -30,7 +30,7 @@ public class ComponentController {
         this.request = request;
     }
 
-    @PostMapping("/create")
+    @PostMapping("")
     public ResponseEntity<String> create(@RequestBody ReqCreateComponentDTO dto ) {
         Account account = (Account) request.getAttribute("account");
         Component component = componentService.create(
@@ -40,7 +40,7 @@ public class ComponentController {
         return new ResponseEntity<>(component.getId(), HttpStatus.CREATED);
     }
 
-    @PostMapping("/editName")
+    @PatchMapping("/name")
     public ResponseEntity<String> editName(@RequestBody ReqEditNameComponentDTO dto ) {
         Account account = (Account) request.getAttribute("account");
         componentService.editName(
@@ -50,11 +50,11 @@ public class ComponentController {
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
-    @PostMapping("/delete")
-    public ResponseEntity<String> delete(@RequestBody ReqDeleteComponentDTO dto ) {
+    @DeleteMapping("/{componentId}")
+    public ResponseEntity<String> delete(@PathVariable String componentId ) {
         Account account = (Account) request.getAttribute("account");
         componentService.delete(
-                dto.getComponentId(),
+                componentId,
                 account );
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }

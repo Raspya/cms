@@ -6,7 +6,6 @@ import dev.bernouy.cms.feature.account.Account;
 import dev.bernouy.cms.feature.website.AuthWebsiteService;
 import dev.bernouy.cms.feature.website.WebsiteExceptionMessages;
 import dev.bernouy.cms.feature.website.builder.Builder;
-import dev.bernouy.cms.feature.website.builder.formatting.response.BuilderFormatting;
 import dev.bernouy.cms.feature.website.builder.service.DataPersistentBuilderService;
 import dev.bernouy.cms.feature.website.paramBuilder.ParamBuilder;
 import dev.bernouy.cms.feature.website.paramBuilder.dto.request.ReqCreateParamBuilder;
@@ -42,11 +41,11 @@ public class BusinessLogicParamBuilderService {
 
     public ParamBuilder create(ReqCreateParamBuilder dto, Account account) {
         ParamBuilder paramBuilderParent = dataPersistentParamBuilderService.getById(dto.getParamBuilderId(), account);
-        Builder builder = dataPersistentBuilderService.getById(paramBuilderParent.getComponentBuilder().getId(), account);
+        Builder builder = dataPersistentBuilderService.getById(paramBuilderParent.getBuilder().getId(), account);
         ParamModel paramModel = paramModelService.getByParentId(paramBuilderParent.getParamModel().getId(), account);
 
         ParamBuilder paramBuilder = new ParamBuilder();
-        paramBuilder.setComponentBuilder(builder);
+        paramBuilder.setBuilder(builder);
         paramBuilder.setParamModel(paramModel);
         paramBuilder.setValue(paramModel.getValue());
         return paramBuilder;
@@ -56,7 +55,7 @@ public class BusinessLogicParamBuilderService {
         ParamModel paramModel = paramModelService.getById(paramModelId, account);
 
         ParamBuilder paramBuilder = new ParamBuilder();
-        paramBuilder.setComponentBuilder(builder);
+        paramBuilder.setBuilder(builder);
         paramBuilder.setParamModel(paramModel);
         paramBuilder.setValue(paramModel.getValue());
         return paramBuilder;
@@ -74,7 +73,7 @@ public class BusinessLogicParamBuilderService {
         if (paramBuilderId != null && builderId != null) throw new BasicException("builderId and paramBuilderId can't be together");
         if (paramBuilderId == null && builderId == null) throw new BasicException("builderId or paramBuilderId is needed");
         if (builderId != null)
-            return dataFormattingParamBuilderService.formatParamBuilders(dataPersistentParamBuilderService.listAllParamBuilderByBuilderId(builderId));
+            return dataFormattingParamBuilderService.formatParamBuilders(dataPersistentParamBuilderService.listAllParamBuilderById(builderId));
         ParamBuilder paramBuilder = dataPersistentParamBuilderService.getById(paramBuilderId, account);
         ParamModel paramModel = paramModelService.getById(paramBuilder.getParamModel().getId(), account);
         return dataFormattingParamBuilderService.formatParamBuilders(dataPersistentParamBuilderService.listAllParamBuilderByParamModelId(paramModel.getId()));

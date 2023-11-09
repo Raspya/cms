@@ -2,21 +2,21 @@ package dev.bernouy.cms.feature.website.version.formatting.request;
 
 public class ReqCreateVersion {
 
-    private String componentID;
+    private String componentId;
     private String typeVersion;
 
     public ReqCreateVersion(){}
-    public ReqCreateVersion(String typeVersion, String componentID) {
+    public ReqCreateVersion(String typeVersion, String componentId) {
         this.typeVersion = typeVersion;
-        this.componentID = componentID;
+        this.componentId = componentId;
     }
 
-    public String getComponentID() {
-        return componentID;
+    public String getComponentId() {
+        return componentId;
     }
 
-    public void setComponentID(String componentID) {
-        this.componentID = componentID;
+    public void setComponentId(String componentId) {
+        this.componentId = componentId;
     }
 
     public String getTypeVersion() {

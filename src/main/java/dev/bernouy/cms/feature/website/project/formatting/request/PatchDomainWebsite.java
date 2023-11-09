@@ -2,20 +2,20 @@ package dev.bernouy.cms.feature.website.project.formatting.request;
 
 public class PatchDomainWebsite {
 
-    private String websiteID;
+    private String websiteId;
     private String domain;
 
-    public PatchDomainWebsite(String websiteID, String domain ){
-        this.websiteID = websiteID;
+    public PatchDomainWebsite(String websiteId, String domain ){
+        this.websiteId = websiteId;
         this.domain = domain;
     }
 
-    public String getWebsiteID() {
-        return websiteID;
+    public String getWebsiteId() {
+        return websiteId;
     }
 
-    public void setWebsiteID(String websiteID) {
-        this.websiteID = websiteID;
+    public void setWebsiteId(String websiteId) {
+        this.websiteId = websiteId;
     }
 
     public String getDomain() {

@@ -27,21 +27,21 @@ public class BuilderController {
         this.request = request;
     }
 
-    @PostMapping("/create")
+    @PostMapping("/")
     public ResponseEntity<String> createBuilder(@RequestBody ReqCreateBuilder dto) {
         Account account = (Account) request.getAttribute("account");
         Builder builder = service.create(dto, account);
         return new ResponseEntity<>(builder.getId(), HttpStatus.CREATED);
     }
 
-    @PostMapping("/{builderId}/delete")
+    @DeleteMapping("/{builderId}")
     public ResponseEntity<String> deleteBuilder(@PathVariable String builderId) {
         Account account = (Account) request.getAttribute("account");
         service.delete(builderId, account);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
-    @PostMapping("/{builderId}/setPosition")
+    @PatchMapping("/{builderId}/position")
     public ResponseEntity<String> deleteBuilder(@RequestBody ReqPositionBuilder dto, @PathVariable String builderId) {
         Account account = (Account) request.getAttribute("account");
         service.setPosition(dto, builderId, account);

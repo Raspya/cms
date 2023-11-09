@@ -79,4 +79,7 @@ public abstract class ParamModel extends AbstractDocument implements ParamInterf
         return false;
     }
 
+    public String toParamString(){
+        return "\"" + this.key + "\":" + "\"" + this.value + "\"";
+    }
 }

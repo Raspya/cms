@@ -49,19 +49,23 @@ public class BusinessLogicBuilderService {
 
     public Builder create(ReqCreateBuilder dto, Account account) {
         versionService.getByIdAccount(dto.getVersionId(), account);
-        if (!(dto.getLayoutId() == null && dto.getPageId() != null) && !(dto.getLayoutId() != null && dto.getPageId() == null))
-            throw new BasicException(WebsiteExceptionMessages.INVALID_BUILDER_PAGEORLAYOUT);
-
-        Version version = versionService.getById(dto.getVersionId());
-        Page page = businessLogicPageService.getById(dto.getPageId(), account);
-        Layout layout = businessLogicLayoutService.getById(dto.getLayoutId(), account);
-
+        Integer maxPos = null;
         Builder builder = new Builder();
-        builder.setPage(page);
-        builder.setLayout(layout);
+        if ((dto.getLayoutId() == null && dto.getPageId() != null)){
+            Page page = businessLogicPageService.getById(dto.getPageId(), account);
+            builder.setPage(page);
+            maxPos = dataPersistentBuilderService.findFirstByBuilderByPageId(page.getId()).getPosition();
+        }
+        else if ((dto.getLayoutId() != null && dto.getPageId() == null)){
+            Layout layout = businessLogicLayoutService.getById(dto.getLayoutId(), account);
+            builder.setLayout(layout);
+            maxPos = dataPersistentBuilderService.findFirstByBuilderByLayoutId(layout.getId()).getPosition();
+        } else {
+            throw new BasicException(WebsiteExceptionMessages.INVALID_BUILDER_PAGEORLAYOUT);
+        }
+        Version version = versionService.getById(dto.getVersionId());
         builder.setComponentVersion(version);
 
-        Integer maxPos = dataPersistentBuilderService.findFirstByComponentVersionOrderByPositionDesc(version.getId()).getPosition();
         if (maxPos == null) maxPos = 0;
         builder.setPosition(maxPos+1);
         dataPersistentBuilderService.save(builder);

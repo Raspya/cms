@@ -16,7 +16,7 @@ import java.util.Objects;
 public class ParamBuilder extends AbstractDocument {
 
     @DBRef
-    private Builder componentBuilder;
+    private Builder builder;
     @DBRef
     private ParamModel paramModel;
     private Object value;
@@ -29,12 +29,12 @@ public class ParamBuilder extends AbstractDocument {
         this.paramModel = paramModel;
     }
 
-    public Builder getComponentBuilder() {
-        return componentBuilder;
+    public Builder getBuilder() {
+        return builder;
     }
 
-    public void setComponentBuilder(Builder componentBuilder) {
-        this.componentBuilder = componentBuilder;
+    public void setBuilder(Builder builder) {
+        this.builder = builder;
     }
 
     public Object getValue() {
@@ -50,18 +50,18 @@ public class ParamBuilder extends AbstractDocument {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ParamBuilder that = (ParamBuilder) o;
-        return  Objects.equals(paramModel, that.paramModel) && Objects.equals(componentBuilder, that.componentBuilder) && Objects.equals(value, that.value);
+        return  Objects.equals(paramModel, that.paramModel) && Objects.equals(builder, that.builder) && Objects.equals(value, that.value);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(componentBuilder, paramModel, value);
+        return Objects.hash(builder, paramModel, value);
     }
 
     @Override
     public String toString() {
         return "ParamBuilder{" +
-                ", componentBuilder=" + componentBuilder +
+                ", componentBuilder=" + builder +
                 ", paramModel=" + paramModel +
                 ", value=" + value +
                 '}';

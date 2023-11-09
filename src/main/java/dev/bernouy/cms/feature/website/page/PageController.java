@@ -27,62 +27,62 @@ public class PageController {
         this.request = request;
     }
 
-    @PostMapping("/create")
+    @PostMapping("")
     public ResponseEntity<String> createPage(@RequestBody ReqCreatePage dto) {
         Account account = (Account) request.getAttribute("account");
         Page page = service.create(dto, account);
         return new ResponseEntity<>(page.getId(), HttpStatus.CREATED);
     }
 
-    @PostMapping("/{pageId}/delete")
+    @DeleteMapping("/{pageId}")
     public ResponseEntity<String> delete(@PathVariable String pageId) {
         Account account = (Account) request.getAttribute("account");
         service.delete(pageId, account);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
-    @PostMapping("/{pageId}/setName")
+    @PatchMapping("/{pageId}/name")
     public ResponseEntity<String> setName(@PathVariable String pageId, @RequestBody ReqSetNamePage dto) {
         Account account = (Account) request.getAttribute("account");
         service.setName(pageId, dto, account);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
-    @PostMapping("/{pageId}/setDeploy")
+    @PatchMapping("/{pageId}/deploy")
     public ResponseEntity<String> setDeploy(@PathVariable String pageId, @RequestBody ReqSetDeployPage dto) {
         Account account = (Account) request.getAttribute("account");
         service.setDeploy(pageId, dto, account);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
-    @PostMapping("/{pageId}/setUrl")
+    @PatchMapping("/{pageId}/path")
     public ResponseEntity<String> setUrl(@PathVariable String pageId, @RequestBody ReqSetUrlPage dto) {
         Account account = (Account) request.getAttribute("account");
         service.setUrl(pageId, dto, account);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
-    @PostMapping("/{pageId}/setTitle")
+    @PatchMapping("/{pageId}/title")
     public ResponseEntity<String> setTitle(@PathVariable String pageId, @RequestBody ReqSetTitlePage dto) {
         Account account = (Account) request.getAttribute("account");
         service.setTitle(pageId, dto, account);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
-    @PostMapping("/{pageId}/setDescription")
+    @PatchMapping("/{pageId}/description")
     public ResponseEntity<String> setDescription(@PathVariable String pageId, @RequestBody ReqSetDescriptionPage dto) {
         Account account = (Account) request.getAttribute("account");
         service.setDescription(pageId, dto, account);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
-    @PostMapping("/{pageId}/setLayout")
+    @PatchMapping("/{pageId}/layout")
     public ResponseEntity<String> setLayout(@PathVariable String pageId, @RequestBody ReqSetLayoutPage dto) {
         Account account = (Account) request.getAttribute("account");
         service.setLayout(pageId, dto, account);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
-    @GetMapping("/{pageId}/get")
+    @GetMapping("/{pageId}")
     public Page get(@PathVariable String pageId) {
         Account account = (Account) request.getAttribute("account");
         return service.getById(pageId, account);

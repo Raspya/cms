@@ -30,7 +30,6 @@ public class DataPersistentBuilderService {
             throw new BasicException(BasicException.AUTH_ERROR, HttpStatus.FORBIDDEN);
     }
 
-
     public Builder findFirstByComponentVersionOrderByPositionDesc(String id) {
         return builderRepository.findFirstByComponentVersionOrderByPositionDesc(id);
     }
@@ -58,4 +57,13 @@ public class DataPersistentBuilderService {
     public List<Builder> listAllBuilderByPageId(String pageId) {
         return builderRepository.findAllByPageId(pageId);
     }
+
+    public Builder findFirstByBuilderByPageId(String id) {
+        return builderRepository.findFirstBuilderByPageId(id);
+    }
+
+    public Builder findFirstByBuilderByLayoutId(String id) {
+        return builderRepository.findFirstBuilderByLayoutId(id);
+    }
+
 }

@@ -3,14 +3,11 @@ package dev.bernouy.cms.feature.website.paramBuilder.service;
 import dev.bernouy.cms.common.BasicException;
 import dev.bernouy.cms.feature.account.Account;
 import dev.bernouy.cms.feature.website.WebsiteExceptionMessages;
-import dev.bernouy.cms.feature.website.builder.Builder;
 import dev.bernouy.cms.feature.website.paramBuilder.ParamBuilder;
 import dev.bernouy.cms.feature.website.paramBuilder.ParamBuilderRepository;
-import dev.bernouy.cms.feature.website.version.VersionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.tags.Param;
 
 import java.util.List;
 
@@ -29,7 +26,7 @@ public class DataPersistentParamBuilderService {
 
     private void authorizeAccount(String builderId, Account account) {
         ParamBuilder paramBuilder = paramBuilderRepository.findById(builderId).orElse(null);
-        if (paramBuilder == null || !paramBuilder.getComponentBuilder().getComponentVersion().getComponent().getProject().getOwner().equals(account) )
+        if (paramBuilder == null || !paramBuilder.getBuilder().getComponentVersion().getComponent().getProject().getOwner().equals(account) )
             throw new BasicException(BasicException.AUTH_ERROR, HttpStatus.FORBIDDEN);
     }
 
@@ -41,7 +38,15 @@ public class DataPersistentParamBuilderService {
         return paramBuilderRepository.findAllByParamModelId(paramModelId);
     }
 
-    public List<ParamBuilder> listAllParamBuilderByBuilderId(String builderId) {
-        return paramBuilderRepository.findAllByComponentBuilderId(builderId);
+    public List<ParamBuilder> listParamBuilderByBuilderId(String builderId) {
+        return paramBuilderRepository.findByParamModelParentIsNullAndBuilderId(builderId);
+    }
+
+    public List<ParamBuilder> listParamBuilderStepByParamModelIdAndBuilderId(String builderId, String paramModelId) {
+        return paramBuilderRepository.findAllByBuilderIdAndParamModelParentId(builderId, paramModelId);
+    }
+
+    public List<ParamBuilder> listAllParamBuilderById(String paramBuilderId) {
+        return paramBuilderRepository.findAllById(paramBuilderId);
     }
 }

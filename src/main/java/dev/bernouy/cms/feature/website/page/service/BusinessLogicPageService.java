@@ -42,8 +42,8 @@ public class BusinessLogicPageService {
         Page page = new Page();
         page.setProject(project);
         page.setName(dto.getName());
-        if (pageRepository.findByUrl(dto.getUrl()) != null) throw new BasicException(WebsiteExceptionMessages.INVALID_PAGE_URL);
-        page.setUrl(dto.getUrl());
+        if (pageRepository.findByUrl(dto.getPath()) != null) throw new BasicException(WebsiteExceptionMessages.INVALID_PAGE_URL);
+        page.setUrl(dto.getPath());
         page.setPublished(false);
         page.setLayout(businessLogicLayoutService.getLayoutDefault(account, project));
         pageRepository.save(page);
@@ -70,9 +70,9 @@ public class BusinessLogicPageService {
     }
 
     public void setUrl(String pageId, ReqSetUrlPage dto, Account account) {
-        if (pageRepository.findByUrl(dto.getUrl()) != null) throw new BasicException(WebsiteExceptionMessages.INVALID_PAGE_URL);
+        if (pageRepository.findByUrl(dto.getPath()) != null) throw new BasicException(WebsiteExceptionMessages.INVALID_PAGE_URL);
         Page page = getById(pageId, account);
-        page.setUrl(dto.getUrl());
+        page.setUrl(dto.getPath());
         pageRepository.save(page);
     }
 

@@ -2,16 +2,16 @@ package dev.bernouy.cms.feature.website.page.dto.request;
 
 public class ReqSetUrlPage {
 
-    private String url;
+    private String path;
 
     public ReqSetUrlPage() {}
-    public ReqSetUrlPage(String url) {
-        this.url = url;
+    public ReqSetUrlPage(String path) {
+        this.path = path;
     }
-    public String getUrl() {
-        return url;
+    public String getPath() {
+        return path;
     }
-    public void setUrl(String url) {
-        this.url = url;
+    public void setPath(String path) {
+        this.path = path;
     }
 }

@@ -30,34 +30,34 @@ public class LibraryController {
         this.request = request;
     }
 
-    @PostMapping("/create")
+    @PostMapping("")
     public ResponseEntity<String> createLibrary(@RequestBody ReqCreateLibrary dto) {
         Account account = (Account) request.getAttribute("account");
         Library library = service.create(dto, account);
         return new ResponseEntity<>(library.getId(), HttpStatus.CREATED);
     }
 
-    @GetMapping("/list")
+    /*@GetMapping("/list")
     public List<LibraryFormatting> listLibrary(@RequestParam String projectId){
         Account account = (Account) request.getAttribute("account");
         return service.listLibrary(account, projectId);
-    }
+    }*/
 
-    @PostMapping("/{libraryId}/add")
+    @PatchMapping("/{libraryId}/addVersion")
     public ResponseEntity<String> add(@PathVariable String libraryId, @RequestBody ReqAddRemoveVersionLibrary dto) {
         Account account = (Account) request.getAttribute("account");
         service.add(libraryId, dto, account);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
-    @PostMapping("/{libraryId}/remove")
+    @PatchMapping("/{libraryId}/removeVersion")
     public ResponseEntity<String> remove(@PathVariable String libraryId, @RequestBody ReqAddRemoveVersionLibrary dto) {
         Account account = (Account) request.getAttribute("account");
         service.remove(libraryId, dto, account);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
-    @PostMapping("/{libraryId}/setName")
+    @PatchMapping("/{libraryId}/name")
     public ResponseEntity<String> setName(@PathVariable String libraryId, @RequestBody ReqNameLibrary dto) {
         Account account = (Account) request.getAttribute("account");
         service.setName(libraryId, dto, account);

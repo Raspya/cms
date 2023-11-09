@@ -81,4 +81,5 @@ public class ParamModelFloat extends ParamModel  {
     public void setMax(Integer max) {
         this.max = max;
     }
+
 }

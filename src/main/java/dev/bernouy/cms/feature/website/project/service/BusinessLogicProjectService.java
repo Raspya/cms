@@ -44,6 +44,8 @@ public class BusinessLogicProjectService {
 
     public void editDomain( String domain, String websiteID, Account account ){
         regexComponent.isDomainValid(domain);
+        if ( dataPersistentProjectService.isDomainAlreadyExist(domain) )
+            throw new BasicException("Domain already exist", HttpStatus.BAD_REQUEST);
         isOwner(websiteID, account);
         Project website = websiteRepository.findById(websiteID).orElseThrow();
         website.setDomain(domain);

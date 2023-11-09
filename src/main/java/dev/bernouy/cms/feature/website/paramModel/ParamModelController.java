@@ -29,70 +29,70 @@ public class ParamModelController {
         this.response = response;
     }
 
-    @PostMapping("/create")
+    @PostMapping("")
     public ResponseEntity<String> createParamModel(@RequestBody ReqCreateParamModel dto) {
         Account account = (Account) request.getAttribute("account");
         ParamModel paramModel = paramModelService.create(dto, account);
         return new ResponseEntity<>(paramModel.getId(), HttpStatus.CREATED);
     }
 
-    @PostMapping("/{paramModelId}/delete")
+    @DeleteMapping("/{paramModelId}")
     public ResponseEntity<String> delete(@PathVariable String paramModelId) {
         Account account = (Account) request.getAttribute("account");
         paramModelService.delete(account, paramModelId);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
-    @PostMapping("/{paramModelId}/setKey")
+    @PatchMapping("/{paramModelId}/key")
     public ResponseEntity<String> setKey(@RequestBody ReqKeyParamModel dto, @PathVariable String paramModelId) {
         Account account = (Account) request.getAttribute("account");
         paramModelService.setKey(dto, account, paramModelId);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
-    @PostMapping("/{paramModelId}/setName")
+    @PatchMapping("/{paramModelId}/name")
     public ResponseEntity<String> setName(@RequestBody ReqNameParamModel dto, @PathVariable String paramModelId) {
         Account account = (Account) request.getAttribute("account");
         paramModelService.setName(dto, account, paramModelId);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
-    @PostMapping("/{paramModelId}/setPosition")
+    @PatchMapping("/{paramModelId}/position")
     public ResponseEntity<String> setPosition(@RequestBody ReqPositionParamModel dto, @PathVariable String paramModelId) {
         Account account = (Account) request.getAttribute("account");
         paramModelService.setPosition(dto, account, paramModelId);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
-    @PostMapping("/{paramModelId}/setOption")
+    @PatchMapping ("/{paramModelId}/option")
     public ResponseEntity<String> setOption(@RequestBody ReqOptionParamModel dto, @PathVariable String paramModelId) {
         Account account = (Account) request.getAttribute("account");
         paramModelService.setOption(dto, account, paramModelId);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
-    @PostMapping("/{paramModelId}/resetOption")
+    @PatchMapping("/{paramModelId}/resetOption")
     public ResponseEntity<String> resetOption(@RequestBody ReqKeyParamModel dto, @PathVariable String paramModelId) {
         Account account = (Account) request.getAttribute("account");
         paramModelService.resetOption(dto, account, paramModelId);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
-    @PostMapping("/{paramModelId}/resetOptions")
+    @PatchMapping("/{paramModelId}/resetOptions")
     public ResponseEntity<String> resetOptions(@PathVariable String paramModelId) {
         Account account = (Account) request.getAttribute("account");
         paramModelService.resetOptions(account, paramModelId);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
-    @PostMapping("/{paramModelId}/setValue")
+    @PatchMapping("/{paramModelId}/value")
     public ResponseEntity<String> setValue(@RequestBody ReqValueParamModel dto, @PathVariable String paramModelId) {
         Account account = (Account) request.getAttribute("account");
         paramModelService.setValue(dto, account, paramModelId);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
-    @GetMapping("/{paramModelId}/get")
+    @GetMapping("/{paramModelId}")
     public ParamModel get(@PathVariable String paramModelId) {
         Account account = (Account) request.getAttribute("account");
         return paramModelService.getById(paramModelId, account);

@@ -4,13 +4,13 @@ public class ReqCreatePage {
 
     private String projectId;
     private String name;
-    private String url;
+    private String path;
 
     public ReqCreatePage() {}
-    public ReqCreatePage(String projectId, String name, String url) {
+    public ReqCreatePage(String projectId, String name, String path) {
         this.projectId = projectId;
         this.name = name;
-        this.url = url;
+        this.path = path;
     }
 
     public String getProjectId() {
@@ -29,11 +29,11 @@ public class ReqCreatePage {
         this.name = name;
     }
 
-    public String getUrl() {
-        return url;
+    public String getPath() {
+        return path;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setPath(String path) {
+        this.path = path;
     }
 }

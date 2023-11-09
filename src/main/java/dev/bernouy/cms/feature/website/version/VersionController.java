@@ -32,35 +32,35 @@ public class VersionController {
     }
 
 
-    @PostMapping("/create")
+    @PostMapping("")
     public ResponseEntity<String> createVersion(@RequestBody ReqCreateVersion dto){
         Account account = (Account) request.getAttribute("account");
         Version version = versionService.create(dto, account);
         return new ResponseEntity<>(version.getId(), HttpStatus.CREATED);
     }
 
-    @PostMapping("/{versionID}/uploadJS")
+    @PatchMapping("/{versionID}/uploadJS")
     public ResponseEntity<String> uploadJS(@RequestBody ReqUploadFile dto, @PathVariable String versionID){
         Account account = (Account) request.getAttribute("account");
         versionService.uploadJS(dto, account, versionID);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
-    @PostMapping("/{versionID}/uploadCSS")
+    @PatchMapping("/{versionID}/uploadCSS")
     public ResponseEntity<String> uploadCSS(@RequestBody ReqUploadFile dto, @PathVariable String versionID){
         Account account = (Account) request.getAttribute("account");
         versionService.uploadCSS(dto, account, versionID);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
-    @PostMapping("/{versionID}/deploy")
+    @PatchMapping("/{versionID}/deploy")
     public ResponseEntity<String> deployVersion(@PathVariable String versionID){
         Account account = (Account) request.getAttribute("account");
         versionService.deploy(account, versionID);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
-    @GetMapping("/{versionID}/get")
+    @GetMapping("/{versionID}")
     public Version get(@PathVariable String versionID) {
         Account account = (Account) request.getAttribute("account");
         return versionService.getByIdAccount(versionID, account);

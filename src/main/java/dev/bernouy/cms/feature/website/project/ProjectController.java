@@ -5,7 +5,6 @@ import dev.bernouy.cms.feature.website.project.formatting.request.ReqCreateWebsi
 import dev.bernouy.cms.feature.website.project.formatting.request.PatchDomainWebsite;
 import dev.bernouy.cms.feature.website.project.formatting.response.ProjectFormatting;
 import dev.bernouy.cms.feature.website.project.service.BusinessLogicProjectService;
-import dev.bernouy.cms.security.Public;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,17 +29,17 @@ public class ProjectController {
         this.request = request;
     }
 
-    @PostMapping("/create")
+    @PostMapping("")
     public ResponseEntity<String> create( @RequestBody ReqCreateWebsiteDTO dto ){
         Account account = (Account) request.getAttribute("account");
         Project website = projectService.create(dto, account);
         return new ResponseEntity<>(website.getId(), HttpStatus.CREATED);
     }
 
-    @PostMapping("/editDomain")
+    @PatchMapping("/domain")
     public ResponseEntity<String> editDomain( @RequestBody PatchDomainWebsite dto ){
         Account account = (Account) request.getAttribute("account");
-        projectService.editDomain(dto.getDomain(), dto.getWebsiteID(), account);
+        projectService.editDomain(dto.getDomain(), dto.getWebsiteId(), account);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
@@ -50,7 +49,7 @@ public class ProjectController {
         return projectService.getListWebsite(account);
     }
 
-    @GetMapping("/getDetail/{projectId}")
+    @GetMapping("/{projectId}")
     public Project isAuth(@PathVariable String projectId){
         Account account = (Account) request.getAttribute("account");
         return projectService.getWebsite(projectId, account);

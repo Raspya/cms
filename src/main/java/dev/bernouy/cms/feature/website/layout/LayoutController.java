@@ -31,35 +31,35 @@ public class LayoutController {
         this.request = request;
     }
 
-    @PostMapping("/create")
+    @PostMapping("")
     public ResponseEntity<String> createLayout(@RequestBody ReqCreateLayout dto) {
         Account account = (Account) request.getAttribute("account");
         Layout layout = service.create(dto, account);
         return new ResponseEntity<>(layout.getId(), HttpStatus.CREATED);
     }
 
-    @PostMapping("/{layoutId}/delete")
+    @DeleteMapping("/{layoutId}")
     public ResponseEntity<String> delete(@PathVariable String layoutId) {
         Account account = (Account) request.getAttribute("account");
         service.delete(layoutId, account);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
-    @PostMapping("/{layoutId}/setName")
+    @PatchMapping("/{layoutId}/name")
     public ResponseEntity<String> setName(@PathVariable String layoutId, @RequestBody ReqSetNameLayout dto) {
         Account account = (Account) request.getAttribute("account");
         service.setName(layoutId, dto, account);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
-    @PostMapping("/{layoutId}/setDefault")
+    @PatchMapping("/{layoutId}/default")
     public ResponseEntity<String> setDefault(@PathVariable String layoutId, @RequestBody ReqSetDefaultLayout dto) {
         Account account = (Account) request.getAttribute("account");
         service.setDefault(layoutId, dto, account);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
-    @GetMapping("/{layoutId}/get")
+    @GetMapping("/{layoutId}")
     public Layout get(@PathVariable String layoutId) {
         Account account = (Account) request.getAttribute("account");
         return service.getById(layoutId, account);

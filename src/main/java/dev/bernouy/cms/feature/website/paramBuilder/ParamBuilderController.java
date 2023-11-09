@@ -30,14 +30,14 @@ public class ParamBuilderController {
         this.request = request;
     }
 
-    @PostMapping("/create")
+    @PostMapping("")
     public ResponseEntity<String> createParamModel(@RequestBody ReqCreateParamBuilder dto) {
         Account account = (Account) request.getAttribute("account");
         ParamBuilder paramBuilder = service.create(dto, account);
         return new ResponseEntity<>(paramBuilder.getId(), HttpStatus.CREATED);
     }
 
-    @PostMapping("/{paramBuilderId}/setValue")
+    @PatchMapping("/{paramBuilderId}/value")
     public ResponseEntity<String> setValue(@PathVariable String paramBuilderId, @RequestBody ReqSetValueParamBuilder dto) {
         Account account = (Account) request.getAttribute("account");
         service.setValue(paramBuilderId, dto, account);
@@ -49,4 +49,5 @@ public class ParamBuilderController {
         Account account = (Account) request.getAttribute("account");
         return service.listAllParamBuilder(builderId, paramBuilderId, account );
     }
+    
 }
