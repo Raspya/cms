@@ -7,11 +7,8 @@ import dev.bernouy.cms.feature.website.WebsiteExceptionMessages;
 import dev.bernouy.cms.feature.website.paramModel.ParamModelRepository;
 import dev.bernouy.cms.feature.website.paramModel.formatting.request.*;
 import dev.bernouy.cms.feature.website.paramModel.formatting.response.ParamModelFormatting;
+import dev.bernouy.cms.feature.website.paramModel.model.*;
 import dev.bernouy.cms.feature.website.version.Version;
-import dev.bernouy.cms.feature.website.paramModel.model.ParamModel;
-import dev.bernouy.cms.feature.website.paramModel.model.ParamModelFloat;
-import dev.bernouy.cms.feature.website.paramModel.model.ParamModelInt;
-import dev.bernouy.cms.feature.website.paramModel.model.ParamModelString;
 import dev.bernouy.cms.feature.website.version.service.BusinessLogicVersionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -53,6 +50,9 @@ public class ParamModelService {
             case "string" -> new ParamModelString();
             case "int"    -> new ParamModelInt();
             case "float"  -> new ParamModelFloat();
+            case "list"   -> new ParamModelList();
+            case "link"   -> new ParamModelLink();
+            case "object" -> new ParamModelObject();
             default       -> throw new BasicException(WebsiteExceptionMessages.INVALID_PARAM_MODEL_TYPE);
         };
         paramModel.setType(dto.getType());
@@ -65,6 +65,7 @@ public class ParamModelService {
 
         paramModel.setPosition(maxPos+1);
         if ( parent != null ) paramModel.setParent(parent);
+
         paramModelRepository.save(paramModel);
         return paramModel;
     }

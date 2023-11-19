@@ -13,8 +13,11 @@ import dev.bernouy.cms.feature.website.layout.Layout;
 import dev.bernouy.cms.feature.website.layout.service.BusinessLogicLayoutService;
 import dev.bernouy.cms.feature.website.page.Page;
 import dev.bernouy.cms.feature.website.page.service.BusinessLogicPageService;
+import dev.bernouy.cms.feature.website.paramBuilder.dto.request.ReqCreateParamBuilder;
 import dev.bernouy.cms.feature.website.paramBuilder.service.BusinessLogicParamBuilderService;
 import dev.bernouy.cms.feature.website.paramModel.model.ParamModel;
+import dev.bernouy.cms.feature.website.paramModel.model.ParamModelList;
+import dev.bernouy.cms.feature.website.paramModel.service.DataPersistentParamModelService;
 import dev.bernouy.cms.feature.website.version.Version;
 import dev.bernouy.cms.feature.website.version.service.BusinessLogicVersionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +37,10 @@ public class BusinessLogicBuilderService {
     private AuthWebsiteService authWebsiteService;
     private BusinessLogicParamBuilderService businessLogicParamBuilderService;
     private DataFormattingBuilderService dataFormattingBuilderService;
+    private DataPersistentParamModelService dataPersistentParamModelService;
 
     @Autowired
-    public BusinessLogicBuilderService(DataFormattingBuilderService dataFormattingBuilderService, DataPersistentBuilderService dataPersistentBuilderService, RegexComponent regexComponent, BusinessLogicVersionService versionService, BusinessLogicPageService businessLogicPageService, BusinessLogicLayoutService businessLogicLayoutService, AuthWebsiteService authWebsiteService, BusinessLogicParamBuilderService businessLogicParamBuilderService) {
+    public BusinessLogicBuilderService(DataFormattingBuilderService dataFormattingBuilderService, DataPersistentBuilderService dataPersistentBuilderService, RegexComponent regexComponent, BusinessLogicVersionService versionService, BusinessLogicPageService businessLogicPageService, BusinessLogicLayoutService businessLogicLayoutService, AuthWebsiteService authWebsiteService, BusinessLogicParamBuilderService businessLogicParamBuilderService, DataPersistentParamModelService dataPersistentParamModelService) {
         this.dataPersistentBuilderService = dataPersistentBuilderService;
         this.regexComponent = regexComponent;
         this.versionService = versionService;
@@ -45,6 +49,7 @@ public class BusinessLogicBuilderService {
         this.authWebsiteService = authWebsiteService;
         this.businessLogicParamBuilderService = businessLogicParamBuilderService;
         this.dataFormattingBuilderService = dataFormattingBuilderService;
+        this.dataPersistentParamModelService = dataPersistentParamModelService;
     }
 
     public Builder create(ReqCreateBuilder dto, Account account) {
@@ -73,8 +78,18 @@ public class BusinessLogicBuilderService {
         ArrayList<ParamModel> lstParamModel = versionService.getLstParamModel(version.getId());
         for (ParamModel paramModel : lstParamModel) {
             businessLogicParamBuilderService.create(paramModel.getId(), builder.getId(), account);
-        }
 
+            if (paramModel instanceof ParamModelList) {
+                List<ParamModel> lstParamModelChild = dataPersistentParamModelService.findAllByParentId(paramModel.getId());
+                int value = Integer.parseInt(paramModel.getValue());
+                for (int i = 0; i < value; i++) {
+                    for (ParamModel paramModelChild : lstParamModelChild) {
+                        businessLogicParamBuilderService.create(new ReqCreateParamBuilder(paramModel.getId()), account);
+                        if (lstParamModel.contains(paramModelChild)) lstParamModel.remove(paramModelChild); // TODO: 2023-11-19 check if it's necessary
+                    }
+                }
+            }
+        }
         return builder;
     }
 

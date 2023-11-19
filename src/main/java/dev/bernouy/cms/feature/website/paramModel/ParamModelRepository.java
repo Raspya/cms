@@ -16,4 +16,6 @@ public interface ParamModelRepository extends CrudRepository<ParamModel, String>
 
     ArrayList<ParamModel> findAllByComponentVersion(String versionId);
     List<ParamModel> findAllByComponentVersionAndParentId(String versionId, String parentId);
+
+    List<ParamModel> findAllByParentId(String id);
 }
