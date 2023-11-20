@@ -2,6 +2,7 @@ package dev.bernouy.cms.feature.account;
 
 import dev.bernouy.cms.feature.account.dto.request.ReqRegisterConDTO;
 import dev.bernouy.cms.feature.account.dto.response.ResponseConDTO;
+import dev.bernouy.cms.feature.account.service.AccountBusinessLogicService;
 import dev.bernouy.cms.security.Public;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -14,12 +15,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/account")
 public class AccountController {
 
-    private AccountService accountService;
+    private AccountBusinessLogicService accountService;
     private HttpServletResponse response;
     private HttpServletRequest  request;
 
     @Autowired
-    public AccountController( AccountService accountService, HttpServletResponse response, HttpServletRequest request){
+    public AccountController(AccountBusinessLogicService accountService, HttpServletResponse response, HttpServletRequest request){
         this.accountService = accountService;
         this.response = response;
         this.request = request;

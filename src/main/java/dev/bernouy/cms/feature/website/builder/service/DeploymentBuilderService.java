@@ -2,7 +2,7 @@ package dev.bernouy.cms.feature.website.builder.service;
 
 import dev.bernouy.cms.feature.website.builder.Builder;
 import dev.bernouy.cms.feature.website.paramBuilder.ParamBuilder;
-import dev.bernouy.cms.feature.website.paramBuilder.service.DataPersistentParamBuilderService;
+import dev.bernouy.cms.feature.website.paramBuilder.service.PersistentParamBuilderService;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -12,9 +12,9 @@ import java.util.Set;
 @Service
 public class DeploymentBuilderService {
 
-    private DataPersistentParamBuilderService   dataPersistentParamBuilderService;
+    private PersistentParamBuilderService dataPersistentParamBuilderService;
 
-    public DeploymentBuilderService(DataPersistentParamBuilderService dataPersistentParamBuilderService) {
+    public DeploymentBuilderService(PersistentParamBuilderService dataPersistentParamBuilderService) {
         this.dataPersistentParamBuilderService = dataPersistentParamBuilderService;
     }
 

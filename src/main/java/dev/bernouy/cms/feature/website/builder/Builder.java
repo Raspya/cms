@@ -1,9 +1,9 @@
 package dev.bernouy.cms.feature.website.builder;
 
 import dev.bernouy.cms.common.AbstractDocument;
-import dev.bernouy.cms.feature.website.version.Version;
 import dev.bernouy.cms.feature.website.layout.Layout;
 import dev.bernouy.cms.feature.website.page.Page;
+import dev.bernouy.cms.feature.website.version.Version;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.index.Indexed;

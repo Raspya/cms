@@ -1,22 +1,18 @@
 package dev.bernouy.cms.tdb;
 
 import dev.bernouy.cms.feature.website.builder.Builder;
-import dev.bernouy.cms.feature.website.builder.formatting.request.ReqCreateBuilder;
-import dev.bernouy.cms.feature.website.builder.service.BusinessLogicBuilderService;
+import dev.bernouy.cms.feature.website.builder.dto.req.ReqCreateBuilderDTO;
+import dev.bernouy.cms.feature.website.builder.service.BusinessBuilderService;
 import dev.bernouy.cms.feature.website.layout.Layout;
 import dev.bernouy.cms.feature.website.page.Page;
-import dev.bernouy.cms.feature.website.paramModel.formatting.request.ReqCreateParamModel;
-import dev.bernouy.cms.feature.website.paramModel.model.ParamModel;
-import dev.bernouy.cms.feature.website.paramModel.service.ParamModelService;
 import dev.bernouy.cms.feature.website.version.Version;
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BuilderTDB {
 
-    private BusinessLogicBuilderService builderService;
+    private BusinessBuilderService builderService;
     private VersionTDB versionTDB;
     private PageTDB pageTDB;
 
@@ -25,23 +21,25 @@ public class BuilderTDB {
     private Page page;
 
     @Autowired
-    public BuilderTDB(BusinessLogicBuilderService builderService, VersionTDB versionTDB, PageTDB pageTDB){
+    public BuilderTDB(BusinessBuilderService builderService, VersionTDB versionTDB, PageTDB pageTDB){
         this.builderService = builderService;
         this.versionTDB = versionTDB;
         this.pageTDB = pageTDB;
     }
 
     public Builder build(){
-        ReqCreateBuilder reqCreateBuilder = new ReqCreateBuilder();
-        reqCreateBuilder.setVersionId(version.getId());
-        reqCreateBuilder.setLayoutId(layout.getId());
-        reqCreateBuilder.setPageId(page.getId());
+        ReqCreateBuilderDTO reqCreateBuilder = new ReqCreateBuilderDTO();
+        if ( layout == null && page == null )
+            page = pageTDB.build();
+        if (version == null)
+            version = versionTDB.build();
+        if ( version != null )
+            reqCreateBuilder.setVersionId(version.getId());
+        if ( layout != null )
+            reqCreateBuilder.setLayoutId(layout.getId());
+        if ( page != null )
+            reqCreateBuilder.setPageId(page.getId());
         Builder b;
-        if ( reqCreateBuilder.getLayoutId() == null && reqCreateBuilder.getPageId() == null )
-            reqCreateBuilder.setPageId(pageTDB.build().getId());
-
-        if (reqCreateBuilder.getVersionId() == null)
-            reqCreateBuilder.setVersionId(versionTDB.build().getId());
 
         if ( reqCreateBuilder.getLayoutId() != null ) b = builderService.create(reqCreateBuilder, layout.getProject().getOwner());
         else b = builderService.create(reqCreateBuilder, page.getProject().getOwner());

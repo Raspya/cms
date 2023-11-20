@@ -1,10 +1,9 @@
 package dev.bernouy.cms.feature.website.page;
 
 import dev.bernouy.cms.feature.account.Account;
-import dev.bernouy.cms.feature.website.layout.formatting.response.LayoutFormatting;
-import dev.bernouy.cms.feature.website.page.dto.request.*;
-import dev.bernouy.cms.feature.website.page.dto.response.PageFormatting;
-import dev.bernouy.cms.feature.website.page.service.BusinessLogicPageService;
+import dev.bernouy.cms.feature.website.page.dto.req.*;
+import dev.bernouy.cms.feature.website.page.dto.res.ResPageDTO;
+import dev.bernouy.cms.feature.website.page.service.BusinessPageService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
@@ -17,11 +16,11 @@ import java.util.List;
 @RequestMapping("/api/v1/page")
 public class PageController {
 
-    private BusinessLogicPageService service;
+    private BusinessPageService service;
     private HttpServletResponse response;
     private HttpServletRequest request;
 
-    public PageController(BusinessLogicPageService service, HttpServletResponse response, HttpServletRequest request) {
+    public PageController(BusinessPageService service, HttpServletResponse response, HttpServletRequest request) {
         this.service = service;
         this.response = response;
         this.request = request;
@@ -42,54 +41,54 @@ public class PageController {
     }
 
     @PatchMapping("/{pageId}/name")
-    public ResponseEntity<String> setName(@PathVariable String pageId, @RequestBody ReqSetNamePage dto) {
+    public ResponseEntity<String> setName(@PathVariable String pageId, @RequestBody ReqPatchNamePageDTO dto) {
         Account account = (Account) request.getAttribute("account");
-        service.setName(pageId, dto, account);
+        service.patchName(pageId, dto, account);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
     @PatchMapping("/{pageId}/deploy")
-    public ResponseEntity<String> setDeploy(@PathVariable String pageId, @RequestBody ReqSetDeployPage dto) {
+    public ResponseEntity<String> setDeploy(@PathVariable String pageId, @RequestBody ReqPatchDeployPageDTO dto) {
         Account account = (Account) request.getAttribute("account");
-        service.setDeploy(pageId, dto, account);
+        service.patchDeploy(pageId, dto, account);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
     @PatchMapping("/{pageId}/path")
-    public ResponseEntity<String> setUrl(@PathVariable String pageId, @RequestBody ReqSetUrlPage dto) {
+    public ResponseEntity<String> setUrl(@PathVariable String pageId, @RequestBody ReqPatchPathPageDTO dto) {
         Account account = (Account) request.getAttribute("account");
-        service.setUrl(pageId, dto, account);
+        service.patchPath(pageId, dto, account);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
     @PatchMapping("/{pageId}/title")
-    public ResponseEntity<String> setTitle(@PathVariable String pageId, @RequestBody ReqSetTitlePage dto) {
+    public ResponseEntity<String> setTitle(@PathVariable String pageId, @RequestBody ReqPatchTitlePageDTO dto) {
         Account account = (Account) request.getAttribute("account");
-        service.setTitle(pageId, dto, account);
+        service.patchTitle(pageId, dto, account);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
     @PatchMapping("/{pageId}/description")
-    public ResponseEntity<String> setDescription(@PathVariable String pageId, @RequestBody ReqSetDescriptionPage dto) {
+    public ResponseEntity<String> setDescription(@PathVariable String pageId, @RequestBody ReqPatchDescriptionPageDTO dto) {
         Account account = (Account) request.getAttribute("account");
-        service.setDescription(pageId, dto, account);
+        service.patchDescription(pageId, dto, account);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
     @PatchMapping("/{pageId}/layout")
-    public ResponseEntity<String> setLayout(@PathVariable String pageId, @RequestBody ReqSetLayoutPage dto) {
+    public ResponseEntity<String> setLayout(@PathVariable String pageId, @RequestBody ReqPatchLayoutPageDTO dto) {
         Account account = (Account) request.getAttribute("account");
-        service.setLayout(pageId, dto, account);
+        service.patchLayout(pageId, dto, account);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
     @GetMapping("/{pageId}")
-    public Page get(@PathVariable String pageId) {
+    public ResPageDTO get(@PathVariable String pageId) {
         Account account = (Account) request.getAttribute("account");
-        return service.getById(pageId, account);
+        return service.detail(pageId, account);
     }
 
     @GetMapping("/list")
-    public List<PageFormatting> list(@RequestParam String websiteId) {
+    public List<ResPageDTO> list(@RequestParam String websiteId) {
         Account account = (Account) request.getAttribute("account");
         return service.list(websiteId, account );
     }

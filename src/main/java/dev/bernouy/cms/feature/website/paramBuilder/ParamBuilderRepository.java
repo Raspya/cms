@@ -1,7 +1,5 @@
 package dev.bernouy.cms.feature.website.paramBuilder;
 
-import dev.bernouy.cms.feature.website.paramModel.model.ParamModel;
-import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

@@ -1,27 +1,23 @@
 package dev.bernouy.cms.tdb;
 
-import dev.bernouy.cms.feature.website.layout.Layout;
-import dev.bernouy.cms.feature.website.layout.formatting.request.ReqCreateLayout;
-import dev.bernouy.cms.feature.website.layout.service.BusinessLogicLayoutService;
 import dev.bernouy.cms.feature.website.library.Library;
-import dev.bernouy.cms.feature.website.library.formatting.request.ReqCreateLibrary;
-import dev.bernouy.cms.feature.website.library.service.BusinessLogicLibraryService;
+import dev.bernouy.cms.feature.website.library.dto.req.ReqCreateLibraryDTO;
+import dev.bernouy.cms.feature.website.library.service.BusinessLibraryService;
 import dev.bernouy.cms.feature.website.project.Project;
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class LibraryTDB {
 
-    private BusinessLogicLibraryService libraryService;
+    private BusinessLibraryService libraryService;
     private WebsiteTDB websiteTDB;
 
     private Project project;
     private String name;
 
     @Autowired
-    public LibraryTDB(BusinessLogicLibraryService libraryService, WebsiteTDB websiteTDB){
+    public LibraryTDB(BusinessLibraryService libraryService, WebsiteTDB websiteTDB){
         this.libraryService = libraryService;
         this.websiteTDB = websiteTDB;
     }
@@ -39,7 +35,7 @@ public class LibraryTDB {
     public Library build(){
         if ( name == null) name = "Ma librairie " + Math.random();
         if (project == null) project = websiteTDB.build();
-        ReqCreateLibrary reqCreateLibrary = new ReqCreateLibrary();
+        ReqCreateLibraryDTO reqCreateLibrary = new ReqCreateLibraryDTO();
         reqCreateLibrary.setProjectId(project.getId());
         reqCreateLibrary.setName(name);
         Library l = libraryService.create(reqCreateLibrary, project.getOwner());

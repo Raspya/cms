@@ -8,6 +8,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.EnumSet;
 
 @Service
+@Deprecated
 public class FileService {
 
     public final static String CLASS_PATH           = FileService.class.getResource("/").getPath();

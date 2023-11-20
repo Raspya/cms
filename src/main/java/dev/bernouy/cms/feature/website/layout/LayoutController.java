@@ -1,12 +1,11 @@
 package dev.bernouy.cms.feature.website.layout;
 
 import dev.bernouy.cms.feature.account.Account;
-import dev.bernouy.cms.feature.website.component.formatting.response.InternalComponentFormat;
-import dev.bernouy.cms.feature.website.layout.formatting.request.ReqCreateLayout;
-import dev.bernouy.cms.feature.website.layout.formatting.request.ReqSetDefaultLayout;
-import dev.bernouy.cms.feature.website.layout.formatting.request.ReqSetNameLayout;
-import dev.bernouy.cms.feature.website.layout.formatting.response.LayoutFormatting;
-import dev.bernouy.cms.feature.website.layout.service.BusinessLogicLayoutService;
+import dev.bernouy.cms.feature.website.layout.dto.req.ReqCreateLayoutDTO;
+import dev.bernouy.cms.feature.website.layout.dto.req.ReqPatchDefaultLayoutDTO;
+import dev.bernouy.cms.feature.website.layout.dto.req.ReqPatchNameLayoutDTO;
+import dev.bernouy.cms.feature.website.layout.dto.res.ResLayoutDTO;
+import dev.bernouy.cms.feature.website.layout.service.BusinessLayoutService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,19 +19,19 @@ import java.util.List;
 @RequestMapping("/api/v1/layout")
 public class LayoutController {
 
-    private BusinessLogicLayoutService service;
+    private BusinessLayoutService service;
     private HttpServletResponse response;
     private HttpServletRequest request;
 
     @Autowired
-    public LayoutController(BusinessLogicLayoutService service, HttpServletResponse response, HttpServletRequest request) {
+    public LayoutController(BusinessLayoutService service, HttpServletResponse response, HttpServletRequest request) {
         this.service = service;
         this.response = response;
         this.request = request;
     }
 
     @PostMapping("")
-    public ResponseEntity<String> createLayout(@RequestBody ReqCreateLayout dto) {
+    public ResponseEntity<String> createLayout(@RequestBody ReqCreateLayoutDTO dto) {
         Account account = (Account) request.getAttribute("account");
         Layout layout = service.create(dto, account);
         return new ResponseEntity<>(layout.getId(), HttpStatus.CREATED);
@@ -46,27 +45,27 @@ public class LayoutController {
     }
 
     @PatchMapping("/{layoutId}/name")
-    public ResponseEntity<String> setName(@PathVariable String layoutId, @RequestBody ReqSetNameLayout dto) {
+    public ResponseEntity<String> setName(@PathVariable String layoutId, @RequestBody ReqPatchNameLayoutDTO dto) {
         Account account = (Account) request.getAttribute("account");
-        service.setName(layoutId, dto, account);
+        service.patchName(layoutId, dto, account);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
     @PatchMapping("/{layoutId}/default")
-    public ResponseEntity<String> setDefault(@PathVariable String layoutId, @RequestBody ReqSetDefaultLayout dto) {
+    public ResponseEntity<String> setDefault(@PathVariable String layoutId, @RequestBody ReqPatchDefaultLayoutDTO dto) {
         Account account = (Account) request.getAttribute("account");
-        service.setDefault(layoutId, dto, account);
+        service.patchDefault(layoutId, dto, account);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
     @GetMapping("/{layoutId}")
-    public Layout get(@PathVariable String layoutId) {
+    public ResLayoutDTO get(@PathVariable String layoutId) {
         Account account = (Account) request.getAttribute("account");
         return service.getById(layoutId, account);
     }
 
     @GetMapping("/list")
-    public List<LayoutFormatting> list(@RequestParam String websiteId) {
+    public List<ResLayoutDTO> list(@RequestParam String websiteId) {
         Account account = (Account) request.getAttribute("account");
         return service.list(websiteId, account );
     }

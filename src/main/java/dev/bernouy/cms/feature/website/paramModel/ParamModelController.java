@@ -1,10 +1,10 @@
 package dev.bernouy.cms.feature.website.paramModel;
 
 import dev.bernouy.cms.feature.account.Account;
-import dev.bernouy.cms.feature.website.paramModel.formatting.request.*;
-import dev.bernouy.cms.feature.website.paramModel.formatting.response.ParamModelFormatting;
+import dev.bernouy.cms.feature.website.paramModel.dto.req.*;
+import dev.bernouy.cms.feature.website.paramModel.dto.response.ResParamModelDTO;
 import dev.bernouy.cms.feature.website.paramModel.model.ParamModel;
-import dev.bernouy.cms.feature.website.paramModel.service.ParamModelService;
+import dev.bernouy.cms.feature.website.paramModel.service.BusinessParamModelService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,19 +18,19 @@ import java.util.List;
 @RequestMapping("/api/v1/component/param")
 public class ParamModelController {
 
-    private ParamModelService paramModelService;
+    private BusinessParamModelService paramModelService;
     private HttpServletResponse response;
     private HttpServletRequest request;
 
     @Autowired
-    public ParamModelController(ParamModelService paramModelService, HttpServletRequest request, HttpServletResponse response){
+    public ParamModelController(BusinessParamModelService paramModelService, HttpServletRequest request, HttpServletResponse response){
         this.paramModelService = paramModelService;
         this.request = request;
         this.response = response;
     }
 
     @PostMapping("")
-    public ResponseEntity<String> createParamModel(@RequestBody ReqCreateParamModel dto) {
+    public ResponseEntity<String> createParamModel(@RequestBody ReqCreateParamModelDTO dto) {
         Account account = (Account) request.getAttribute("account");
         ParamModel paramModel = paramModelService.create(dto, account);
         return new ResponseEntity<>(paramModel.getId(), HttpStatus.CREATED);
@@ -44,35 +44,35 @@ public class ParamModelController {
     }
 
     @PatchMapping("/{paramModelId}/key")
-    public ResponseEntity<String> setKey(@RequestBody ReqKeyParamModel dto, @PathVariable String paramModelId) {
+    public ResponseEntity<String> setKey(@RequestBody ReqKeyParamModelDTO dto, @PathVariable String paramModelId) {
         Account account = (Account) request.getAttribute("account");
-        paramModelService.setKey(dto, account, paramModelId);
+        paramModelService.patchKey(dto, account, paramModelId);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
     @PatchMapping("/{paramModelId}/name")
-    public ResponseEntity<String> setName(@RequestBody ReqNameParamModel dto, @PathVariable String paramModelId) {
+    public ResponseEntity<String> setName(@RequestBody ReqNameParamModelDTO dto, @PathVariable String paramModelId) {
         Account account = (Account) request.getAttribute("account");
-        paramModelService.setName(dto, account, paramModelId);
+        paramModelService.patchName(dto, account, paramModelId);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
     @PatchMapping("/{paramModelId}/position")
-    public ResponseEntity<String> setPosition(@RequestBody ReqPositionParamModel dto, @PathVariable String paramModelId) {
+    public ResponseEntity<String> setPosition(@RequestBody ReqPositionParamModelDTO dto, @PathVariable String paramModelId) {
         Account account = (Account) request.getAttribute("account");
-        paramModelService.setPosition(dto, account, paramModelId);
+        paramModelService.patchPosition(dto, account, paramModelId);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
     @PatchMapping ("/{paramModelId}/option")
-    public ResponseEntity<String> setOption(@RequestBody ReqOptionParamModel dto, @PathVariable String paramModelId) {
+    public ResponseEntity<String> setOption(@RequestBody ReqOptionParamModelDTO dto, @PathVariable String paramModelId) {
         Account account = (Account) request.getAttribute("account");
-        paramModelService.setOption(dto, account, paramModelId);
+        paramModelService.patchOption(dto, account, paramModelId);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
     @PatchMapping("/{paramModelId}/resetOption")
-    public ResponseEntity<String> resetOption(@RequestBody ReqKeyParamModel dto, @PathVariable String paramModelId) {
+    public ResponseEntity<String> resetOption(@RequestBody ReqKeyParamModelDTO dto, @PathVariable String paramModelId) {
         Account account = (Account) request.getAttribute("account");
         paramModelService.resetOption(dto, account, paramModelId);
         return new ResponseEntity<>("", HttpStatus.CREATED);
@@ -86,22 +86,22 @@ public class ParamModelController {
     }
 
     @PatchMapping("/{paramModelId}/value")
-    public ResponseEntity<String> setValue(@RequestBody ReqValueParamModel dto, @PathVariable String paramModelId) {
+    public ResponseEntity<String> setValue(@RequestBody ReqValueParamModelDTO dto, @PathVariable String paramModelId) {
         Account account = (Account) request.getAttribute("account");
-        paramModelService.setValue(dto, account, paramModelId);
+        paramModelService.patchValue(dto, account, paramModelId);
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
     @GetMapping("/{paramModelId}")
-    public ParamModel get(@PathVariable String paramModelId) {
+    public ResParamModelDTO get(@PathVariable String paramModelId) {
         Account account = (Account) request.getAttribute("account");
         return paramModelService.getById(paramModelId, account);
     }
 
     @GetMapping("/list")
-    public List<ParamModelFormatting> list(@RequestParam(required = false) String paramModelId, @RequestParam String versionId) {
+    public List<ResParamModelDTO> list(@RequestParam(required = false) String paramModelId, @RequestParam String versionId) {
         Account account = (Account) request.getAttribute("account");
-        return paramModelService.listParamModel(paramModelId, versionId, account);
+        return paramModelService.list(account, paramModelId, versionId);
     }
 
 

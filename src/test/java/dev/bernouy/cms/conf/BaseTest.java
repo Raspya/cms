@@ -2,16 +2,16 @@ package dev.bernouy.cms.conf;
 
 import dev.bernouy.cms.common.FileService;
 import dev.bernouy.cms.config.properties.FileSystemProperties;
-import dev.bernouy.cms.feature.account.AccountService;
-import dev.bernouy.cms.feature.website.builder.service.BusinessLogicBuilderService;
-import dev.bernouy.cms.feature.website.component.service.BusinessLogicComponentService;
-import dev.bernouy.cms.feature.website.layout.service.BusinessLogicLayoutService;
-import dev.bernouy.cms.feature.website.library.service.BusinessLogicLibraryService;
-import dev.bernouy.cms.feature.website.page.service.BusinessLogicPageService;
-import dev.bernouy.cms.feature.website.paramBuilder.service.BusinessLogicParamBuilderService;
-import dev.bernouy.cms.feature.website.paramModel.service.ParamModelService;
-import dev.bernouy.cms.feature.website.project.service.BusinessLogicProjectService;
-import dev.bernouy.cms.feature.website.version.service.BusinessLogicVersionService;
+import dev.bernouy.cms.feature.account.service.AccountBusinessLogicService;
+import dev.bernouy.cms.feature.website.builder.service.BusinessBuilderService;
+import dev.bernouy.cms.feature.website.component.service.BusinessComponentService;
+import dev.bernouy.cms.feature.website.layout.service.BusinessLayoutService;
+import dev.bernouy.cms.feature.website.library.service.BusinessLibraryService;
+import dev.bernouy.cms.feature.website.page.service.BusinessPageService;
+import dev.bernouy.cms.feature.website.paramBuilder.service.BusinessParamBuilderService;
+import dev.bernouy.cms.feature.website.paramModel.service.BusinessParamModelService;
+import dev.bernouy.cms.feature.website.project.service.BusinessProjectService;
+import dev.bernouy.cms.feature.website.version.service.BusinessVersionService;
 import dev.bernouy.cms.tdb.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,25 +26,25 @@ public class BaseTest {
     protected MongoTemplate mongoTemplate;
 
     @Autowired
-    protected AccountService accountService;
+    protected AccountBusinessLogicService accountService;
     @Autowired
-    protected BusinessLogicComponentService componentService;
+    protected BusinessComponentService componentService;
     @Autowired
-    protected BusinessLogicVersionService versionService;
+    protected BusinessVersionService versionService;
     @Autowired
-    protected BusinessLogicParamBuilderService paramBuilderService;
+    protected BusinessParamBuilderService paramBuilderService;
     @Autowired
-    protected BusinessLogicProjectService websiteService;
+    protected BusinessProjectService websiteService;
     @Autowired
-    protected BusinessLogicPageService pageService;
+    protected BusinessPageService pageService;
     @Autowired
-    protected BusinessLogicBuilderService builderService;
+    protected BusinessBuilderService builderService;
     @Autowired
-    protected BusinessLogicLibraryService libraryService;
+    protected BusinessLibraryService libraryService;
     @Autowired
-    protected BusinessLogicLayoutService layoutService;
+    protected BusinessLayoutService layoutService;
     @Autowired
-    protected ParamModelService paramModelService;
+    protected BusinessParamModelService paramModelService;
 
     @Autowired
     protected AccountTDB accountTDB;

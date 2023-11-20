@@ -1,7 +1,7 @@
 package dev.bernouy.cms.security;
 
 import dev.bernouy.cms.feature.account.Account;
-import dev.bernouy.cms.feature.account.AccountService;
+import dev.bernouy.cms.feature.account.service.AccountBusinessLogicService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -15,10 +15,10 @@ import java.io.IOException;
 @Component
 public class InterceptorAuth implements HandlerInterceptor {
 
-    private final AccountService accountService;
+    private final AccountBusinessLogicService accountService;
 
     @Autowired
-    public InterceptorAuth( AccountService accountService ){
+    public InterceptorAuth( AccountBusinessLogicService accountService ){
         this.accountService = accountService;
     }
 

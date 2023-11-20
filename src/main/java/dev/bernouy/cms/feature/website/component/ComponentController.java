@@ -1,11 +1,10 @@
 package dev.bernouy.cms.feature.website.component;
 
 import dev.bernouy.cms.feature.account.Account;
-import dev.bernouy.cms.feature.website.component.formatting.request.ReqCreateComponentDTO;
-import dev.bernouy.cms.feature.website.component.formatting.request.ReqDeleteComponentDTO;
-import dev.bernouy.cms.feature.website.component.formatting.request.ReqEditNameComponentDTO;
-import dev.bernouy.cms.feature.website.component.formatting.response.InternalComponentFormat;
-import dev.bernouy.cms.feature.website.component.service.BusinessLogicComponentService;
+import dev.bernouy.cms.feature.website.component.dto.req.ReqCreateComponentDTO;
+import dev.bernouy.cms.feature.website.component.dto.req.ReqPatchNameComponentDTO;
+import dev.bernouy.cms.feature.website.component.dto.res.ResComponentDTO_VInternalComponent;
+import dev.bernouy.cms.feature.website.component.service.BusinessComponentService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +18,12 @@ import java.util.List;
 @RequestMapping("/api/v1/component")
 public class ComponentController {
 
-    private BusinessLogicComponentService componentService;
+    private BusinessComponentService componentService;
     private HttpServletResponse response;
     private HttpServletRequest request;
 
     @Autowired
-    public ComponentController(BusinessLogicComponentService componentService, HttpServletResponse response, HttpServletRequest request) {
+    public ComponentController(BusinessComponentService componentService, HttpServletResponse response, HttpServletRequest request) {
         this.componentService = componentService;
         this.response = response;
         this.request = request;
@@ -41,9 +40,9 @@ public class ComponentController {
     }
 
     @PatchMapping("/name")
-    public ResponseEntity<String> editName(@RequestBody ReqEditNameComponentDTO dto ) {
+    public ResponseEntity<String> editName(@RequestBody ReqPatchNameComponentDTO dto ) {
         Account account = (Account) request.getAttribute("account");
-        componentService.editName(
+        componentService.patchName(
                 dto.getName(),
                 dto.getComponentId(),
                 account );
@@ -60,8 +59,8 @@ public class ComponentController {
     }
 
     @GetMapping("/list")
-    public List<InternalComponentFormat> list(@RequestParam String websiteId) {
+    public List<ResComponentDTO_VInternalComponent> list(@RequestParam String websiteId) {
         Account account = (Account) request.getAttribute("account");
-        return componentService.list(websiteId, account );
+        return componentService.listProjectComponents(websiteId, account );
     }
 }

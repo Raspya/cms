@@ -6,7 +6,8 @@ import java.util.List;
 
 public interface PageRepository extends CrudRepository<Page, String> {
 
-    Page findByUrl(String url);
+    Page findByPath(String url);
+    Page findByPathAndProjectId(String url, String projectId);
 
     List<Page> findAllByProjectId(String projectId);
 }

@@ -22,10 +22,10 @@ public class DeploymentProjectService {
     private FileSystemProperties fileSystem;
     private MyDistributionService myDistributionService;
     private MyFileStorageService myFileStorageService;
-    private DataPersistentProjectService datePersistenceProjectService;
+    private PersistentProjectService datePersistenceProjectService;
 
     @Autowired
-    public DeploymentProjectService(FileSystemProperties fileSystem, MyDistributionService myDistributionService, MyFileStorageService myFileStorageService, BucketsProperties bucketsProperties, DataPersistentProjectService datePersistenceProjectService ){
+    public DeploymentProjectService(FileSystemProperties fileSystem, MyDistributionService myDistributionService, MyFileStorageService myFileStorageService, BucketsProperties bucketsProperties, PersistentProjectService datePersistenceProjectService ){
         this.fileSystem = fileSystem;
         this.myDistributionService = myDistributionService;
         this.myFileStorageService = myFileStorageService;

@@ -1,26 +1,22 @@
 package dev.bernouy.cms.tdb;
 
-import dev.bernouy.cms.feature.account.Account;
 import dev.bernouy.cms.feature.website.component.Component;
-import dev.bernouy.cms.feature.website.component.service.BusinessLogicComponentService;
+import dev.bernouy.cms.feature.website.component.service.BusinessComponentService;
 import dev.bernouy.cms.feature.website.project.Project;
-import dev.bernouy.cms.feature.website.project.formatting.request.ReqCreateWebsiteDTO;
-import dev.bernouy.cms.feature.website.project.service.BusinessLogicProjectService;
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ComponentTDB {
 
-    private BusinessLogicComponentService componentService;
+    private BusinessComponentService componentService;
     private WebsiteTDB websiteTDB;
 
     private String name;
     private Project project;
 
     @Autowired
-    public ComponentTDB(BusinessLogicComponentService componentService, WebsiteTDB websiteTDB){
+    public ComponentTDB(BusinessComponentService componentService, WebsiteTDB websiteTDB){
         this.componentService = componentService;
         this.websiteTDB = websiteTDB;
     }

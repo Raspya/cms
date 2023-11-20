@@ -6,7 +6,7 @@ import dev.bernouy.cms.feature.website.project.Project;
 public class Layout extends AbstractDocument {
 
     private String name;
-    private boolean aBoolean;
+    private boolean isDefault;
     private Project project;
 
     public String getName() {
@@ -17,12 +17,12 @@ public class Layout extends AbstractDocument {
         this.name = name;
     }
 
-    public boolean isaBoolean() {
-        return aBoolean;
+    public boolean isDefault() {
+        return isDefault;
     }
 
-    public void setaBoolean(boolean aBoolean) {
-        this.aBoolean = aBoolean;
+    public void setIsDefault(boolean aDefault) {
+        this.isDefault = aDefault;
     }
 
     public Project getProject() {

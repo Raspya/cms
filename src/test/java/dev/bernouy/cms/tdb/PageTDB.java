@@ -1,21 +1,16 @@
 package dev.bernouy.cms.tdb;
 
-import dev.bernouy.cms.feature.website.component.Component;
 import dev.bernouy.cms.feature.website.page.Page;
-import dev.bernouy.cms.feature.website.page.dto.request.ReqCreatePage;
-import dev.bernouy.cms.feature.website.page.service.BusinessLogicPageService;
+import dev.bernouy.cms.feature.website.page.dto.req.ReqCreatePage;
+import dev.bernouy.cms.feature.website.page.service.BusinessPageService;
 import dev.bernouy.cms.feature.website.project.Project;
-import dev.bernouy.cms.feature.website.version.Version;
-import dev.bernouy.cms.feature.website.version.formatting.request.ReqCreateVersion;
-import dev.bernouy.cms.feature.website.version.service.BusinessLogicVersionService;
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PageTDB {
 
-    private BusinessLogicPageService pageService;
+    private BusinessPageService pageService;
     private WebsiteTDB websiteTDB;
 
     private int cpt = 0;
@@ -24,7 +19,7 @@ public class PageTDB {
     private String path;
 
     @Autowired
-    public PageTDB(BusinessLogicPageService pageService, WebsiteTDB websiteTDB){
+    public PageTDB(BusinessPageService pageService, WebsiteTDB websiteTDB){
         this.pageService = pageService;
         this.websiteTDB = websiteTDB;
     }

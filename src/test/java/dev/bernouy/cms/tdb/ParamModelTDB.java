@@ -1,21 +1,16 @@
 package dev.bernouy.cms.tdb;
 
-import dev.bernouy.cms.feature.website.library.Library;
-import dev.bernouy.cms.feature.website.library.formatting.request.ReqCreateLibrary;
-import dev.bernouy.cms.feature.website.library.service.BusinessLogicLibraryService;
-import dev.bernouy.cms.feature.website.paramModel.formatting.request.ReqCreateParamModel;
+import dev.bernouy.cms.feature.website.paramModel.dto.req.ReqCreateParamModelDTO;
 import dev.bernouy.cms.feature.website.paramModel.model.ParamModel;
-import dev.bernouy.cms.feature.website.paramModel.service.ParamModelService;
-import dev.bernouy.cms.feature.website.project.Project;
+import dev.bernouy.cms.feature.website.paramModel.service.BusinessParamModelService;
 import dev.bernouy.cms.feature.website.version.Version;
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ParamModelTDB {
 
-    private ParamModelService paramModelService;
+    private BusinessParamModelService paramModelService;
     private VersionTDB versionTDB;
 
     private Version version;
@@ -23,7 +18,7 @@ public class ParamModelTDB {
     private ParamModel parent;
 
     @Autowired
-    public ParamModelTDB(ParamModelService paramModelService, VersionTDB versionTDB){
+    public ParamModelTDB(BusinessParamModelService paramModelService, VersionTDB versionTDB){
         this.paramModelService = paramModelService;
         this.versionTDB = versionTDB;
     }
@@ -46,10 +41,11 @@ public class ParamModelTDB {
     public ParamModel build(){
         if (version == null) version = versionTDB.build();
         if (type == null) type = "STRING";
-        ReqCreateParamModel reqCreateParamModel = new ReqCreateParamModel();
+        ReqCreateParamModelDTO reqCreateParamModel = new ReqCreateParamModelDTO();
         reqCreateParamModel.setVersionId(version.getId());
         reqCreateParamModel.setType(type);
-        reqCreateParamModel.setParentId(parent.getId());
+        if (parent != null)
+            reqCreateParamModel.setParentId(parent.getId());
         ParamModel p = paramModelService.create(reqCreateParamModel, version.getComponent().getProject().getOwner());
         reset();
         return p;

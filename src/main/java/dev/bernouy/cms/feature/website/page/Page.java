@@ -9,7 +9,7 @@ public class Page extends AbstractDocument {
     private Project project;
     private String name;
     private String title;
-    private String url;
+    private String path;
     private String description;
     private boolean isPublished;
 
@@ -39,12 +39,12 @@ public class Page extends AbstractDocument {
         this.title = title;
     }
 
-    public String getUrl() {
-        return url;
+    public String getPath() {
+        return path;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public String getDescription() {

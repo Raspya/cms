@@ -1,19 +1,16 @@
 package dev.bernouy.cms.tdb;
 
 import dev.bernouy.cms.feature.account.Account;
-import dev.bernouy.cms.feature.account.AccountService;
 import dev.bernouy.cms.feature.website.project.Project;
-import dev.bernouy.cms.feature.website.project.formatting.request.ReqCreateWebsiteDTO;
-import dev.bernouy.cms.feature.website.project.service.BusinessLogicProjectService;
-import jakarta.annotation.PostConstruct;
+import dev.bernouy.cms.feature.website.project.dto.req.ReqCreateWebsiteDTO;
+import dev.bernouy.cms.feature.website.project.service.BusinessProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class WebsiteTDB {
 
-    private BusinessLogicProjectService projectService;
+    private BusinessProjectService projectService;
     private AccountTDB accountTDB;
 
     private int cpt = 0;
@@ -22,7 +19,7 @@ public class WebsiteTDB {
     private Account account;
 
     @Autowired
-    public WebsiteTDB(BusinessLogicProjectService projectService, AccountTDB accountTDB){
+    public WebsiteTDB(BusinessProjectService projectService, AccountTDB accountTDB){
         this.projectService = projectService;
         this.accountTDB = accountTDB;
     }

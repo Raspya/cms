@@ -1,22 +1,21 @@
 package dev.bernouy.cms.tdb;
 
 import dev.bernouy.cms.feature.account.Account;
-import dev.bernouy.cms.feature.account.AccountService;
-import jakarta.annotation.PostConstruct;
+import dev.bernouy.cms.feature.account.service.AccountBusinessLogicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AccountTDB {
 
-    private AccountService accountService;
+    private AccountBusinessLogicService accountService;
 
     private int cpt = 0;
     private String email;
     private String password;
 
     @Autowired
-    public AccountTDB(AccountService accountService){
+    public AccountTDB(AccountBusinessLogicService accountService){
         this.accountService = accountService;
     }
 
