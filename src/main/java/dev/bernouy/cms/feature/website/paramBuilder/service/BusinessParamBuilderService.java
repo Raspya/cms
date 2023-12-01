@@ -46,6 +46,8 @@ public class BusinessParamBuilderService {
         paramBuilder.setBuilder(builder);
         paramBuilder.setParamModel(paramModel);
         paramBuilder.setValue(paramModel.getValue());
+        paramBuilder.setParent(paramModel.getId());
+        dataPersistentParamBuilderService.save(paramBuilder);
         return paramBuilder;
     }
 
@@ -58,6 +60,8 @@ public class BusinessParamBuilderService {
         paramBuilder.setBuilder(builder);
         paramBuilder.setParamModel(paramModel);
         paramBuilder.setValue(paramModel.getValue());
+        paramBuilder.setParent(paramModel.getParent());
+        dataPersistentParamBuilderService.save(paramBuilder);
         return paramBuilder;
     }
 
@@ -73,6 +77,8 @@ public class BusinessParamBuilderService {
     public List<ResParamBuilderDTO> listAllParamBuilder(String builderId, String paramBuilderId, Account account) {
         if (paramBuilderId != null && builderId != null) throw new BasicException("builderId and paramBuilderId can't be together");
         if (paramBuilderId == null && builderId == null) throw new BasicException("builderId or paramBuilderId is needed");
+        Builder builder = dataPersistentBuilderService.getById(builderId);
+        builder.getComponentVersion();
         if (builderId != null)
             return dataFormattingParamBuilderService.formatParamBuilders(dataPersistentParamBuilderService.listAllParamBuilderById(builderId));
         ParamBuilder paramBuilder = dataPersistentParamBuilderService.getById(paramBuilderId);

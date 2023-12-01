@@ -103,7 +103,7 @@ public class BusinessVersionService {
         Version version = persistentVersionService.getById(versionId);
         authProjectService.checkIsOwner(version.getComponent().getProject(), account);
         String urlJS = fileSystemProperties.getFileSystem("root") + "/component" + File.separator + "js" + File.separator + "C" + version.getId() + ".js";
-        String urlCSS = fileSystemProperties.getFileSystem("root") + "/component" + File.separator + "css" + File.separator + "C" + version.getId() + ".js";
+        String urlCSS = fileSystemProperties.getFileSystem("root") + "/component" + File.separator + "css" + File.separator + "C" + version.getId() + ".css";
         File fileJS = new File(urlJS);
         File fileCSS = new File(urlCSS);
         if (!fileJS.exists() || !fileCSS.exists()) throw new BasicException(WebsiteExceptionMessages.FILE_DOES_NOT_EXIST);

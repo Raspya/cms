@@ -88,6 +88,26 @@ public class PersistentBuilderService {
         }
     }
 
+    public int getMaxPosByLayoutId(String id) {
+        try{
+            Builder builder = builderRepository.findFirstBuilderByLayoutIdOrderByPositionDesc(id);
+            if ( builder == null ) return 0;
+            return builderRepository.findFirstBuilderByLayoutIdOrderByPositionDesc(id).getPosition();
+        } catch ( Exception e ){
+            throw new MyDatabaseException();
+        }
+    }
+
+    public int getMaxPosByPageId(String id) {
+        try{
+            Builder builder = builderRepository.findFirstBuilderByPageIdOrderByPositionDesc(id);
+            if ( builder == null ) return 0;
+            return builderRepository.findFirstBuilderByPageIdOrderByPositionDesc(id).getPosition();
+        } catch ( Exception e ){
+            throw new MyDatabaseException();
+        }
+    }
+
     public Builder getFirstByPageId(String id) {
         try{
             return builderRepository.findFirstBuilderByPageIdOrderByPositionDesc(id);

@@ -28,7 +28,7 @@ public class CopyParamModelService {
             default       -> throw new BasicException(WebsiteExceptionMessages.INVALID_PARAM_MODEL_TYPE);
         };
         paramModel.setComponentVersion(newVersion);
-        paramModel.setParent(persistentParamModelService.getById(parentId));
+        paramModel.setParent(parentId);
         paramModel.setName(oldParamModel.getName());
         paramModel.setKey(oldParamModel.getKey());
         paramModel.setType(oldParamModel.getType());

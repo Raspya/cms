@@ -6,10 +6,7 @@ import java.util.List;
 
 public interface ParamBuilderRepository extends CrudRepository<ParamBuilder, String> {
 
-    List<ParamBuilder> findAllByBuilderIdAndParamModelParentId(String builderId, String paramModelId);
     List<ParamBuilder> findByParamModelParentIsNullAndBuilderId(String builderId);
-
-    List<ParamBuilder> findAllByBuilderIdAndParamModelId(String builderId, String paramModelId);
     List<ParamBuilder> findAllByParamModelId(String paramModelId);
     List<ParamBuilder> findAllById(String paramBuilderId);
 }

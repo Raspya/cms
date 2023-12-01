@@ -72,7 +72,7 @@ public class BaseTest {
     public void setup() {
         mongoTemplate.getDb().drop();
         FileService.initFileSystem();
-    }
+    } 
 
     @AfterEach
     public void cleanup() {

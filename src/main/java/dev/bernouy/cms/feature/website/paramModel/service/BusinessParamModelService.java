@@ -65,7 +65,7 @@ public class BusinessParamModelService {
         int maxPos = persistentParamModelService.getLastPosition(componentVersion);
 
         paramModel.setPosition(maxPos+1);
-        if ( parent != null ) paramModel.setParent(parent);
+        if ( parent != null ) paramModel.setParent(parent.getId());
 
         persistentParamModelService.save(paramModel);
         return paramModel;

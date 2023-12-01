@@ -15,6 +15,7 @@ import dev.bernouy.cms.feature.website.layout.service.PersistentLayoutService;
 import dev.bernouy.cms.feature.website.page.Page;
 import dev.bernouy.cms.feature.website.page.service.BusinessPageService;
 import dev.bernouy.cms.feature.website.page.service.PersistentPageService;
+import dev.bernouy.cms.feature.website.paramBuilder.ParamBuilder;
 import dev.bernouy.cms.feature.website.paramBuilder.dto.req.ReqCreateParamBuilderDTO;
 import dev.bernouy.cms.feature.website.paramBuilder.service.BusinessParamBuilderService;
 import dev.bernouy.cms.feature.website.paramModel.model.ParamModel;
@@ -72,30 +73,30 @@ public class BusinessBuilderService {
         if ((dto.getLayoutId() == null && dto.getPageId() != null)){
             Page page = persistentPageService.getById(dto.getPageId());
             builder.setPage(page);
-            maxPos = dataPersistentBuilderService.getFirstByPageId(page.getId()).getPosition();
+            maxPos = dataPersistentBuilderService.getMaxPosByPageId(page.getId());
         }
         else if ((dto.getLayoutId() != null && dto.getPageId() == null)){
             Layout layout = persistentLayoutService.getById(dto.getLayoutId());
             builder.setLayout(layout);
-            maxPos = dataPersistentBuilderService.getFirstByLayoutId(layout.getId()).getPosition();
+            maxPos = dataPersistentBuilderService.getMaxPosByLayoutId(layout.getId());
         } else {
             throw new BasicException(WebsiteExceptionMessages.INVALID_BUILDER_PAGEORLAYOUT);
         }
         builder.setComponentVersion(version);
-        if (maxPos == null) maxPos = 0;
         builder.setPosition(maxPos+1);
         dataPersistentBuilderService.save(builder);
 
         List<ParamModel> lstParamModel = dataPersistentParamModelService.findAllByVersion(version);
         for (ParamModel paramModel : lstParamModel) {
-            businessLogicParamBuilderService.create(paramModel.getId(), builder.getId(), account);
+            ParamBuilder paramBuilder = businessLogicParamBuilderService.create(paramModel.getId(), builder.getId(), account);
 
             if (paramModel instanceof ParamModelList) {
                 List<ParamModel> lstParamModelChild = dataPersistentParamModelService.findAllByParentId(paramModel.getId());
-                int value = Integer.parseInt(paramModel.getValue());
+                int value = 1;
+                if ( paramModel.getValue() != null ) value = Integer.parseInt(paramModel.getValue());
                 for (int i = 0; i < value; i++) {
                     for (ParamModel paramModelChild : lstParamModelChild) {
-                        businessLogicParamBuilderService.create(new ReqCreateParamBuilderDTO(paramModel.getId()), account);
+                        businessLogicParamBuilderService.create(new ReqCreateParamBuilderDTO(paramBuilder.getId()), account);
                         if (lstParamModel.contains(paramModelChild)) lstParamModel.remove(paramModelChild); // TODO: 2023-11-19 check if it's necessary
                     }
                 }

@@ -9,10 +9,6 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.util.Objects;
 
-@CompoundIndexes({
-        @CompoundIndex(name = "keyIndex", def = "{'parent' : 1, 'key': 1}", unique = true),
-        @CompoundIndex(name = "searchIndex", def = "{ 'parent': 1, 'componentBuilder': 1 }")
-})
 public class ParamBuilder extends AbstractDocument {
 
     @DBRef
@@ -20,6 +16,7 @@ public class ParamBuilder extends AbstractDocument {
     @DBRef
     private ParamModel paramModel;
     private Object value;
+    private String parent;
 
     public ParamModel getParamModel() {
         return paramModel;
@@ -27,6 +24,14 @@ public class ParamBuilder extends AbstractDocument {
 
     public void setParamModel(ParamModel paramModel) {
         this.paramModel = paramModel;
+    }
+
+    public String getParent() {
+        return parent;
+    }
+
+    public void setParent(String parent) {
+        this.parent = parent;
     }
 
     public Builder getBuilder() {

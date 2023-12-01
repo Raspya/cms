@@ -70,13 +70,13 @@ public class PersistentParamModelService {
     }
 
     public List<ParamModel> findAllByParentId(String id) {
-        return paramModelRepository.findAllByParentId(id);
+        return paramModelRepository.findAllByParent(id);
     }
 
 
     public List<ParamModel> findAllByVersionAndParent(Version version, ParamModel parent){
         try{
-            return paramModelRepository.findAllByComponentVersionIdAndParentId(version.getId(), parent.getId());
+            return paramModelRepository.findAllByComponentVersionIdAndParent(version.getId(), parent.getId());
         } catch (Exception e) {
             throw new MyDatabaseException();
         }
@@ -84,7 +84,7 @@ public class PersistentParamModelService {
 
     public ParamModel getByParent(ParamModel paramModel){
         try {
-            return paramModelRepository.findByParentId(paramModel.getId());
+            return paramModelRepository.findByParent(paramModel.getId());
         } catch (Exception e) {
             throw new MyDatabaseException();
         }

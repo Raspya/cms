@@ -29,10 +29,10 @@ public class BuilderTDB {
 
     public Builder build(){
         ReqCreateBuilderDTO reqCreateBuilder = new ReqCreateBuilderDTO();
-        if ( layout == null && page == null )
-            page = pageTDB.build();
         if (version == null)
             version = versionTDB.build();
+        if ( layout == null && page == null )
+            page = pageTDB.withProject(version.getComponent().getProject()).build();
         if ( version != null )
             reqCreateBuilder.setVersionId(version.getId());
         if ( layout != null )
@@ -45,6 +45,21 @@ public class BuilderTDB {
         else b = builderService.create(reqCreateBuilder, page.getProject().getOwner());
         reset();
         return b;
+    }
+
+    public BuilderTDB withLayout(Layout layout){
+        this.layout = layout;
+        return this;
+    }
+
+    public BuilderTDB withVersion(Version version){
+        this.version = version;
+        return this;
+    }
+
+    public BuilderTDB withPage(Page page){
+        this.page = page;
+        return this;
     }
 
     public void reset(){

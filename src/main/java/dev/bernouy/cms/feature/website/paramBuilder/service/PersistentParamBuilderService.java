@@ -16,9 +16,9 @@ public class PersistentParamBuilderService {
     @Autowired
     private ParamBuilderRepository paramBuilderRepository;
 
-    public ParamBuilder getById(String paramModelId) {
+    public ParamBuilder getById(String paramBuilderId) {
         try{
-            ParamBuilder paramBuilder = paramBuilderRepository.findById(paramModelId).orElse(null);
+            ParamBuilder paramBuilder = paramBuilderRepository.findById(paramBuilderId).orElse(null);
             if (paramBuilder == null) throw new BasicException(WebsiteExceptionMessages.INVALID_PARAM_MODEL_ID);
             return paramBuilder;
         } catch ( Exception e ){

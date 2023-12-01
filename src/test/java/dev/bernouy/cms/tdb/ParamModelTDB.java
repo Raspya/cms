@@ -39,7 +39,12 @@ public class ParamModelTDB {
     }
     
     public ParamModel build(){
-        if (version == null) version = versionTDB.build();
+        if (version == null) {
+            if (parent == null)
+                version = versionTDB.build();
+            else
+                version = parent.getComponentVersion();
+        };
         if (type == null) type = "STRING";
         ReqCreateParamModelDTO reqCreateParamModel = new ReqCreateParamModelDTO();
         reqCreateParamModel.setVersionId(version.getId());

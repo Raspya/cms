@@ -8,16 +8,11 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.util.HashMap;
 
-@CompoundIndexes({
-        @CompoundIndex(name = "keyIndex", def = "{'parent' : 1, 'key': 1}"),
-        @CompoundIndex(name = "searchIndex", def = "{ 'parent': 1, 'componentVersion': 1 }")
-})
 public abstract class ParamModel extends AbstractDocument implements ParamInterface {
 
     @DBRef
     protected Version componentVersion;
-    @DBRef
-    protected ParamModel parent;
+    protected String parent;
     protected String name;
     protected String key;
     protected String type;
@@ -33,11 +28,11 @@ public abstract class ParamModel extends AbstractDocument implements ParamInterf
         return componentVersion;
     }
 
-    public ParamModel getParent() {
+    public String getParent() {
         return parent;
     }
 
-    public void setParent(ParamModel parent) {
+    public void setParent(String parent) {
         this.parent = parent;
     }
 

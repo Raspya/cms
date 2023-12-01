@@ -9,7 +9,6 @@ public class ParamModelObject extends ParamModel  {
 
     public ParamModelObject() {}
 
-
     public HashMap<String, Object> optionsToMap() {
         HashMap<String, Object> hashMap = new HashMap<>();
         return hashMap;
